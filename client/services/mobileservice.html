@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafaTech Solutions — Premium Mobile App Development Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0f1c;
+      --bg-secondary: #0b1222;
+      --panel: #101826;
+      --panel2: #0f1524;
+      --text: #e9eef6;
+      --muted: #9fb0c4;
+      --brand: #5b7cfa;
+      --brand2: #22d3ee;
+      --accent: #ff6b6b;
+      --success: #51cf66;
+      --border: rgba(255,255,255,.08);
+      --border-hover: rgba(255,255,255,.15);
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 50%, #0c1527 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .shape {
+      position: absolute;
+      background: linear-gradient(45deg, var(--brand), var(--brand2));
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      left: 70%;
+      animation-delay: 4s;
+    }
+
+    .shape:nth-child(4) {
+      width: 40px;
+      height: 40px;
+      left: 80%;
+      animation-delay: 6s;
+    }
+
+    .shape:nth-child(5) {
+      width: 120px;
+      height: 120px;
+      left: 30%;
+      animation-delay: 8s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Particle System */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--brand2);
+      border-radius: 50%;
+      animation: particle-float 15s infinite linear;
+    }
+
+    @keyframes particle-float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10px) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Styles */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 15, 28, 0.85);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      transition: padding 0.3s ease;
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: -0.025em;
+      transition: transform 0.3s ease;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand:hover {
+      transform: translateY(-2px);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      box-shadow: 0 0 20px rgba(91, 124, 250, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background: linear-gradient(135deg, rgba(91,124,250,.3), rgba(34,211,238,.25));
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(91, 124, 250, 0.3);
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 80px 0 60px;
+      min-height: 90vh;
+    }
+
+    .hero-content {
+      animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-media {
+      animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .panel {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(16, 24, 38, 0.8) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brand2), transparent);
+    }
+
+    .panel:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--border-hover);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      margin: 0 0 20px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--brand2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 0 0 30px;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 16px 32px;
+      border-radius: 16px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      color: #031221;
+      box-shadow: 0 10px 30px rgba(91, 124, 250, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(91, 124, 250, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.15);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi {
+      background: linear-gradient(135deg, var(--panel2) 0%, rgba(15, 21, 36, 0.8) 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand), var(--brand2));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .kpi:hover::before {
+      transform: scaleX(1);
+    }
+
+    .kpi:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-hover);
+    }
+
+    .kpi .num {
+      font-weight: 900;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Hero Image/Video */
+    .hero-media-container {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-media-container:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+    }
+
+    /* Sections */
+    .section {
+      margin: 100px 0;
+      animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 50px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--text) 0%, var(--brand2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.025em;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(16, 24, 38, 0.8) 100%);
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 20px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand), var(--brand2));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 15px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Process Steps */
+    .process-card {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(16, 24, 38, 0.8) 100%);
+      border: 1px solid var(--border);
+      padding: 25px;
+      border-radius: 18px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .process-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--brand), var(--brand2));
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .process-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .process-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Tech Stack */
+    .tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .chip {
+      padding: 12px 20px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.04) 100%);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(91, 124, 250, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .chip:hover::before {
+      left: 100%;
+    }
+
+    .chip:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(135deg, rgba(91, 124, 250, 0.2), rgba(34, 211, 238, 0.1));
+      border-color: var(--brand);
+      color: var(--brand2);
+    }
+
+    /* Pricing */
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .price {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(16, 24, 38, 0.8) 100%);
+      border: 1px solid var(--border);
+      padding: 40px 30px;
+      border-radius: 24px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      text-align: center;
+    }
+
+    .price.featured {
+      border: 2px solid var(--brand);
+      transform: scale(1.05);
+    }
+
+    .price.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      color: #031221;
+      padding: 8px 24px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .price:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+      border-color: var(--brand);
+    }
+
+    .price h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .price .price-amount {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 20px 0;
+    }
+
+    .price .features {
+      list-style: none;
+      margin: 30px 0;
+    }
+
+    .price .features li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .price .features li:last-child {
+      border-bottom: none;
+    }
+
+    /* Contact Form */
+    .contact-section {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(16, 24, 38, 0.8) 100%);
+      border-radius: 24px;
+      padding: 60px 40px;
+      margin: 100px 0;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .contact-form {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(91, 124, 250, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 100px;
+      padding: 40px 0;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--brand2);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--brand);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      
+      .nav { padding: 12px 0; }
+      
+      nav { display: none; }
+      
+      .hero { 
+        grid-template-columns: 1fr; 
+        gap: 30px;
+        padding: 50px 0 40px;
+        text-align: center;
+      }
+      
+      .hero-image { height: 250px; }
+      
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+      
+      .grid-3 { grid-template-columns: 1fr; }
+      
+      .grid-5 { grid-template-columns: 1fr; }
+      
+      .pricing { grid-template-columns: 1fr; }
+      
+      .contact { grid-template-columns: 1fr; }
+      
+      .cta { justify-content: center; }
+      
+      .panel { padding: 30px 25px; }
+      
+      .price.featured { transform: none; }
+      
+      .section { margin: 60px 0; }
+    }
+
+    /* Loading Animation */
+    .loading {
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+  </div>
+
+  <!-- Particle System -->
+  <div class="particles" id="particles"></div>
+
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="brand"><span class="dot"></span> SafaTech Solutions</a>
+   <nav><a href="webservice.html">Web Development</a>
+  <a href="softwareservice.html">Software Development</a>
+  <a href="mobileservice.html">Mobile Development</a>
+  <a href="markettingservice.html" class="active">Digital Marketing</a>
+  <a href="GraphicDesign.html">Graphic Design</a>
+  <a href="Ved&photoservice.html">Photography & Video</a></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero loading">
+      <div class="hero-content">
+        <div class="panel">
+          <h1>Mobile App Excellence</h1>
+          <p>We create stunning native and cross-platform mobile applications that deliver exceptional user experiences. From iOS to Android, React Native to Flutter - we build apps that scale and engage users across all devices.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="mailto:contact@safatech.com">Get App Quote</a>
+            <a class="btn btn-secondary" href="#process">Our App Process</a>
+          </div>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="num" data-target="180">0</div>
+              <div class="label">Apps Launched</div>
+            </div>
+            <div class="kpi">
+              <div class="num">8–12</div>
+              <div class="label">Week Timeline</div>
+            </div>
+            <div class="kpi">
+              <div class="num" data-target="4.8">0</div>
+              <div class="label">App Store Rating</div>
+            </div>
+            <div class="kpi">
+              <div class="num" data-target="95">0</div>
+              <div class="label">Client Retention</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="hero-media-container">
+          <img src="https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mobile app development on smartphone and tablet" class="hero-image">
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="value">
+      <h2>What We Deliver</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Native Performance</h3>
+          <p>Platform-optimized apps built with Swift/Kotlin or cross-platform solutions like React Native and Flutter for optimal performance and user experience.</p>
+        </div>
+        <div class="card">
+          <h3>Intuitive UI/UX</h3>
+          <p>User-centered design following iOS Human Interface Guidelines and Material Design principles to create engaging, accessible interfaces.</p>
+        </div>
+        <div class="card">
+          <h3>Scalable Architecture</h3>
+          <p>Clean code architecture, comprehensive testing, CI/CD integration, and cloud backend services for apps that grow with your business.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="process">
+      <h2>Our App Development Process</h2>
+      <div class="grid-5">
+        <div class="process-card">
+          <h3>01 · Strategy</h3>
+          <p>Market research, competitor analysis, user persona development, and platform strategy to define your app's success path.</p>
+        </div>
+        <div class="process-card">
+          <h3>02 · Design</h3>
+          <p>User journey mapping, wireframing, prototyping, and high-fidelity UI design with platform-specific considerations.</p>
+        </div>
+        <div class="process-card">
+          <h3>03 · Development</h3>
+          <p>Agile sprints, continuous integration, automated testing, and real-device testing across multiple screen sizes and OS versions.</p>
+        </div>
+        <div class="process-card">
+          <h3>04 · Testing</h3>
+          <p>Comprehensive QA testing, performance optimization, security audits, and App Store compliance validation.</p>
+        </div>
+        <div class="process-card">
+          <h3>05 · Launch</h3>
+          <p>App Store submission, launch strategy, user acquisition planning, analytics setup, and post-launch monitoring.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="tech">
+      <h2>Our Mobile Tech Stack</h2>
+      <div class="tech">
+        <span class="chip">iOS & Swift</span>
+        <span class="chip">Android & Kotlin</span>
+        <span class="chip">React Native</span>
+        <span class="chip">Flutter</span>
+        <span class="chip">Firebase</span>
+        <span class="chip">AWS Amplify</span>
+        <span class="chip">GraphQL</span>
+        <span class="chip">Push Notifications</span>
+        <span class="chip">App Store Connect</span>
+        <span class="chip">Google Play Console</span>
+        <span class="chip">Analytics & Crashlytics</span>
+        <span class="chip">In-App Purchases</span>
+        <span class="chip">Biometric Auth</span>
+        <span class="chip">Offline Sync</span>
+      </div>
+    </section>
+
+    <section class="section reveal" id="pricing">
+      <h2>App Development Packages</h2>
+      <div class="pricing">
+        <div class="price">
+          <h3>MVP App</h3>
+          <p style="color: var(--muted);">Perfect for startups & validation</p>
+          <div class="price-amount">PKR 800k – 1.5M</div>
+          <ul class="features">
+            <li>Single platform (iOS or Android)</li>
+            <li>5-7 core screens</li>
+            <li>Basic user authentication</li>
+            <li>Cloud database integration</li>
+            <li>App Store submission</li>
+            <li>30 days post-launch support</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary" style="margin-top: 20px;">Start MVP</a>
+        </div>
+        
+        <div class="price featured">
+          <h3>Professional App</h3>
+          <p style="color: var(--muted);">Full-featured business application</p>
+          <div class="price-amount">PKR 2M – 4M</div>
+          <ul class="features">
+            <li>Cross-platform (iOS + Android)</li>
+            <li>Advanced UI/UX design</li>
+            <li>Backend API development</li>
+            <li>Push notifications</li>
+            <li>Analytics & crash reporting</li>
+            <li>Payment gateway integration</li>
+            <li>3 months support & updates</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary" style="margin-top: 20px;">Most Popular</a>
+        </div>
+        
+        <div class="price">
+          <h3>Enterprise App</h3>
+          <p style="color: var(--muted);">Large-scale, feature-rich applications</p>
+          <div class="price-amount">Custom Quote</div>
+          <ul class="features">
+            <li>Multi-platform deployment</li>
+            <li>Advanced security & compliance</li>
+            <li>Custom integrations</li>
+            <li>Dedicated development team</li>
+            <li>24/7 support & monitoring</li>
+            <li>Continuous updates</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary" style="margin-top: 20px;">Discuss Project</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section reveal" id="contact">
+      <h2 style="margin-bottom: 40px;">Launch Your App Today</h2>
+      <div class="contact">
+        <div class="contact-form">
+          <form onsubmit="event.preventDefault(); showSuccessMessage();">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input required placeholder="Your full name" />
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input required type="email" placeholder="you@company.com" />
+            </div>
+            <div class="form-group">
+              <label>App Type</label>
+              <input placeholder="e.g., E-commerce, Social, Business" />
+            </div>
+            <div class="form-group">
+              <label>Target Platform</label>
+              <input placeholder="iOS, Android, or Both" />
+            </div>
+            <div class="form-group">
+              <label>App Requirements *</label>
+              <textarea required placeholder="Describe your app idea, target audience, key features, and any specific requirements..."></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit" style="width: 100%;">Submit App Request</button>
+          </form>
+        </div>
+        
+        <div class="contact-info">
+          <div class="card">
+            <h3>Ready to Build Your App?</h3>
+            <p style="margin-bottom: 30px;">Transform your idea into a powerful mobile application. We'll guide you through every step from concept to App Store success.</p>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="margin-bottom: 10px;">Free App Consultation</h4>
+              <p style="color: var(--muted);">Get expert advice on platform selection, feature planning, and development timeline.</p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="margin-bottom: 10px;">Portfolio Review</h4>
+              <p style="color: var(--muted);">See examples of our mobile apps across different industries and platforms.</p>
+            </div>
+            
+            <div>
+              <h4 style="margin-bottom: 10px;">Contact Information</h4>
+              <p style="color: var(--muted);">
+                📧 contact@safatech.com<br>
+                📱 Mobile App Development Team<br>
+                🕒 Mon-Fri, 9 AM - 6 PM PKT
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="loading">
+    <div class="container">
+      <p>&copy; 2025 SafaTech Solutions · Islamabad, Pakistan · <a href="mailto:contact@safatech.com">contact@safatech.com</a></p>
+      <p style="margin-top: 10px; font-size: 0.9rem;">Building mobile experiences that drive engagement</p>
+    </div>
+  </footer>
+
+  <script>
+    // Particle System
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Counter Animation
+    function animateCounters() {
+      const counters = document.querySelectorAll('.kpi .num[data-target]');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const increment = target / 50;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            counter.textContent = target === 4.8 ? '4.8★' : target === 95 ? '95%' : target + '+';
+            clearInterval(timer);
+          } else {
+            counter.textContent = Math.floor(current) + (target === 4.8 ? '★' : target === 95 ? '%' : '+');
+          }
+        }, 30);
+      });
+    }
+
+    // Scroll Reveal Animation
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      reveals.forEach(reveal => {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveal.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveal.classList.add('active');
+        }
+      });
+    }
+
+    // Header Scroll Effect
+    let lastScroll = 0;
+    function handleScroll() {
+      const header = document.querySelector('header');
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        header.style.transform = 'translateY(-100%)';
+      } else {
+        header.style.transform = 'translateY(0)';
+      }
+      
+      if (currentScroll > 50) {
+        header.style.background = 'rgba(10, 15, 28, 0.95)';
+      } else {
+        header.style.background = 'rgba(10, 15, 28, 0.85)';
+      }
+      
+      lastScroll = currentScroll;
+      revealOnScroll();
+    }
+
+    // Smooth Scrolling
+    function initSmoothScrolling() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    }
+
+    // Success Message
+    function showSuccessMessage() {
+      alert('Thank you for your app idea! We\'ll review your requirements and get back to you within 24 hours with a detailed proposal and development timeline.');
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+      initSmoothScrolling();
+      
+      // Trigger counter animation when hero section is visible
+      setTimeout(animateCounters, 1000);
+      
+      // Initial reveal check
+      revealOnScroll();
+    });
+
+    // Event Listeners
+    window.addEventListener('scroll', handleScroll);
+  </script>
+</body>
+</html>

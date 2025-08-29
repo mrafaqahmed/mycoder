@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - SafaTech Solution | Secure Sign In and Access Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to SafaTech Solution to securely access your productivity tools. Modern, secure, and fast sign in for all SafaTech users.">
+  <meta name="keywords" content="SafaTech Solution, Login, Sign In, Secure Access, Productivity Tools, SaaS, User Portal">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #181526 0%, #7a5af8 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .container-main {
+      max-width: 1220px;
+      margin: 7vh auto;
+      border-radius: 2.5rem;
+      overflow: hidden;
+      display: flex;
+      min-height: 80vh;
+      box-shadow: 0 18px 60px 0 rgba(31,38,135,0.14);
+      background: transparent;
+      align-items: stretch;
+    }
+    .left-section, .right-section {
+      flex: 1 1 0%;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: none;
+      min-height: 100%;
+    }
+    .left-section {
+      align-items: flex-end;
+      justify-content: center;
+      background: linear-gradient(135deg, #221b38 0%, #7a5af8 100%);
+      border-top-left-radius: 2.5rem;
+      border-bottom-left-radius: 2.5rem;
+      padding-right: 0;
+    }
+    .form-inner {
+      width: 100%;
+      max-width: 480px;
+      min-height: 720px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2.8rem 4rem 3.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeinbuttery 1.1s cubic-bezier(.39,.58,.57,1.03) 0.1s forwards;
+    }
+    @keyframes fadeinbuttery {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .form-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2.2rem;
+    }
+    .form-logo img {
+      width: 70px;
+      height: 70px;
+      border-radius: 1.3rem;
+      background: #fff;
+      box-shadow: 0 4px 18px rgba(120,73,255,0.07);
+      object-fit: contain;
+    }
+    .form-title {
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+      text-align: left;
+    }
+    .form-desc {
+      color: #c2b7e3;
+      font-size: 1.17rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.3px;
+    }
+    .input-shadow {
+      box-shadow: 0 2px 14px 0 rgba(120, 73, 255, 0.10);
+      border-radius: 2.5rem;
+      background: #271f3c;
+      color: #edeaff;
+    }
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b197fc;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .input-field {
+      background: #271f3c !important;
+      border: 1.5px solid #4a387b !important;
+      color: #edeaff !important;
+      padding-left: 2.7rem;
+      font-size: 1.05rem;
+      outline: none;
+      border-radius: 2.5rem !important;
+      transition: border-color .18s;
+      width: 100%;
+      padding-top: 0.9rem;
+      padding-bottom: 0.9rem;
+      font-weight: 500;
+      letter-spacing: .01em;
+    }
+    .input-field:focus {
+      border-color: #a389fa !important;
+      box-shadow: 0 0 0 2px #a389fa44;
+      background: #2a2041 !important;
+      color: #fff !important;
+    }
+    .input-field::placeholder {
+      color: #b197fc !important;
+      opacity: 1;
+      font-weight: 400;
+    }
+    .checkbox-label {
+      color: #bcb1e9;
+      font-size: 1rem;
+      margin-left: 0.4em;
+    }
+    .btn-purple {
+      background: linear-gradient(90deg,#a389fa 0%,#7a5af8 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 2.5rem;
+      padding: 0.9rem 0;
+      box-shadow: 0 2px 18px #a259f7cc;
+      transition: background .2s, box-shadow .2s;
+      margin-top: 0.2rem;
+    }
+    .btn-purple:hover {
+      background: linear-gradient(90deg,#7a5af8 0%,#a389fa 100%);
+      box-shadow: 0 2px 24px #a259f7dd;
+    }
+    .btn-google {
+      background: #a259f7;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.08rem;
+      border-radius: 2.5rem;
+      padding: 0.85rem 0;
+      margin-top: 0.67rem;
+      margin-bottom: 0.1rem;
+      transition: background .2s;
+      box-shadow: 0 0 8px #a389fa22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+    }
+    .btn-google:hover {
+      background: #6c1aff;
+      color: #fff;
+    }
+    .btn-google .google-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+      display: inline-block;
+      vertical-align: middle;
+      background: transparent;
+    }
+    .btn-linkedin {
+      background: #140024;
+      border: 2px solid #a259f7;
+      color: #a259f7;
+      font-weight: 600;
+      font-size: 1.08rem;
+      border-radius: 2.5rem;
+      padding: 0.85rem 0;
+      margin-bottom: 0.1rem;
+      transition: background .2s, color .2s;
+      box-shadow: 0 0 8px #a389fa22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+    }
+    .btn-linkedin:hover {
+      background: #2b0052;
+      color: #fff;
+    }
+    .error-message {
+      color: #dc2626;
+      background: #fee2e2;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid #fecaca;
+      display: none;
+    }
+    .right-section {
+      background: #f6faff;
+      align-items: flex-start;
+      justify-content: center;
+      position: relative;
+      border-top-right-radius: 2.5rem;
+      border-bottom-right-radius: 2.5rem;
+      min-width: 0;
+      min-height: 800px;
+      padding-top: 0;
+      padding-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .panel-content {
+      width: 100%;
+      max-width: 420px;
+      align-self: flex-end;
+      margin-top: 2.5rem;
+      margin-right: 3.2rem;
+      margin-bottom: 0.3rem;
+      background: none;
+      border-radius: 1.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.12rem;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #232458;
+      margin-bottom: 0.1em;
+      gap: 0.5em;
+    }
+    .panel-header img {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #fff;
+      margin-right: 7px;
+      box-shadow: 0 1px 7px #a389fa22;
+      object-fit: contain;
+    }
+    .panel-desc {
+      color: #7e89a5;
+      font-size: 1.07rem;
+      margin-bottom: 1.15em;
+      text-align: right;
+      width: 100%;
+      max-width: 350px;
+      font-weight: 500;
+    }
+    .svg-card {
+      width: 510px;
+      height: 800px;
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: 0 12px 40px 0 rgba(31,38,135,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.6rem;
+      margin-right: 3.2rem;
+      margin-bottom: 0;
+    }
+    .signin-illustration {
+      max-width: 410px;
+      max-height: 600px;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 1.2rem;
+      background: #fff;
+      display: block;
+    }
+    .svg-card {
+      height: calc(100% - 3.5rem - 2.2rem);
+      min-height: 380px;
+      margin-bottom: 2.2rem;
+    }
+    @media (max-width: 1400px) {
+      .container-main { max-width: 99vw; }
+      .form-inner, .svg-card { width: 99vw !important; max-width: 99vw !important; }
+      .svg-card { margin-right: 0; }
+      .panel-content { margin-right:0; }
+    }
+    @media (max-width: 1100px) {
+      .svg-card { width: 90vw; min-width: 0; }
+      .form-inner { max-width: 97vw; }
+      .panel-content { max-width: 95vw; }
+    }
+    @media (max-width: 900px) {
+      .container-main { flex-direction: column; border-radius: 0; max-width: 99vw; }
+      .left-section, .right-section { border-radius: 0; min-height: unset; }
+      .panel-content, .svg-card { margin-right: 0; max-width: 95vw; }
+      .svg-card { width: 95vw; }
+      .form-inner { padding: 2.2rem 1.2rem; max-width: 100vw; }
+      .right-section { min-height: 400px; }
+      .svg-card { margin-bottom: 1.5rem; }
+    }
+    @media (max-width: 700px) {
+      .container-main { flex-direction: column; border-radius: 0; width: 100vw; }
+      .left-section, .right-section { padding: 1.2rem 0.2rem; }
+      .form-inner { max-width: 99vw; padding: 1.2rem 0.2rem; }
+      .svg-card { width: 99vw !important; height: 350px !important; min-height: 220px; margin-top: 1rem; }
+      .panel-content { max-width: 100vw; margin: 1rem 0 0 0; }
+      .signin-illustration { max-width: 99vw; }
+    }
+    @media (max-width: 480px) {
+      .form-title { font-size: 2rem; }
+      .form-logo img { width: 48px; height: 48px; }
+      .panel-header img { width: 22px; height: 22px; }
+      .svg-card { width: 100vw !important; height: 200px !important; }
+      .form-inner { padding: 0.7rem 0.1rem; }
+      .panel-content { padding-right: 0.6rem; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+  <div class="container-main">
+    <!-- Left Section: Sign In Form -->
+    <div class="left-section">
+      <div class="form-inner">
+        <div class="form-logo">
+          <img src="/assets/images/safa.png" alt="SafaTech Solution Logo" />
+        </div>
+        <div class="form-title mb-1 mt-3">Sign In</div>
+        <div class="form-desc">Securely log in to your SafaTech Solution account</div>
+        <div id="errorMsg" class="error-message"></div>
+        <form id="loginForm" class="space-y-5 w-full max-w-md" autocomplete="off">
+          <div class="relative mb-2">
+            <span class="input-icon">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M16 12a4 4 0 11-8 0 4 4 0 018 0zm2 6a6 6 0 00-12 0"/>
+              </svg>
+            </span>
+            <input type="email" id="email" name="email" required
+              class="input-field"
+              placeholder="Email Address">
+          </div>
+          <div class="relative mb-2">
+            <span class="input-icon">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 17a5 5 0 100-10 5 5 0 000 10zm0 0v4m0-4h.01"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password" required
+              class="input-field"
+              placeholder="Password">
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="inline-flex items-center text-[#b88cf7] text-sm font-medium">
+              <input id="remember" name="remember" type="checkbox" class="rounded border-[#a259f7] focus:ring-[#a259f7]" />
+              <span class="ml-2">Remember me</span>
+            </label>
+            <a href="#" class="text-sm text-[#b88cf7] hover:underline font-semibold">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-purple w-full">Sign In</button>
+          <button id="googleLoginBtn" type="button" class="btn-google w-full">
+            <svg class="google-icon" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.9 33.3 30.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8.1 3.1l6.1-6.1C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 19.1-7.7 20.7-17.7.1-.7.3-1.4.3-2.3 0-1.6-.2-3.2-.5-4.7z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.6 16.5 19.5 14 24 14c3.1 0 5.9 1.1 8.1 3.1l6.1-6.1C34.6 5.1 29.6 3 24 3c-7.7 0-14.6 3.8-18.7 9.7z"/><path fill="#FBBC05" d="M24 45c5.4 0 10.3-1.8 14.2-4.9l-6.7-5.5C28.9 36.5 26.6 37 24 37c-6.2 0-11.5-4.2-13.3-9.9l-6.5 5C7.1 41.3 14.9 45 24 45z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7C34.5 33.5 29.7 37 24 37c-6.2 0-11.5-4.2-13.3-9.9l-6.5 5C7.1 41.3 14.9 45 24 45c6.2 0 11.5-2.1 15.2-5.5l-6.7-5.5z"/><path fill="none" d="M0 0h48v48H0z"/></g></svg>
+            Sign in with Google
+          </button>
+          <button type="button" class="btn-linkedin w-full">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.994 24v-8.569c0-4.076-2.181-5.98-5.091-5.98-2.345 0-3.396 1.292-3.988 2.198v-1.886h-4.854v14.237h4.854v-7.081c0-1.87.356-3.681 2.668-3.681 2.285 0 2.316 2.139 2.316 3.801v6.961h4.855zm-20.565-17.977c-1.669 0-2.767 1.096-2.767 2.563 0 1.439 1.067 2.563 2.707 2.563h.032c1.7 0 2.767-1.124 2.767-2.563-.032-1.467-1.067-2.563-2.739-2.563zm-2.453 17.977h4.868v-14.237h-4.868v14.237z"/></svg>
+            Sign in with LinkedIn
+          </button>
+          <div class="text-center text-[#b88cf7] text-sm pt-2">Don't have an account? <a href="signup.html" class="text-[#a259f7] hover:underline font-semibold">Sign Up</a></div>
+        </form>
+      </div>
+    </div>
+    <!-- Right Section: SVG Illustration & Info Panel -->
+    <div class="right-section">
+      <div class="panel-content">
+        <div class="panel-header">
+          <img src="/assets/images/safa.png" alt="SafaTech Solution Logo" />
+          <span class="font-bold text-gray-900 text-base">SafaTech Solution</span>
+        </div>
+        <div class="panel-desc">
+          Boost your efficiency with SafaTech's advanced digital tools, designed to help you work smarter, collaborate seamlessly, and achieve more every day.
+        </div>
+      </div>
+      <div class="svg-card">
+        <img src="/assets/images/login.gif" alt="Sign In to SafaTech Solution" class="signin-illustration" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fade-in animation stagger (for .fade-in, not needed for new structure but left for future extension)
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach((el, i) => {
+        el.style.animationDelay = (i * 0.15) + 's';
+        el.classList.add('opacity-0');
+        setTimeout(() => el.classList.remove('opacity-0'), i * 150);
+      });
+    });
+
+     // Login form handler
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const errorMsg = document.getElementById('errorMsg');
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        errorMsg.style.display = 'none';
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        try {
+          // Use FULL backend URL for fetch!
+          const response = await fetch('http://127.0.0.1:5000/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await response.json();
+          if (response.ok && data.token) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            // Redirect to dashboard.html in the same directory (client/)
+            window.location.href = "dashboard.html";
+          } else {
+            errorMsg.textContent = data.error || 'Login failed. Please try again.';
+            errorMsg.style.display = 'block';
+          }
+        } catch (err) {
+          errorMsg.textContent = 'Network error. Please try again later.';
+          errorMsg.style.display = 'block';
+        }
+      });
+
+
+     // Google Sign-In button handler
+      const googleLoginBtn = document.getElementById('googleLoginBtn');
+      if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = 'http://127.0.0.1:5000/api/google?prompt=select_account';
+        });
+      }
+
+      // Handle Google OAuth redirect back to frontend
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        localStorage.setItem('token', token);
+        window.location.href = "dashboard.html";
+      }
+    });
+  </script>
+</body>
+</html>

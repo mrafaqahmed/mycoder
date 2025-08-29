@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grammar Checker - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #181122 0%, #321a5a 100%);
+      color: #e6e6ff;
+      overflow-x: hidden;
+    }
+    .main-content { margin-left: 130px; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0; }
+    .grammar-checker-container { background: linear-gradient(135deg, #24143c 60%, #1c1030 100%); border-radius: 2.5rem; box-shadow: 0 16px 54px #0005, 0 2px 30px #a259f73a; padding: 2.5rem 2.3rem 2.2rem 2.3rem; width: 100%; max-width: 1100px; min-height: 85vh; margin: 2.5rem 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; }
+    .grammar-checker-title { font-size: 2.3rem; font-weight: 900; color: #fff; letter-spacing: 1.5px; margin-bottom: 0.3rem; text-shadow: 0 3px 18px #a259f732; display: flex; align-items: center; gap: 0.7rem; }
+    .grammar-checker-subtitle { font-size: 1.18rem; color: #bba9fa; font-weight: 500; margin-bottom: 1.3rem; text-shadow: 0 1px 8px #a259f71a; }
+    .settings-panel { background: #2d174b; border-radius: 1em; padding: 1.1em 1.2em 0.6em 1.2em; margin-bottom: 1.3em; display: flex; flex-wrap: wrap; gap: 1.6em 2.3em; align-items: center; font-size: 1em;}
+    .settings-panel label { color: #bba9fa; font-weight: 600; margin-right: 0.7em; font-size: 1.01em;}
+    .settings-panel select, .settings-panel input[type="checkbox"], .settings-panel input[type="radio"] { margin-left: 0.4em; }
+    .settings-panel select, .settings-panel input[type="range"] { background: #27194a; border-radius: .6em; border: 1.3px solid #a259f738; color: #fff; padding: 0.19em 0.55em; }
+    .input-label { color: #a259f7; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 1.2rem; letter-spacing: 1px; }
+    #text-input { background: #2d174b; color: #f6f6ff; border: 1.8px solid #a259f738; border-radius: 1.2rem; padding: 1.25rem 1.2rem; font-size: 1.19rem; min-height: 220px; resize: vertical; width: 100%; margin-bottom: 1.2rem; transition: border 0.19s, box-shadow 0.16s; box-shadow: 0 1.5px 8px #a259f70c; }
+    #text-input:focus { border: 2.7px solid #a259f7; outline: none; background: #27194a; color: #fff; }
+    .btn-row { display: flex; justify-content: flex-end; align-items: center; gap: 1.2rem; margin-bottom: 1.7rem; }
+    .btn { border: none; border-radius: 0.9rem; padding: 0.72rem 1.7rem; font-weight: 800; font-size: 1.1rem; background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%); color: #fff; transition: background .16s, color .16s, box-shadow .16s; box-shadow: 0 2px 12px #a259f726; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+    .btn:hover, .btn:focus { background: linear-gradient(90deg,#6c67f7 0%,#a259f7 100%); color: #fff; box-shadow: 0 4px 18px #a259f72e; }
+    .btn.reset { background: linear-gradient(90deg,#eee 0%, #a259f7 100%); color: #a259f7; border: 1.4px solid #a259f7; }
+    .btn.reset:hover, .btn.reset:focus { background: linear-gradient(90deg,#a259f7 0%, #eee 100%); color: #fff; }
+    #copy-message { text-shadow: 0 1px 3px #6c67f7aa; }
+    .result-area { background: #2d174b; color: #fff; border-radius: 1.1rem; padding: 1.35rem 1.15rem 1.15rem 1.15rem; margin-top: 1.3rem; margin-bottom: 0.7rem; border: 2px solid #a259f738; font-size: 1.11rem; line-height: 1.65; word-break: break-word; position: relative; }
+    .highlight { border-radius: 0.3em; color: #fff; padding: 0 4px; cursor: pointer; transition: background 0.15s; border-bottom: 1.5px dashed #fff; }
+    .highlight-grammar { background: #ff4d58b3; border-bottom: 2px solid #ff4d58; }
+    .highlight-spelling { background: #4da6ffb3; border-bottom: 2px solid #4da6ff; }
+    .highlight-punctuation { background: #1db96fb3; border-bottom: 2px solid #1db96f; }
+    .highlight-style { background: #ffbe35b3; border-bottom: 2px solid #ffbe35; }
+    .badge { display:inline-block; font-size:0.83em; font-weight:700; padding:2px 10px; margin-right:9px; border-radius: 1em; margin-bottom: 2px; vertical-align:middle;}
+    .badge-grammar { background: #ff4d58; color: #fff; }
+    .badge-spelling { background: #4da6ff; color:#fff;}
+    .badge-punctuation { background: #1db96f; color:#fff;}
+    .badge-style { background: #ffbe35; color: #fff;}
+   .popup {
+  position: absolute;
+  z-index: 80;
+  background: #27194a;
+  border-radius: 0.7em;
+  border: 2px solid #a259f7;
+  box-shadow: 0 2px 12px #0007;
+  padding: 0.7em 1em 1em 1em;
+  font-size: 0.95em;
+  color: #fff;
+  min-width: 190px;
+  max-width: 270px;
+  left: 0;
+  top: 100%;
+  margin-top: 6px;
+  animation: popupFadeIn 0.18s;
+}
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 0.2em;
+}
+.popup .badge {
+  font-size: 0.96em;
+  padding: 3px 10px;
+  border-radius: 1em;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin-right: 0;
+}
+.popup-word {
+  font-weight: 800;
+  font-size: 1.08em;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+.popup-divider {
+  border: none;
+  border-top: 1.2px solid #a259f7;
+  margin: 0.4em 0 0.7em 0;
+}
+.popup-suggestion-label {
+  font-size: 1em;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.12em;
+}
+.popup-suggestion-value {
+  color: #ffbe35;
+  font-weight: 800;
+  font-size: 1em;
+}
+.popup-explanation {
+  color: #bba9fa;
+  font-size: 0.97em;
+  margin: 0.65em 0 1em 0;
+  line-height: 1.5em;
+}
+.popup-actions {
+  display: flex;
+  gap: 0.7em;
+  justify-content: flex-start;
+  flex-wrap: nowrap; /* Ensure buttons stay on one line */
+}
+
+.popup .accept-btn, .popup .ignore-btn {
+  border: none;
+  border-radius: 0.42em;
+  padding: 0.48em 1.22em;
+  font-weight: 800;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s, box-shadow 0.13s;
+  box-shadow: 0 1px 6px #0002;
+  outline: none;
+  letter-spacing: 0.01em;
+  margin-top: 0.1em;
+  min-width: 90px;         /* <-- Add this line */
+  white-space: nowrap;     /* <-- Add this line */
+  text-align: center;
+}
+.popup .accept-btn {
+  background: linear-gradient(90deg,#17d86d 0%,#0ea46f 100%);
+  color: #fff;
+}
+.popup .accept-btn:hover {
+  background: linear-gradient(90deg, #0ea46f 0%, #17d86d 100%);
+  color: #fff;
+}
+.popup .ignore-btn {
+  background: linear-gradient(90deg,#ff4d58 0%,#ff7675 100%);
+  color: #fff;
+}
+.popup .ignore-btn:hover {
+  background: linear-gradient(90deg,#ff7675 0%,#ff4d58 100%);
+  color: #fff;
+}
+    .summary-bar { font-size: 1.05em; margin-bottom: 1.2em; background: #2d174b; border-radius: 1em; padding: .9em 1.2em; display: flex; gap: 2.5em; align-items:center; box-shadow: 0 2px 8px #0004; font-weight: 700;}
+    .summary-bar span { margin-right: 1.4em; }
+    .error-msg { color: #ff4d58; font-weight: 700; margin: 1.2rem 0 0.5rem 0; font-size: 1.11rem; }
+    @media (max-width: 900px) { .main-content { margin-left: 0; } .sidebar { display: none; } .grammar-checker-container { border-radius: 0; margin:0;padding:1.2rem 2vw; min-height:90vh;} }
+    @media (max-width: 600px) {
+      .grammar-checker-title { font-size: 1.2rem; }
+      .grammar-checker-container { padding: 1.1rem 0.3rem 1.2rem 0.3rem; min-width: 0; }
+      .settings-panel { flex-direction: column; gap: 0.7em 0; padding: 0.7em 0.7em 0.2em 0.7em; }
+      #text-input { font-size: 0.99rem; min-height: 110px; }
+      .btn-row { flex-direction:column; gap:0.7em; }
+      .popup { left: unset; right: 0; min-width: 93vw; max-width: 97vw; font-size: 1em;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar ... unchanged ... -->
+  <aside class="sidebar">
+    <div class="logo flex flex-col items-center">
+      <span>SafaTech</span>
+      <span class="tools">Tools</span>
+    </div>
+    <a href="/client/tools/word-counter.html" class="sidebar-link">
+      <div class="icon">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M8 12h8"/></svg>
+      </div>
+      <span class="label font-bold" style="color:#a259f7;">Word Counter</span>
+    </a>
+    <a href="/client/tools/grammar-checker.html" class="sidebar-link active" aria-current="page">
+      <div class="icon" style="background:#ffe6e7;color:#ff4d58;">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10h-2"/></svg>
+      </div>
+      <span class="label">Grammar Checker</span>
+    </a>
+    <!-- ...other tools... -->
+    <div class="sidebar-footer">
+      <div class="profile-box">
+        <div class="profile-avatar" id="profile-avatar">I</div>
+        <div>
+          <div class="font-bold" id="profile-name" style="color:#a259f7">ibrahim usman</div>
+          <div class="profile-meta" id="profile-email">ibrahimusman4666@gmail.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </aside>
+  <div class="main-content">
+    <div class="grammar-checker-container">
+      <div class="grammar-checker-title">
+        <svg class="w-10 h-10" fill="none" stroke="#ff4d58" stroke-width="2.5" viewBox="0 0 32 32">
+          <rect x="8" y="8" width="16" height="16" rx="5" fill="#fff" />
+          <text x="12" y="24" font-size="13" font-weight="bold" fill="#ff4d58" font-family="Inter,Arial,sans-serif">G</text>
+        </svg>
+        Grammar Checker
+      </div>
+      <div class="grammar-checker-subtitle">
+        Instantly check your text for grammar and spelling mistakes — get suggestions, details, and more in a distraction-free interface.
+      </div>
+      <form id="settings-form" class="settings-panel" onsubmit="return false;">
+        <label>
+          <input type="checkbox" id="live-check-toggle" checked>
+          Live Check
+        </label>
+        <label>
+          Language/Dialect:
+          <select id="lang-select">
+            <option value="en-US">English (US)</option>
+            <option value="en-GB">English (UK)</option>
+            <option value="en-CA">English (Canada)</option>
+            <option value="en-AU">English (Australia)</option>
+            <option value="en-NZ">English (New Zealand)</option>
+            <option value="en-ZA">English (South Africa)</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" id="rule-style" checked>
+          Style
+        </label>
+        <label>
+          <input type="checkbox" id="rule-punctuation" checked>
+          Punctuation
+        </label>
+        <label>
+          <input type="checkbox" id="rule-grammar" checked>
+          Grammar
+        </label>
+        <label>
+          <input type="checkbox" id="rule-spelling" checked>
+          Spelling
+        </label>
+        <label>
+          Font Size:
+          <input type="range" id="font-size-range" min="14" max="26" value="19" style="vertical-align:middle;">
+        </label>
+        <label>
+          Theme:
+          <select id="theme-select">
+            <option value="default" selected>Default</option>
+            <option value="light">Light</option>
+            <option value="high-contrast">High Contrast</option>
+          </select>
+        </label>
+      </form>
+      <div id="summary-bar" class="summary-bar" style="display:none;"></div>
+      <label for="text-input" class="input-label">Your Text</label>
+      <textarea id="text-input" rows="11" placeholder="Type or paste your text here..." aria-label="Text to check grammar for"></textarea>
+      <div class="btn-row">
+        <button id="reset-btn" type="button" class="btn reset" title="Clear text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#a259f7" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.07 19A9 9 0 1 1 12 21v-1"/></svg>
+          Reset
+        </button>
+        <button id="copy-btn" type="button" class="btn" title="Copy text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+        <button id="check-btn" type="button" class="btn" style="background:linear-gradient(90deg,#ff4d58 0%,#a259f7 100%);" title="Check grammar">
+          <svg class="inline h-5 w-5" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10h-2"/></svg>
+          Check Grammar
+        </button>
+      </div>
+      <div id="copy-message" class="text-sm text-[#a259f7] font-semibold mt-0 mb-3 hidden">Copied to clipboard!</div>
+      <div id="loading" class="text-sm text-[#a259f7] font-semibold mt-0 mb-3 hidden">Checking...</div>
+      <div id="error-message" class="error-msg" style="display:none;"></div>
+      <div id="result-area" class="result-area" style="display:none;position:relative;"></div>
+    </div>
+  </div>
+  <script>
+  // --- Auth/User
+  (function() {
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+  })();
+  const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+  document.getElementById('profile-name').textContent = userInfo.name || "Unknown User";
+  document.getElementById('profile-email').textContent = userInfo.email || "unknown@example.com";
+  document.getElementById('profile-avatar').textContent = userInfo.name && userInfo.name.length ? userInfo.name[0].toUpperCase() : "U";
+  document.getElementById('logout-btn').onclick = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = "/login.html";
+  };
+
+  // --- UI Elements
+  const textInput = document.getElementById('text-input');
+  const copyBtn = document.getElementById('copy-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const checkBtn = document.getElementById('check-btn');
+  const copyMsg = document.getElementById('copy-message');
+  const loadingMsg = document.getElementById('loading');
+  const errorMsg = document.getElementById('error-message');
+  const resultArea = document.getElementById('result-area');
+  const summaryBar = document.getElementById('summary-bar');
+
+  // Personalization settings
+  const liveCheckToggle = document.getElementById('live-check-toggle');
+  const langSelect = document.getElementById('lang-select');
+  const ruleStyle = document.getElementById('rule-style');
+  const rulePunctuation = document.getElementById('rule-punctuation');
+  const ruleGrammar = document.getElementById('rule-grammar');
+  const ruleSpelling = document.getElementById('rule-spelling');
+  const fontSizeRange = document.getElementById('font-size-range');
+  const themeSelect = document.getElementById('theme-select');
+
+  // --- Type classes and labels
+  const typeClasses = {
+    grammar: "highlight-grammar badge-grammar",
+    spelling: "highlight-spelling badge-spelling",
+    punctuation: "highlight-punctuation badge-punctuation",
+    style: "highlight-style badge-style"
+  };
+  const typeLabels = {
+    grammar: "Grammar",
+    spelling: "Spelling",
+    punctuation: "Punctuation",
+    style: "Style"
+  };
+
+  // --- getIssueType helper
+  function getIssueType(match) {
+    let t = (match.rule.issueType || '').toLowerCase();
+    if (t && typeClasses[t]) return t;
+    let cat = (match.rule.category?.id || '').toLowerCase();
+    if (cat.includes("typo") || cat.includes("spelling")) return "spelling";
+    if (cat.includes("grammar")) return "grammar";
+    if (cat.includes("punctuation")) return "punctuation";
+    if (cat.includes("style")) return "style";
+    return "grammar";
+  }
+
+  // --- Theme & Font Size
+  function applyTheme() {
+    const theme = themeSelect.value;
+    document.body.classList.remove('theme-light', 'theme-high-contrast');
+    if (theme === 'light') {
+      document.body.style.background = "#f8f8ff";
+      document.body.style.color = "#24143c";
+      document.querySelectorAll('.grammar-checker-container').forEach(e=>e.style.background="#fff");
+    } else if (theme === 'high-contrast') {
+      document.body.style.background = "#131313";
+      document.body.style.color = "#ffeb3b";
+      document.querySelectorAll('.grammar-checker-container').forEach(e=>e.style.background="#222");
+    } else {
+      document.body.style.background = "linear-gradient(135deg, #181122 0%, #321a5a 100%)";
+      document.body.style.color = "#e6e6ff";
+      document.querySelectorAll('.grammar-checker-container').forEach(e=>e.style.background="linear-gradient(135deg, #24143c 60%, #1c1030 100%)");
+    }
+  }
+  themeSelect.addEventListener('change', applyTheme);
+  fontSizeRange.addEventListener('input', () => {
+    textInput.style.fontSize = fontSizeRange.value + "px";
+    resultArea.style.fontSize = (fontSizeRange.value*0.93) + "px";
+  });
+
+  // Save/load settings
+  function saveSettings() {
+    localStorage.setItem('grammarSettings', JSON.stringify({
+      live: liveCheckToggle.checked,
+      lang: langSelect.value,
+      rules: {
+        style: ruleStyle.checked,
+        punctuation: rulePunctuation.checked,
+        grammar: ruleGrammar.checked,
+        spelling: ruleSpelling.checked
+      },
+      fontSize: fontSizeRange.value,
+      theme: themeSelect.value
+    }));
+  }
+  function loadSettings() {
+    const s = JSON.parse(localStorage.getItem('grammarSettings') || '{}');
+    if (s.live !== undefined) liveCheckToggle.checked = s.live;
+    if (s.lang) langSelect.value = s.lang;
+    if (s.rules) {
+      ruleStyle.checked = !!s.rules.style;
+      rulePunctuation.checked = !!s.rules.punctuation;
+      ruleGrammar.checked = !!s.rules.grammar;
+      ruleSpelling.checked = !!s.rules.spelling;
+    }
+    if (s.fontSize) {
+      fontSizeRange.value = s.fontSize; textInput.style.fontSize = s.fontSize+"px";
+    }
+    if (s.theme) { themeSelect.value = s.theme; applyTheme(); }
+  }
+  Array.from(document.querySelectorAll('.settings-panel input, .settings-panel select')).forEach(el => {
+    el.addEventListener('change', saveSettings);
+  });
+  loadSettings();
+
+  // --- Live Check logic
+  let liveCheckTimeout = null;
+  let lastText = "";
+  function scheduleLiveCheck() {
+    if (!liveCheckToggle.checked) return;
+    if (liveCheckTimeout) clearTimeout(liveCheckTimeout);
+    liveCheckTimeout = setTimeout(() => {
+      if (textInput.value.trim() !== lastText) {
+        checkGrammar();
+      }
+    }, 1100);
+  }
+  liveCheckToggle.addEventListener('change', () => {
+    if (liveCheckToggle.checked) checkGrammar();
+  });
+
+  textInput.addEventListener('input', () => {
+    scheduleLiveCheck();
+  });
+
+  // --- Copy/Reset
+  copyBtn.addEventListener('click', () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textInput.value).then(() => {
+        copyMsg.classList.remove('hidden');
+        setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+      });
+    } else {
+      textInput.select();
+      document.execCommand('copy');
+      copyMsg.classList.remove('hidden');
+      setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+    }
+  });
+  resetBtn.addEventListener('click', () => {
+    textInput.value = '';
+    resultArea.style.display = 'none';
+    summaryBar.style.display = 'none';
+    errorMsg.style.display = 'none';
+    textInput.focus();
+  });
+
+  // --- Accept/Ignore logic
+  let originalText = "";
+  let allMatches = [];
+  let ignoredIDs = new Set();
+
+  function renderSummaryBar(matches) {
+    if (!matches.length) { summaryBar.style.display = 'none'; return; }
+    const counts = {};
+    matches.forEach(m => {
+      const t = getIssueType(m);
+      counts[t] = (counts[t] || 0) + 1;
+    });
+    let html = `<span>${matches.length} issue${matches.length > 1 ? "s" : ""} found:</span>`;
+    Object.entries(counts).forEach(([t, n]) => {
+      html += `<span class="badge badge-${t}">${n} ${typeLabels[t]}</span>`;
+    });
+    summaryBar.innerHTML = html;
+    summaryBar.style.display = '';
+  }
+  function escapeHTML(str) {
+    return str.replace(/[<>&"]/g, c =>
+      ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  }
+  function renderTextWithHighlights(text, matches) {
+    // Filter by user settings
+    const filtered = matches.filter((m,i) => {
+      if (ignoredIDs.has(m._uid)) return false;
+      const t = getIssueType(m);
+      if (!ruleStyle.checked && t==="style") return false;
+      if (!rulePunctuation.checked && t==="punctuation") return false;
+      if (!ruleGrammar.checked && t==="grammar") return false;
+      if (!ruleSpelling.checked && t==="spelling") return false;
+      return true;
+    });
+    filtered.sort((a, b) => b.offset - a.offset);
+    let html = escapeHTML(text);
+    filtered.forEach((match, idx) => {
+      const t = getIssueType(match);
+      const highlightClass = typeClasses[t]?.split(" ")[0] || "highlight-grammar";
+      let uid = match._uid;
+      const wrong = escapeHTML(text.substr(match.offset, match.length));
+      html =
+        html.slice(0, match.offset) +
+        `<span class="highlight ${highlightClass}" data-uid="${uid}" title="${escapeHTML(match.message)}">${wrong}</span>` +
+        html.slice(match.offset + match.length);
+    });
+    resultArea.innerHTML = html;
+    resultArea.style.display = '';
+    document.querySelectorAll('.highlight').forEach(el => {
+      el.onclick = (e) => {
+        e.stopPropagation();
+        showPopupForMatch(el.getAttribute('data-uid'));
+      };
+    });
+    document.body.onclick = function(e) {
+      if (!e.target.classList.contains('highlight')) {
+        closePopup();
+      }
+    };
+  }
+  function showPopupForMatch(uid) {
+    closePopup();
+    const match = allMatches.find(m => m._uid === uid);
+    if (!match) return;
+    const t = getIssueType(match);
+    const badge = `<span class="badge badge-${t}">${typeLabels[t]}</span>`;
+    const wrong = escapeHTML(originalText.substr(match.offset, match.length));
+    const suggestion = match.replacements?.[0]?.value || '';
+    const explanation = escapeHTML(match.message || '');
+    const span = document.querySelector(`.highlight[data-uid="${uid}"]`);
+    if (!span) return;
+    const popup = document.createElement('div');
+    popup.className = "popup";
+    popup.innerHTML = `
+  <div class="popup-header">
+    ${badge}
+    <span class="popup-word">${wrong}</span>
+  </div>
+  <hr class="popup-divider">
+  <div class="popup-suggestion-label">Suggestion: 
+    <span class="popup-suggestion-value">${suggestion ? suggestion : '<span style="color:#fff;">No suggestion</span>'}</span>
+  </div>
+  <div class="popup-explanation">${explanation}</div>
+  <div class="popup-actions">
+    <button class="accept-btn">Accept</button>
+    <button class="ignore-btn">Ignore</button>
+  </div>
+`;
+    popup.querySelector('.accept-btn').onclick = (e) => {
+      e.stopPropagation();
+      acceptSuggestion(match);
+      closePopup();
+    };
+    popup.querySelector('.ignore-btn').onclick = (e) => {
+      e.stopPropagation();
+      ignoredIDs.add(match._uid);
+      renderTextWithHighlights(originalText, allMatches);
+      renderSummaryBar(allMatches.filter(m => !ignoredIDs.has(m._uid)));
+      closePopup();
+    };
+    span.style.position = "relative";
+    span.appendChild(popup);
+  }
+  function closePopup() {
+    document.querySelectorAll('.popup').forEach(p => p.remove());
+  }
+  function acceptSuggestion(match) {
+    if (!match.replacements?.[0]?.value) return;
+    let before = originalText.slice(0, match.offset);
+    let after = originalText.slice(match.offset + match.length);
+    let replacement = match.replacements[0].value;
+    textInput.value = before + replacement + after;
+    checkGrammar();
+  }
+
+  async function checkGrammar() {
+    const text = textInput.value.trim();
+    resultArea.style.display = 'none';
+    summaryBar.style.display = 'none';
+    errorMsg.style.display = 'none';
+    loadingMsg.classList.remove('hidden');
+    checkBtn.disabled = true;
+    closePopup();
+    if (!text) {
+      errorMsg.textContent = "Please enter some text to check.";
+      errorMsg.style.display = '';
+      loadingMsg.classList.add('hidden');
+      checkBtn.disabled = false;
+      return;
+    }
+    let apiBase = '';
+    if (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) {
+      if (window.location.port === '5500') {
+        apiBase = 'http://localhost:5000';
+      }
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiBase}/api/tools/grammar-check`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          text,
+          language: langSelect.value // send language to backend
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login.html';
+        }
+        throw new Error(data.error || "Unknown error");
+      }
+      let matches = Array.isArray(data.matches) ? data.matches : [];
+      matches.forEach((m,i) => m._uid = "m"+i+"_"+Math.random().toString(36).slice(2,8));
+      originalText = text;
+      allMatches = matches;
+      ignoredIDs = new Set();
+      renderTextWithHighlights(text, matches);
+      renderSummaryBar(matches);
+      lastText = textInput.value.trim();
+    } catch (e) {
+      errorMsg.textContent = e.message || "Something went wrong!";
+      errorMsg.style.display = '';
+    } finally {
+      loadingMsg.classList.add('hidden');
+      checkBtn.disabled = false;
+    }
+  }
+  checkBtn.addEventListener('click', checkGrammar);
+  // Re-check on settings change
+  langSelect.addEventListener('change', ()=>{ if(liveCheckToggle.checked) checkGrammar(); });
+  ruleStyle.addEventListener('change', ()=>{ renderTextWithHighlights(originalText, allMatches); });
+  rulePunctuation.addEventListener('change', ()=>{ renderTextWithHighlights(originalText, allMatches); });
+  ruleGrammar.addEventListener('change', ()=>{ renderTextWithHighlights(originalText, allMatches); });
+  ruleSpelling.addEventListener('change', ()=>{ renderTextWithHighlights(originalText, allMatches); });
+
+  textInput.focus();
+  </script>
+</body>
+</html>

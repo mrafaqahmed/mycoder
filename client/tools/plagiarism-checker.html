@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plagiarism Checker - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.0.1/mammoth.browser.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #170028 0%, #2a005d 60%, #23143a 100%);
+      color: #e6e6ff;
+      overflow-x: hidden;
+    }
+    .sidebar {
+      background: #42267a;
+      min-width: 92px;
+      width: 92px;
+      max-width: 92px;
+      height: 98vh;
+      border-radius: 2.8rem;
+      margin: 18px 0 18px 18px;
+      position: fixed;
+      top: 0; left: 0;
+      box-shadow: 0 8px 44px #19113370, 2px 0 38px #6c1aff1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 30;
+      transition: width 0.36s cubic-bezier(.7,.32,.23,1.1);
+      will-change: width;
+    }
+    .sidebar:hover {
+      width: 220px;
+      min-width: 220px;
+      max-width: 220px;
+      box-shadow: 0 8px 58px #a259f73c;
+    }
+    .sidebar .logo {
+      margin: 34px 0 26px 0;
+      text-align: center;
+      width: 100%;
+    }
+    .sidebar .logo span {
+      color: #fff;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      display: block;
+    }
+    .sidebar .logo .tools {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #a259f7;
+      letter-spacing: 1px;
+      margin-top: -2px;
+      opacity: 0.86;
+    }
+    .sidebar .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 92%;
+      margin: 9px 0;
+      padding: 14px 18px;
+      border-radius: 1.55rem;
+      color: #c2b6e7;
+      font-size: 1.13rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      cursor: pointer;
+    }
+    .sidebar .sidebar-link.active,
+    .sidebar .sidebar-link[aria-current="page"] {
+      background: #fff;
+      color: #ffb96b;
+      font-weight: 800;
+      box-shadow: 0 2px 12px #ffb96b22;
+    }
+    .sidebar .sidebar-link:hover:not(.active):not([aria-current="page"]) {
+      background: #ffb96b;
+      color: #fff;
+    }
+    .sidebar .sidebar-link span.label {
+      opacity: 0;
+      transition: opacity .23s;
+      white-space: nowrap;
+      pointer-events: none;
+      font-size: 1.09rem;
+    }
+    .sidebar:hover .sidebar-link span.label {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .sidebar .sidebar-link .icon {
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border-radius: 1.2rem;
+      background: #fff;
+      color: #ffb96b;
+      box-shadow: 0 1.5px 7px #ffb96b2c;
+      transition: background 0.19s, color 0.19s;
+    }
+    .sidebar .sidebar-link.active .icon,
+    .sidebar .sidebar-link[aria-current="page"] .icon {
+      background: #ffb96b;
+      color: #fff;
+    }
+    .sidebar .sidebar-link:hover .icon {
+      background: #fff;
+      color: #ffb96b;
+    }
+    .sidebar .sidebar-footer {
+      margin-top: auto;
+      margin-bottom: 30px;
+      width: 92%;
+      text-align: left;
+    }
+    .sidebar .profile-box {
+      background: #fff;
+      color: #a259f7;
+      border-radius: 1.25rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 2px 8px #a259f71a;
+      font-size: 1.02rem;
+      font-weight: 600;
+      transition: box-shadow .22s;
+    }
+    .sidebar .profile-box .profile-avatar {
+      background: #a259f7;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .sidebar .profile-box .profile-meta {
+      color: #a259f7;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .sidebar .logout-btn {
+      background: linear-gradient(90deg, #a259f7 0%, #6c67f7 100%);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.6rem;
+      font-weight: 800;
+      border-radius: 1.1rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      box-shadow: 0 1.5px 8px #a259f72c;
+      font-size: 1.11rem;
+      transition: background .17s, color .14s;
+    }
+    .sidebar .logout-btn:hover {
+      background: linear-gradient(90deg, #6c67f7 0%, #a259f7 100%);
+      color: #fff;
+    }
+    .main-content {
+      margin-left: 130px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .plagiarism-checker-container {
+      background: linear-gradient(135deg, #24143c 60%, #1c1030 100%);
+      border-radius: 2.5rem;
+      box-shadow: 0 16px 54px #0005, 0 2px 30px #ffb96b3a;
+      padding: 2.5rem 2.3rem 2.2rem 2.3rem;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 85vh;
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .plagiarism-checker-title {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 3px 18px #ffb96b32;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .plagiarism-checker-subtitle {
+      font-size: 1.18rem;
+      color: #ffebcc;
+      font-weight: 500;
+      margin-bottom: 1.3rem;
+      text-shadow: 0 1px 8px #ffb96b1a;
+    }
+    .input-label {
+      color: #ffb96b;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      margin-top: 1.2rem;
+      letter-spacing: 1px;
+    }
+    #plag-textarea {
+      background: #2d174b;
+      color: #f6f6ff;
+      border: 1.8px solid #ffb96b38;
+      border-radius: 1.2rem;
+      padding: 1.25rem 1.2rem;
+      font-size: 1.19rem;
+      min-height: 220px;
+      resize: vertical;
+      width: 100%;
+      margin-bottom: 1.2rem;
+      transition: border 0.19s, box-shadow 0.16s;
+      box-shadow: 0 1.5px 8px #ffb96b0c;
+    }
+    #plag-textarea:focus {
+      border: 2.7px solid #ffb96b;
+      outline: none;
+      background: #27194a;
+      color: #fff;
+    }
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.7rem;
+    }
+    .btn {
+      border: none;
+      border-radius: 0.9rem;
+      padding: 0.72rem 1.7rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg,#ffb96b 0%,#ffda9b 100%);
+      color: #fff;
+      transition: background .16s, color .16s, box-shadow .16s;
+      box-shadow: 0 2px 12px #ffb96b26;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+    }
+    .btn:hover, .btn:focus {
+      background: linear-gradient(90deg,#ffda9b 0%,#ffb96b 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px #ffb96b2e;
+    }
+    .btn.reset {
+      background: linear-gradient(90deg,#eee 0%, #ffb96b 100%);
+      color: #ffb96b;
+      border: 1.4px solid #ffb96b;
+    }
+    .btn.reset:hover, .btn.reset:focus {
+      background: linear-gradient(90deg,#ffb96b 0%, #eee 100%);
+      color: #fff;
+    }
+    #copy-message {
+      text-shadow: 0 1px 3px #ffb96baa;
+    }
+    .result-area {
+      background: #2d174b;
+      color: #fff;
+      border-radius: 1.1rem;
+      padding: 1.35rem 1.15rem 1.15rem 1.15rem;
+      margin-top: 1.3rem;
+      margin-bottom: 0.7rem;
+      border: 2px solid #ffb96b38;
+      font-size: 1.11rem;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+    .google-search-link {
+      color: #ffb96b;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .success-msg {
+      color: #1db96f;
+      font-weight: 700;
+      margin: 1.2rem 0 0.5rem 0;
+      font-size: 1.11rem;
+    }
+    .error-msg {
+      color: #ff4d58;
+      font-weight: 700;
+      margin: 1.2rem 0 0.5rem 0;
+      font-size: 1.11rem;
+    }
+    .plag-summary-bar {
+      font-size: 1.05em;
+      margin-bottom: 1.2em;
+      background: #2d174b;
+      border-radius: 1em;
+      padding: .9em 1.2em;
+      display: flex;
+      gap: 2.5em;
+      align-items:center;
+      box-shadow: 0 2px 8px #0004;
+      font-weight: 700;
+      color: #ffb96b;
+    }
+    .plag-summary-bar span { margin-right: 1.4em; }
+    .sentence-controls {
+      margin: 0.3em 0 0.8em 0;
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+      flex-wrap: wrap;
+    }
+    .sentence-mark-btn {
+      border: none;
+      border-radius: 0.4em;
+      padding: 0.22em 1.1em;
+      font-weight: 700;
+      background: #3b2957;
+      color: #ffb96b;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-size: 0.97em;
+    }
+    .sentence-mark-btn.active {
+      background: #ffb96b;
+      color: #fff;
+    }
+    .sentence-note {
+      border-radius: 0.4em;
+      border: 1px solid #ffb96b55;
+      background: #3b2957;
+      color: #fff;
+      padding: 0.13em 0.75em;
+      font-size: 0.97em;
+      margin-left: 0.7em;
+      width: 180px;
+    }
+    .file-upload-container {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      margin-bottom: 1.1em;
+      margin-top: 0.7em;
+    }
+    #download-report-btn {
+      margin-left: auto;
+      margin-top: 0.7em;
+      font-size: 1.13em;
+    }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; }
+      .sidebar { display: none; }
+      .plagiarism-checker-container { border-radius: 0; margin:0;padding:1.2rem 2vw; min-height:90vh;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar (reuse from your word counter) -->
+  <aside class="sidebar">
+    <div class="logo flex flex-col items-center">
+      <span>SafaTech</span>
+      <span class="tools">Tools</span>
+    </div>
+    <!-- ... sidebar links ... -->
+    <a href="/client/tools/plagiarism-checker.html" class="sidebar-link active" aria-current="page">
+      <div class="icon" style="background:#ffb96b;color:#fff;">
+        <svg class="w-6 h-6" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 10h8M8 14h4"/></svg>
+      </div>
+      <span class="label">Plagiarism Checker</span>
+    </a>
+    <!-- ... sidebar links ... -->
+    <div class="sidebar-footer">
+      <div class="profile-box">
+        <div class="profile-avatar" id="profile-avatar">I</div>
+        <div>
+          <div class="font-bold" id="profile-name" style="color:#a259f7">ibrahim usman</div>
+          <div class="profile-meta" id="profile-email">ibrahimusman4666@gmail.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="plagiarism-checker-container">
+      <div class="plagiarism-checker-title">
+        <svg class="w-10 h-10" fill="none" stroke="#ffb96b" stroke-width="2.5" viewBox="0 0 32 32">
+          <rect x="8" y="8" width="16" height="16" rx="5" fill="#fff" />
+          <text x="12" y="24" font-size="13" font-weight="bold" fill="#ffb96b" font-family="Inter,Arial,sans-serif">P</text>
+        </svg>
+        Plagiarism Checker
+      </div>
+      <div class="plagiarism-checker-subtitle">
+        Instantly check your text or file for plagiarism — get Google search links, mark sentences, and download a PDF report.
+      </div>
+      <div class="file-upload-container">
+        <input type="file" id="file-upload" accept=".pdf,.docx,.txt" />
+        <span id="uploaded-file-name" style="color:#ffb96b;font-weight:600;"></span>
+        <button id="download-report-btn" class="btn" type="button" style="display:none;">Download Plagiarism Report (PDF)</button>
+      </div>
+      <label for="plag-textarea" class="input-label">Your Text</label>
+      <textarea id="plag-textarea" rows="11" placeholder="Paste or type your text here to check for plagiarism..." aria-label="Text to check plagiarism for"></textarea>
+      <div class="btn-row">
+        <button id="reset-btn" type="button" class="btn reset" title="Clear text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#ffb96b" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.07 19A9 9 0 1 1 12 21v-1"/></svg>
+          Reset
+        </button>
+        <button id="copy-btn" type="button" class="btn" title="Copy text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+        <button id="check-btn" type="button" class="btn" title="Check plagiarism">
+          <svg class="inline h-5 w-5" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10h-2"/></svg>
+          Check Plagiarism
+        </button>
+      </div>
+      <div id="copy-message" class="text-sm text-[#ffb96b] font-semibold mt-0 mb-3 hidden">Copied to clipboard!</div>
+      <div id="loading" class="text-sm text-[#ffb96b] font-semibold mt-0 mb-3 hidden">Checking...</div>
+      <div id="error-message" class="error-msg" style="display:none;"></div>
+      <div id="result-area" class="result-area" style="display:none;"></div>
+      <div id="plag-summary-bar" class="plag-summary-bar" style="display:none;"></div>
+    </div>
+  </div>
+  <script>
+  // AUTH CHECK
+  (function() {
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+  })();
+
+  // PROFILE
+  const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+  document.getElementById('profile-name').textContent = userInfo.name || "Unknown User";
+  document.getElementById('profile-email').textContent = userInfo.email || "unknown@example.com";
+  document.getElementById('profile-avatar').textContent = userInfo.name && userInfo.name.length ? userInfo.name[0].toUpperCase() : "U";
+  document.getElementById('logout-btn').onclick = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = "/login.html";
+  };
+
+  // Elements
+  const plagTextarea = document.getElementById('plag-textarea');
+  const copyBtn = document.getElementById('copy-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const checkBtn = document.getElementById('check-btn');
+  const copyMsg = document.getElementById('copy-message');
+  const loadingMsg = document.getElementById('loading');
+  const errorMsg = document.getElementById('error-message');
+  const resultArea = document.getElementById('result-area');
+  const summaryBar = document.getElementById('plag-summary-bar');
+  const fileInput = document.getElementById('file-upload');
+  const uploadedFileName = document.getElementById('uploaded-file-name');
+  const downloadReportBtn = document.getElementById('download-report-btn');
+
+  let lastSearchResults = []; // For report export
+
+  // Copy functionality
+  copyBtn.addEventListener('click', () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(plagTextarea.value).then(() => {
+        copyMsg.classList.remove('hidden');
+        setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+      });
+    } else {
+      plagTextarea.select();
+      document.execCommand('copy');
+      copyMsg.classList.remove('hidden');
+      setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+    }
+  });
+
+  // Reset functionality
+  resetBtn.addEventListener('click', () => {
+    plagTextarea.value = '';
+    resultArea.style.display = 'none';
+    summaryBar.style.display = 'none';
+    errorMsg.style.display = 'none';
+    uploadedFileName.textContent = '';
+    downloadReportBtn.style.display = 'none';
+    lastSearchResults = [];
+    plagTextarea.focus();
+  });
+
+  // --- File Upload Handler ---
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    uploadedFileName.textContent = file.name;
+    // Only one file at a time
+    resultArea.style.display = 'none';
+    summaryBar.style.display = 'none';
+    errorMsg.style.display = 'none';
+    downloadReportBtn.style.display = 'none';
+    lastSearchResults = [];
+
+    if (file.type === "application/pdf") {
+      extractPdfText(file);
+    } else if (file.name.endsWith('.docx')) {
+      extractDocxText(file);
+    } else if (file.type === "text/plain") {
+      file.text().then(txt => {
+        plagTextarea.value = txt;
+        checkAndRender();
+      });
+    } else {
+      errorMsg.textContent = "Unsupported file type. Please upload a PDF, DOCX, or TXT file.";
+      errorMsg.style.display = '';
+    }
+  });
+
+  // PDF.js minimal text extraction (works for simple PDFs)
+  async function extractPdfText(file) {
+    errorMsg.style.display = 'none';
+    loadingMsg.classList.remove('hidden');
+    plagTextarea.value = '';
+    try {
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const typedarray = new Uint8Array(e.target.result);
+        if (window.pdfjsLib) {
+          const pdf = await window.pdfjsLib.getDocument({data: typedarray}).promise;
+          let text = '';
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(' ') + '\n';
+          }
+          plagTextarea.value = text;
+          checkAndRender();
+        } else {
+          errorMsg.textContent = "PDF.js library not loaded (PDF extraction not available).";
+          errorMsg.style.display = '';
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (e) {
+      errorMsg.textContent = "Could not extract text from PDF.";
+      errorMsg.style.display = '';
+    } finally {
+      loadingMsg.classList.add('hidden');
+    }
+  }
+  // DOCX extraction using mammoth.js
+  function extractDocxText(file) {
+    errorMsg.style.display = 'none';
+    loadingMsg.classList.remove('hidden');
+    plagTextarea.value = '';
+    mammoth.extractRawText({arrayBuffer: file})
+      .then(function(result){
+        plagTextarea.value = result.value;
+        checkAndRender();
+      })
+      .catch(function(e){
+        errorMsg.textContent = "Could not extract text from DOCX.";
+        errorMsg.style.display = '';
+      })
+      .finally(function() {
+        loadingMsg.classList.add('hidden');
+      });
+  }
+
+  // --- Plagiarism Check: DIY Google Search Links + Mark/Notes ---
+  async function checkAndRender() {
+    const text = plagTextarea.value.trim();
+    resultArea.style.display = 'none';
+    summaryBar.style.display = 'none';
+    errorMsg.style.display = 'none';
+    downloadReportBtn.style.display = 'none';
+    lastSearchResults = [];
+    loadingMsg.classList.remove('hidden');
+    checkBtn.disabled = true;
+
+    if (!text) {
+      errorMsg.textContent = "Please enter some text to check.";
+      errorMsg.style.display = '';
+      loadingMsg.classList.add('hidden');
+      checkBtn.disabled = false;
+      return;
+    }
+
+    try {
+      // Call your backend plagiarism API
+      const token = localStorage.getItem('token');
+      let apiBase = '';
+      if (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      ) {
+        if (window.location.port === '5500') {
+          apiBase = 'http://localhost:5000';
+        }
+      }
+      const res = await fetch(`${apiBase}/api/tools/plagiarism`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ text })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login.html';
+        }
+        throw new Error(data.error || "Unknown error");
+      }
+
+      // Data: { searches: [{sentence, url}], message }
+      let { searches, message } = data;
+      searches = Array.isArray(searches) ? searches : [];
+
+      // Enhance: add user-marking & notes to each sentence
+      lastSearchResults = searches.map(s => ({
+        ...s,
+        status: '', // '', 'original', 'plagiarized'
+        note: ''
+      }));
+
+      // Render summary bar: number of sentences checked
+      summaryBar.innerHTML = `<span>${searches.length} sentence${searches.length !== 1 ? "s" : ""} checked for plagiarism.</span>`;
+      summaryBar.style.display = '';
+
+      // Render Google search links, marking, and notes controls
+      if (searches.length > 0) {
+        let html = '<div style="margin-bottom:1em;">Click the Google links below to check for possible plagiarism. Mark each sentence and add notes if desired:</div><ul style="margin-left:1.2em;">';
+        searches.forEach((item, idx) => {
+          html += `<li style="margin-bottom:1.5em;">
+            <b>${escapeHtml(item.sentence)}</b><br>
+            <a class="google-search-link" href="${item.url}" target="_blank" rel="noopener noreferrer">Google Search</a>
+            <div class="sentence-controls" data-idx="${idx}">
+              <button type="button" class="sentence-mark-btn" data-status="original">Original</button>
+              <button type="button" class="sentence-mark-btn" data-status="plagiarized">Plagiarized</button>
+              <input class="sentence-note" type="text" maxlength="100" placeholder="Add note (optional)">
+            </div>
+          </li>`;
+        });
+        html += '</ul>';
+        if (message) {
+          html += `<div style="margin-top:1em;color:#ffb96b;font-weight:600;">${escapeHtml(message)}</div>`;
+        }
+        resultArea.innerHTML = html;
+        // Attach button handlers
+        Array.from(resultArea.querySelectorAll('.sentence-controls')).forEach(ctrl => {
+          const idx = Number(ctrl.dataset.idx);
+          const originalBtn = ctrl.querySelector('[data-status="original"]');
+          const plagBtn = ctrl.querySelector('[data-status="plagiarized"]');
+          const noteInput = ctrl.querySelector('.sentence-note');
+          originalBtn.onclick = function() {
+            lastSearchResults[idx].status = 'original';
+            originalBtn.classList.add('active');
+            plagBtn.classList.remove('active');
+          };
+          plagBtn.onclick = function() {
+            lastSearchResults[idx].status = 'plagiarized';
+            plagBtn.classList.add('active');
+            originalBtn.classList.remove('active');
+          };
+          noteInput.oninput = function() {
+            lastSearchResults[idx].note = noteInput.value;
+          };
+        });
+
+        downloadReportBtn.style.display = '';
+      } else {
+        resultArea.innerHTML = `<div style="color:#ffb96b;">No sentences found to check.</div>`;
+        downloadReportBtn.style.display = 'none';
+      }
+      resultArea.style.display = '';
+    } catch (e) {
+      errorMsg.textContent = e.message || "Something went wrong!";
+      errorMsg.style.display = '';
+    } finally {
+      loadingMsg.classList.add('hidden');
+      checkBtn.disabled = false;
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"]/g, function(tag) {
+      const chars = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;'
+      };
+      return chars[tag] || tag;
+    });
+  }
+
+   // PDF EXPORT (jsPDF) - with background and logo
+  downloadReportBtn.addEventListener('click', () => {
+    if (!lastSearchResults.length) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({unit: 'pt', format: 'a4'});
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    // --- LIGHT PURPLE BACKGROUND ---
+    doc.setFillColor(235, 224, 255); // light purple
+    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+    // --- ADD LOGO (top right) ---
+    // Make sure you have the logo at /assets/safatech_logo.png
+    doc.addImage('/assets/images/bg.png', 'PNG', pageWidth - 110,30, 70, 60, undefined, 'FAST');
+
+    let y = 50;
+
+    // Header and branding
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(162, 89, 247);
+    doc.text("SafaTech Solution", 40, y);
+    doc.setFontSize(19);
+    doc.setTextColor(0,0,0);
+    doc.text("Plagiarism Report", 40, y+28);
+    doc.setDrawColor(162,89,247);
+    doc.setLineWidth(2);
+    doc.line(40, y+36, pageWidth-40, y+36);
+
+    y += 55;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0,0,0);
+    doc.text(`Checked by: ${userInfo.name || 'Unknown User'} (${userInfo.email || ''})`, 40, y);
+    y += 20;
+    const now = new Date();
+    doc.text(`Date: ${now.toLocaleString()}`, 40, y);
+    y += 20;
+    doc.text(`Source: ${uploadedFileName.textContent || "Pasted text"}`, 40, y);
+
+    // Summary box
+    y += 28;
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255,185,107);
+    doc.text("Summary:", 40, y);
+
+    y += 10;
+    doc.setDrawColor(255,185,107);
+    doc.setLineWidth(1);
+    doc.setFillColor(255, 245, 255); // lighter purple box
+    doc.rect(38, y, pageWidth-76, 70, 'FD');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(0,0,0);
+    const total = lastSearchResults.length;
+    const plag = lastSearchResults.filter(s => s.status === 'plagiarized').length;
+    const orig = lastSearchResults.filter(s => s.status === 'original').length;
+    const percent = total ? Math.round(100 * plag / total) : 0;
+    y += 20;
+    doc.text(`Total sentences:`, 55, y);
+    doc.text(String(total), 170, y);
+    doc.text(`Marked as plagiarized:`, 250, y);
+    doc.text(String(plag), 390, y);
+    y += 16;
+    doc.text(`Marked as original:`, 55, y);
+    doc.text(String(orig), 170, y);
+    doc.text(`Plagiarism %:`, 250, y);
+    doc.text(percent + "%", 390, y);
+
+    // Colored plagiarism bar
+    y += 22;
+    doc.setFillColor(255, 77, 88);
+    doc.rect(55, y, Math.max(1, percent*4), 8, 'F');
+    doc.setFillColor(29, 185, 111);
+    doc.rect(55 + percent*4, y, Math.max(1, (100-percent)*4), 8, 'F');
+    doc.setTextColor(0,0,0);
+
+    y += 32;
+    // Details Table Header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(162,89,247);
+    doc.text("Details:", 40, y);
+
+    // Table columns
+    y += 13;
+    doc.setFontSize(11);
+    doc.setTextColor(0,0,0);
+    let tableY = y + 12;
+    doc.setFont('helvetica', 'bold');
+    doc.text("No.", 50, tableY);
+    doc.text("Sentence", 80, tableY);
+    doc.text("Status", 410, tableY);
+    doc.text("Note", 480, tableY);
+    doc.text("Google", 540, tableY);
+    doc.setLineWidth(0.7);
+    doc.setDrawColor(200, 200, 200);
+    doc.line(48, tableY+2, pageWidth-48, tableY+2);
+
+    // Table rows
+    doc.setFont('helvetica', 'normal');
+    tableY += 14;
+    lastSearchResults.forEach((s, i) => {
+      if (tableY > pageHeight-60) { 
+        doc.addPage();
+        // light purple bg for each page
+        doc.setFillColor(235, 224, 255);
+        doc.rect(0, 0, pageWidth, pageHeight, 'F');
+        doc.addImage('/assets/safatech_logo.png', 'PNG', pageWidth - 120, 30, 80, 80, undefined, 'FAST');
+        tableY = 40; 
+      }
+      doc.text(String(i+1), 52, tableY);
+      let sent = s.sentence.length > 60 ? s.sentence.slice(0, 58) + "..." : s.sentence;
+      doc.text(sent, 80, tableY, {maxWidth: 320});
+      if (s.status === 'plagiarized') {
+        doc.setTextColor(255, 77, 88);
+        doc.text("Plagiarized", 410, tableY);
+      } else if (s.status === 'original') {
+        doc.setTextColor(29, 185, 111);
+        doc.text("Original", 410, tableY);
+      } else {
+        doc.setTextColor(180,180,180);
+        doc.text("Not marked", 410, tableY);
+      }
+      doc.setTextColor(0,0,0);
+      if (s.note) doc.text(s.note, 480, tableY, {maxWidth: 55});
+      doc.setTextColor(162, 89, 247);
+      doc.textWithLink("🔗", 540, tableY, { url: s.url });
+      doc.setTextColor(0,0,0);
+      tableY += 18;
+    });
+
+    // Footer with branding and page numbers
+    doc.setFontSize(10);
+    tableY += 10;
+    doc.setTextColor(162,89,247);
+    doc.text("Report generated by SafaTech Solution Plagiarism Checker", 40, tableY);
+
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(9);
+      doc.setTextColor(180,180,180);
+      doc.text(`Page ${i} of ${pageCount}`, pageWidth-90, pageHeight-20);
+    }
+
+    doc.save('plagiarism_report.pdf');
+  });
+
+  checkBtn.addEventListener('click', checkAndRender);
+
+  // Live check as user types (debounced)
+  let liveCheckTimeout = null;
+  plagTextarea.addEventListener('input', () => {
+    if (liveCheckTimeout) clearTimeout(liveCheckTimeout);
+    liveCheckTimeout = setTimeout(checkAndRender, 900);
+  });
+
+  plagTextarea.focus();
+  </script>
+  <!-- PDF.js for PDF extraction (only needed if you want to support PDF extraction in browser) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script>
+    // PDF.js worker set up
+    if (window['pdfjsLib']) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    }
+  </script>
+</body>
+</html>

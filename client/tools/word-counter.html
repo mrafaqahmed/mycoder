@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Counter - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #181122 0%, #3d265f 100%);
+      color: #f6f3ff;
+      overflow-x: hidden;
+    }
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 90px;
+      background: linear-gradient(180deg, #22103a 0%, #19082c 100%);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0 20px 0;
+      box-shadow: 0 0 24px #0009;
+      border-radius: 2.2rem;
+      margin: 14px 0 14px 14px;
+      transition: width .33s cubic-bezier(.7,.32,.23,1.1);
+    }
+    .nav-bar .nav-logo {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .nav-bar .nav-logo img {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 7px;
+      border-radius: 1.1rem;
+      background: #5d1e9ca8;
+      box-shadow: 0 2px 7px #b09ac9;
+    }
+    .nav-bar .nav-logo span {
+      color: #eae1e1;
+      font-size: 1rem;
+      font-weight: 750;
+      letter-spacing: 1.1px;
+      margin-bottom: 1px;
+      margin-top: 2px;
+      text-shadow: 0 2px 6px #a259f7;
+    }
+    .nav-bar .nav-logo .tools {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #b8a3d0;
+      letter-spacing: 1px;
+      margin-top: -2px;
+      opacity: 0.89;
+    }
+    .nav-bar .nav-links {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .nav-bar .nav-link {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto;
+      border-radius: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: #a59edb;
+      font-size: 1.7rem;
+      margin-bottom: 2px;
+      transition: background 0.18s, color 0.18s;
+      box-shadow: 0 2px 6px #0002;
+      cursor: pointer;
+      position: relative;
+    }
+    .nav-bar .nav-link.active, .nav-bar .nav-link:hover {
+      background: linear-gradient(90deg,#a259f7 0%,#7e36c9 100%);
+      color: #fff;
+      box-shadow: 0 2px 9px #a259f74e;
+    }
+    .nav-bar .nav-link svg {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+    .nav-bar .profile-section {
+      width: 78px;
+      background: #0f0f0f;
+      border-radius: 1.5rem;
+      box-shadow: 0 5px 9px #b09ac9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 0 15px 0;
+      margin-bottom: 5px;
+      gap: 16px;
+    }
+    .nav-bar .profile-section .profile-avatar-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-bar .profile-section .profile-avatar {
+      background: #a259f7;
+      color: #fff;
+      font-size: 1.14rem;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 0;
+      transition: box-shadow 0.16s;
+    }
+    .nav-bar .profile-section .profile-avatar:hover {
+      box-shadow: 0 0 0 4px #a259f76e;
+    }
+    /* Hide name and email in sidebar */
+    .nav-bar .profile-section .profile-name,
+    .nav-bar .profile-section .profile-meta {
+      display: none !important;
+    }
+    .nav-bar .logout-btn {
+      background: linear-gradient(90deg, #a259f7 0%, #6c67f7 100%);
+      color: #fff;
+      border: none;
+      padding: 0.7rem 0;
+      font-weight: 800;
+      border-radius: 0.8rem;
+      width: 90%;
+      box-shadow: 0 2px 9px #a259f72c;
+      font-size: 0.9rem;
+      transition: background .17s, color .14s;
+      display: block;
+      cursor: pointer;
+      text-align: center;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    .nav-bar .logout-btn:hover {
+      background: linear-gradient(90deg, #6c67f7 0%, #a259f7 100%);
+      color: #fff;
+    }
+    @media (max-width: 1300px) {
+      .main-content { margin-left: 0; }
+      .nav-bar { display: none; }
+    }
+    @media (max-width: 900px) {
+      .dashboard-row { flex-direction: column; gap: 1.2rem; }
+      .main-content { margin-left: 0; }
+      .nav-bar { display: none; }
+      .dashboard-header-row { flex-direction: column; gap: 1.2rem; align-items: flex-start;}
+      .tool-list-card { margin-bottom: 1.2rem;}
+    }
+    .user-profile-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .user-profile-bar .profile-avatar {
+      width: 2.5rem; height: 2.5rem;
+      background: #a259f7;
+      color: #fff;
+      font-size: 1.35rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-right: 0.7rem;
+    }
+    .user-profile-bar .name {
+      font-weight: 800;
+      font-size: 1.12rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .user-profile-bar .email {
+      color: #bba9fa;
+      font-size: 0.95rem;
+      font-weight: 500;
+      opacity: 0.82;
+    }
+    /* MAIN PANEL */
+    .main-content {
+      margin-left: 130px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .word-counter-container {
+      background: linear-gradient(135deg, #24143c 60%, #1c1030 100%);
+      border-radius: 2.5rem;
+      box-shadow: 0 16px 54px #0005, 0 2px 30px #a259f73a;
+      padding: 2.5rem 2.3rem 2.2rem 2.3rem;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 85vh;
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .word-counter-title {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 3px 18px #a259f732;
+    }
+    .word-counter-subtitle {
+      font-size: 1.18rem;
+      color: #bba9fa;
+      font-weight: 500;
+      margin-bottom: 1.3rem;
+      text-shadow: 0 1px 8px #a259f71a;
+    }
+    .input-label {
+      color: #a259f7;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      margin-top: 1.2rem;
+      letter-spacing: 1px;
+    }
+    #text-input {
+      background: #2d174b;
+      color: #f6f6ff;
+      border: 1.8px solid #a259f738;
+      border-radius: 1.2rem;
+      padding: 1.25rem 1.2rem;
+      font-size: 1.19rem;
+      min-height: 220px;
+      resize: vertical;
+      width: 100%;
+      margin-bottom: 1.2rem;
+      transition: border 0.19s, box-shadow 0.16s;
+      box-shadow: 0 1.5px 8px #a259f70c;
+    }
+    #text-input:focus {
+      border: 2.7px solid #a259f7;
+      outline: none;
+      background: #27194a;
+      color: #fff;
+    }
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.7rem;
+    }
+    .btn {
+      border: none;
+      border-radius: 0.9rem;
+      padding: 0.72rem 1.7rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%);
+      color: #fff;
+      transition: background .16s, color .16s, box-shadow .16s;
+      box-shadow: 0 2px 12px #a259f726;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+    }
+    .btn:hover, .btn:focus {
+      background: linear-gradient(90deg,#6c67f7 0%,#a259f7 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px #a259f72e;
+    }
+    .btn.reset {
+      background: linear-gradient(90deg,#eee 0%, #a259f7 100%);
+      color: #a259f7;
+      border: 1.4px solid #a259f7;
+    }
+    .btn.reset:hover, .btn.reset:focus {
+      background: linear-gradient(90deg,#a259f7 0%, #eee 100%);
+      color: #fff;
+    }
+    #copy-message {
+      text-shadow: 0 1px 3px #6c67f7aa;
+    }
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 2.1rem;
+      margin-top: 2.3rem;
+    }
+    .stat-card {
+      background: linear-gradient(120deg,#24143c 80%,#1c1030 100%);
+      border-radius: 1.3rem;
+      border: 2.2px solid #472b7b;
+      box-shadow: 0 2px 24px #a259f721;
+      padding: 1.7rem 1.2rem 1.5rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.17s cubic-bezier(.4,0,.2,1), box-shadow 0.17s, background 0.19s;
+    }
+    .stat-card .stat-icon {
+      font-size: 2.2rem;
+      color: #a259f7;
+      margin-bottom: 0.6rem;
+    }
+    .stat-card .stat-title {
+      color: #a259f7;
+      font-size: 1.07rem;
+      font-weight: 700;
+      margin-bottom: 0.33rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    .stat-card .stat-value {
+      font-size: 2.13rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1.2px;
+      text-shadow: 0 2px 7px #a259f722;
+    }
+    .stat-card.animated {
+      animation: statBounce3D 0.53s cubic-bezier(.36,1.37,.31,0.98);
+    }
+    @keyframes statBounce3D {
+      0%   { transform: scale3d(1,1,1) rotateY(0deg); }
+      30%  { transform: scale3d(1.09,1.09,1.1) rotateY(-10deg);}
+      60%  { transform: scale3d(0.98,0.98,1) rotateY(3deg);}
+      100% { transform: scale3d(1,1,1) rotateY(0deg);}
+    }
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .main-content { margin-left: 0; }
+      .sidebar { display: none; }
+      .word-counter-container { max-width: 100vw; border-radius: 0; margin:0;padding:1.2rem 4vw;}
+    }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; }
+      .sidebar { display: none; }
+      .word-counter-container { border-radius: 0; margin:0;padding:1.2rem 2vw; min-height:90vh;}
+      .dashboard-stats { grid-template-columns: 1fr; gap: 1.2rem; }
+      .stat-card { padding: 1.2rem 0.7rem 1.2rem 0.7rem; }
+    }
+    @media (max-width: 700px) {
+      .word-counter-title { font-size: 1.3rem;}
+      .stat-card .stat-value { font-size: 1.38rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+   <nav class="nav-bar">
+    <div>
+      <div class="nav-logo">
+        <img src="/assets/images/bg.png" alt="SafaTech Logo">
+        <span>SafaTech</span>
+        <span class="tools">Tools</span>
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html" class="nav-link active" title="Dashboard">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="6"/><path d="M9 9h6v6H9z"/></svg>
+        </a>
+        <a href="tools/word-counter.html" class="nav-link" title="Word Counter">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M8 9h8M8 13h4"/></svg>
+        </a>
+        <a href="tools/grammar-checker.html" class="nav-link" title="Grammar Checker">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+        </a>
+        <a href="tools/paraphraser.html" class="nav-link" title="Paraphraser">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="6"/><path d="M9 9h6v6H9z"/></svg>
+        </a>
+        <a href="tools/plagiarism-checker.html" class="nav-link" title="Plagiarism Checker">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><rect x="8" y="8" width="8" height="8" rx="4"/><rect x="3" y="3" width="18" height="18" rx="7"/></svg>
+        </a>
+        <a href="tools/readability-checker.html" class="nav-link" title="Readability Checker">
+          <svg fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="profile-section">
+      <!-- Use absolute path for universal access from all locations -->
+     <a href="profile.html" class="profile-avatar-link" title="View Profile">
+  <div class="profile-avatar" id="profile-avatar">I</div>
+</a>
+      <div class="profile-name" id="profile-name"></div>
+      <div class="profile-meta" id="profile-email"></div>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="word-counter-container">
+      <div class="word-counter-title flex items-center gap-3">
+        <svg class="w-10 h-10" fill="none" stroke="#a259f7" stroke-width="2.5" viewBox="0 0 32 32">
+          <rect x="8" y="8" width="16" height="16" rx="5" fill="#fff" />
+          <text x="12" y="24" font-size="13" font-weight="bold" fill="#a259f7" font-family="Inter,Arial,sans-serif">W</text>
+        </svg>
+        Word Counter
+      </div>
+      <div class="word-counter-subtitle">
+        The ultimate tool to count words, characters, sentences, and more — in a clean, distraction-free interface.
+      </div>
+      <label for="text-input" class="input-label">Your Text</label>
+      <textarea id="text-input" rows="11" placeholder="Type or paste your text here..." aria-label="Text to count words for"></textarea>
+      <div class="btn-row">
+        <button id="reset-btn" type="button" class="btn reset" title="Clear text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#a259f7" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.07 19A9 9 0 1 1 12 21v-1"/></svg>
+          Reset
+        </button>
+        <button id="copy-btn" type="button" class="btn" title="Copy text">
+          <svg class="inline h-5 w-5" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div id="copy-message" class="text-sm text-[#a259f7] font-semibold mt-0 mb-3 hidden">Copied to clipboard!</div>
+      <div class="dashboard-stats">
+        <div class="stat-card" id="stat-words">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#a259f7" stroke-width="2" viewBox="0 0 24 24"><path d="M17 11H7m10 4H7m8-8H7"/></svg>
+          </div>
+          <div class="stat-title">Words</div>
+          <div id="word-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card" id="stat-chars">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#6c67f7" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 15h16"/></svg>
+          </div>
+          <div class="stat-title">Characters</div>
+          <div id="char-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card" id="stat-sentences">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#00c4cc" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a7 7 0 10.6 1.5"/></svg>
+          </div>
+          <div class="stat-title">Sentences</div>
+          <div id="sentence-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card" id="stat-paras">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#50b2fc" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+          </div>
+          <div class="stat-title">Paragraphs</div>
+          <div id="para-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card" id="stat-read">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#1db96f" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-3.86 0-7 1.79-7 4v3h14v-3c0-2.21-3.14-4-7-4z"/><circle cx="12" cy="14" r="3"/></svg>
+          </div>
+          <div class="stat-title">Reading Time</div>
+          <div id="read-time" class="stat-value">0s</div>
+        </div>
+        <div class="stat-card" id="stat-speak">
+          <div class="stat-icon">
+            <svg class="h-7 w-7" fill="none" stroke="#ff4d58" stroke-width="2" viewBox="0 0 24 24"><path d="M8 17l4 4 4-4m0-5V5a2 2 0 00-2-2H8a2 2 0 00-2 2v7a2 2 0 002 2h8a2 2 0 002-2v-3"/></svg>
+          </div>
+          <div class="stat-title">Speaking Time</div>
+          <div id="speak-time" class="stat-value">0s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // === AUTH CHECK: Only allow access if logged in ===
+  (function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login.html';
+    }
+  })();
+
+  // PROFILE - Show user info in sidebar if available
+  const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+  document.getElementById('profile-name').textContent = userInfo.name || "Unknown User";
+  document.getElementById('profile-email').textContent = userInfo.email || "unknown@example.com";
+  document.getElementById('profile-avatar').textContent = userInfo.name && userInfo.name.length ? userInfo.name[0].toUpperCase() : "U";
+
+  document.getElementById('logout-btn').onclick = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = "/login.html";
+  };
+
+  // Word Counter Logic (Frontend + Backend)
+  const textInput = document.getElementById('text-input');
+  const wordCount = document.getElementById('word-count');
+  const charCount = document.getElementById('char-count');
+  const paraCount = document.getElementById('para-count');
+  const sentCount = document.getElementById('sentence-count');
+  const copyBtn = document.getElementById('copy-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const copyMsg = document.getElementById('copy-message');
+  const readTime = document.getElementById('read-time');
+  const speakTime = document.getElementById('speak-time');
+  const statWords = document.getElementById('stat-words');
+  const statChars = document.getElementById('stat-chars');
+  const statSentences = document.getElementById('stat-sentences');
+  const statParas = document.getElementById('stat-paras');
+  const statRead = document.getElementById('stat-read');
+  const statSpeak = document.getElementById('stat-speak');
+
+  function animateStat(card) {
+    if(card) {
+      card.classList.remove('animated');
+      void card.offsetWidth;
+      card.classList.add('animated');
+    }
+  }
+
+  // Update counts and send to backend for words/chars
+  async function updateCounts() {
+    const text = textInput.value;
+
+    // If running from Live Server or a different port, use the correct API base.
+    // If served from Express, keep as relative '/api/tools/word-count'
+    let apiBase = '';
+    if (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+    ) {
+      // If running from 5500 (Live Server), use backend on 5000.
+      if (window.location.port === '5500') {
+        apiBase = 'http://localhost:5000';
+      }
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiBase}/api/tools/word-count`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ text })
+      });
+      if (res.ok) {
+        const { words, characters } = await res.json();
+        wordCount.textContent = words;
+        charCount.textContent = characters;
+        animateStat(statWords);
+        animateStat(statChars);
+      } else if (res.status === 401) {
+        // Unauthorized, redirect to login
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login.html';
+      } else {
+        wordCount.textContent = 0;
+        charCount.textContent = 0;
+      }
+    } catch (e) {
+      console.error(e);
+      wordCount.textContent = 0;
+      charCount.textContent = 0;
+    }
+
+    // Sentences (frontend, more robust regex)
+    const sentences = text.length > 0 ? text.match(/[^.!?]+[.!?]*|\w+$/g) : null;
+    sentCount.textContent = sentences ? sentences.length : 0;
+    animateStat(statSentences);
+
+    // Paragraphs (frontend)
+    const paras = text.length > 0 ? text.split(/\n+/).filter(p => p.trim().length > 0) : [];
+    paraCount.textContent = paras.length;
+    animateStat(statParas);
+
+    // Reading and speaking time (frontend, based on words)
+    const wordsNum = Number(wordCount.textContent) || 0;
+    const readingSecs = Math.ceil(wordsNum / 200 * 60);
+    readTime.textContent = readingSecs > 59
+      ? Math.floor(readingSecs / 60) + 'm ' + (readingSecs % 60) + 's'
+      : readingSecs + 's';
+    animateStat(statRead);
+    const speakingSecs = Math.ceil(wordsNum / 130 * 60);
+    speakTime.textContent = speakingSecs > 59
+      ? Math.floor(speakingSecs / 60) + 'm ' + (speakingSecs % 60) + 's'
+      : speakingSecs + 's';
+    animateStat(statSpeak);
+  }
+
+  textInput.addEventListener('input', updateCounts);
+
+  // Use modern clipboard API with fallback
+  copyBtn.addEventListener('click', () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textInput.value).then(() => {
+        copyMsg.classList.remove('hidden');
+        setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+      });
+    } else {
+      textInput.select();
+      document.execCommand('copy');
+      copyMsg.classList.remove('hidden');
+      setTimeout(() => copyMsg.classList.add('hidden'), 1300);
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    textInput.value = '';
+    updateCounts();
+    textInput.focus();
+  });
+
+  // Focus the textarea on load for better UX
+  textInput.focus();
+
+  updateCounts();
+  </script>
+</body>
+</html>

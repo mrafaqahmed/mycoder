@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #181526 0%, #7a5af8 100%);
+      min-height: 100vh;
+    }
+    .container-main {
+      max-width: 805px;
+      margin: 2vh auto;
+      border-radius: 2.5rem;
+      overflow: hidden;
+      display: flex;
+      min-height: 35vh;
+      box-shadow: 0 18px 60px 0 rgba(31,38,135,0.14);
+      background: transparent;
+    }
+    .left-section, .right-section {
+      flex: 1 1 0%;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .left-section {
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #221b38 0%, #7a5af8 100%);
+      border-top-left-radius: 2.5rem;
+      border-bottom-left-radius: 2.5rem;
+    }
+    .form-inner {
+      width: 100%;
+      max-width: 600px;
+      min-height: 720px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3.2rem 2.2rem;
+      /* Fade-in effect */
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeinbuttery 1.1s cubic-bezier(.39,.58,.57,1.03) 0.1s forwards;
+    }
+    @keyframes fadeinbuttery {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .form-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .form-desc {
+      color: #c2b7e3;
+      font-size: 1.2rem;
+      margin-bottom: 2.2rem;
+    }
+    .input-shadow {
+      box-shadow: 0 2px 14px 0 rgba(120, 73, 255, 0.10);
+      border-radius: 2.5rem;
+      background: #271f3c;
+      color: #edeaff;
+    }
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b197fc;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .checkbox-label {
+      color: #bcb1e9;
+      font-size: 1rem;
+      margin-left: 0.4em;
+    }
+    .error-message, .success-message, .validation-error {
+      font-size: 1.07rem;
+      margin-bottom: 0.75rem;
+    }
+    .error-message {
+      color: #fecaca; background: #2c152c; border-radius: 0.5em; padding: 0.5em 1em;
+      border: 1px solid #fecaca; display: none; font-weight: 600;
+    }
+    .success-message {
+      color: #bbf7d0; background: #181526; border-radius: 0.5em; padding: 0.5em 1em;
+      border: 1px solid #86efac; display: none; font-weight: 600;
+    }
+    .validation-error {
+      color: #f472b6; font-size: 0.93rem; margin-top: 0.25em; margin-left: 0.1em; display: none;
+    }
+    .right-section {
+      background: #f6faff;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-top-right-radius: 2.5rem;
+      border-bottom-right-radius: 2.5rem;
+    }
+    .svg-card {
+      width: 400px;
+      height: 920px;
+      background: #fff;
+      border-radius: 2.5rem;
+      box-shadow: 0 18px 60px 0 rgba(31,38,135,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signup-illustration {
+      max-width: 500px;
+      max-height: 650px;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 1.5rem;
+      background: #fff;
+      display: block;
+    }
+    .form-inner input,
+    .form-inner select {
+      background: #271f3c !important;
+      color: #edeaff !important;
+      border: 1.5px solid #4a387b !important;
+      transition: border .18s;
+      border-radius: 2.5rem !important;
+    }
+    .form-inner input:focus,
+    .form-inner select:focus {
+      border-color: #a389fa !important;
+      box-shadow: 0 0 0 2px #a389fa44;
+      background: #2a2041 !important;
+      color: #fff !important;
+    }
+    .form-inner input::placeholder,
+    .form-inner select::placeholder {
+      color: #b197fc !important;
+      opacity: 1;
+    }
+    .form-inner option {
+      color: #edeaff !important;
+      background: #271f3c !important;
+      font-size: 1rem;
+      padding-left: 1.25em;
+    }
+    .form-inner select {
+      padding-top: 0.7rem !important;
+      padding-bottom: 0.7rem !important;
+    }
+    .form-inner select optgroup {
+      color: #b197fc !important;
+      font-style: normal;
+    }
+    .form-inner select::-webkit-scrollbar {
+      width: 10px;
+      background: #231c32;
+      border-radius: 12px;
+    }
+    .form-inner select::-webkit-scrollbar-thumb {
+      background: #6347c2;
+      border-radius: 12px;
+    }
+    select, option, optgroup {
+      background: #271f3c !important;
+      color: #edeaff !important;
+    }
+    .form-inner input[type="checkbox"] {
+      accent-color: #a389fa;
+      border: 1.5px solid #6f53bb;
+      background: #271f3c;
+    }
+    .form-inner button[type="submit"] {
+      background: linear-gradient(90deg, #a389fa 0%, #7a5af8 100%);
+      color: #fff;
+      border: none;
+    }
+    .form-inner button[type="submit"]:hover {
+      background: linear-gradient(90deg, #7a5af8 0%, #a389fa 100%);
+      color: #fff;
+    }
+    .form-inner .text-purple-400,
+    .form-inner .text-purple-600 {
+      color: #a389fa !important;
+    }
+    @media (max-width: 800px) {
+      .container-main { max-width: 99vw; }
+      .form-inner, .svg-card { max-width: 99vw !important; }
+      .svg-card { width: 99vw; }
+    }
+    @media (max-width: 800px) {
+      .container-main { flex-direction: column; border-radius: 0; }
+      .left-section, .right-section { border-radius: 0; min-height: unset; }
+      .svg-card, .form-inner { margin-right: 0; max-width: 95vw; width: 95vw; }
+    }
+    @media (max-width: 700px) {
+      .container-main { flex-direction: column; border-radius: 0; }
+      .left-section, .right-section { padding: 2rem 0.2rem; }
+      .form-inner { max-width: 99vw; }
+      .svg-card { width: 99vw !important; height: auto !important; min-height: 350px; }
+      .signup-illustration { max-width: 99vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-main">
+    <!-- Left Section: Signup Form -->
+    <div class="left-section">
+      <div class="form-inner">
+        <div class="form-title mb-1 mt-3">Sign Up</div>
+        <div class="form-desc">Sign up for your account</div>
+        <div id="errorMsg" class="error-message"></div>
+        <div id="successMsg" class="success-message"></div>
+        <form id="signupForm" class="space-y-5" autocomplete="off" novalidate>
+          <!-- Full Name -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 14c2.21 0 4 1.79 4 4v0.5a0.5 0.5 0 01-0.5 0.5H4.5A0.5 0.5 0 014 18.5V18c0-2.21 1.79-4 4-4h8z"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <input type="text" id="name" name="name" required
+              class="pl-10 pr-4 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Full Name">
+            <div id="nameError" class="validation-error"></div>
+          </div>
+          <!-- Email -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="5" width="16" height="10" rx="2"/>
+                <path d="M2 5l8 6 8-6"/>
+              </svg>
+            </span>
+            <input type="email" id="email" name="email" required
+              class="pl-10 pr-4 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Email Address">
+            <div id="emailError" class="validation-error"></div>
+          </div>
+          <!-- Phone -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 2l16 16M15 15a5 5 0 01-11-6.58M21 21a16 16 0 01-16-16"/>
+              </svg>
+            </span>
+            <input type="tel" id="phone" name="phone" required
+              class="pl-10 pr-4 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Phone Number">
+            <div id="phoneError" class="validation-error"></div>
+          </div>
+          <!-- Country -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="10" cy="10" r="8"/>
+                <line x1="2" y1="10" x2="18" y2="10"/>
+                <path d="M10 2a8 8 0 000 16"/>
+              </svg>
+            </span>
+            <select id="country" name="country" required
+              class="pl-10 pr-4 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400">
+              <option value="">🌐 Select Country</option>
+              <option value="Afghanistan">🇦🇫 Afghanistan</option>
+              <option value="Albania">🇦🇱 Albania</option>
+              <option value="Algeria">🇩🇿 Algeria</option>
+              <option value="Andorra">🇦🇩 Andorra</option>
+              <option value="Angola">🇦🇴 Angola</option>
+              <option value="Argentina">🇦🇷 Argentina</option>
+              <option value="Armenia">🇦🇲 Armenia</option>
+              <option value="Australia">🇦🇺 Australia</option>
+              <option value="Austria">🇦🇹 Austria</option>
+              <option value="Azerbaijan">🇦🇿 Azerbaijan</option>
+              <option value="Bahamas">🇧🇸 Bahamas</option>
+              <option value="Bahrain">🇧🇭 Bahrain</option>
+              <option value="Bangladesh">🇧🇩 Bangladesh</option>
+              <option value="Belarus">🇧🇾 Belarus</option>
+              <option value="Belgium">🇧🇪 Belgium</option>
+              <option value="Belize">🇧🇿 Belize</option>
+              <option value="Benin">🇧🇯 Benin</option>
+              <option value="Bhutan">🇧🇹 Bhutan</option>
+              <option value="Bolivia">🇧🇴 Bolivia</option>
+              <option value="Bosnia and Herzegovina">🇧🇦 Bosnia and Herzegovina</option>
+              <option value="Botswana">🇧🇼 Botswana</option>
+              <option value="Brazil">🇧🇷 Brazil</option>
+              <option value="Brunei">🇧🇳 Brunei</option>
+              <option value="Bulgaria">🇧🇬 Bulgaria</option>
+              <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+              <option value="Burundi">🇧🇮 Burundi</option>
+              <option value="Cambodia">🇰🇭 Cambodia</option>
+              <option value="Cameroon">🇨🇲 Cameroon</option>
+              <option value="Canada">🇨🇦 Canada</option>
+              <option value="Chad">🇹🇩 Chad</option>
+              <option value="Chile">🇨🇱 Chile</option>
+              <option value="China">🇨🇳 China</option>
+              <option value="Colombia">🇨🇴 Colombia</option>
+              <option value="Comoros">🇰🇲 Comoros</option>
+              <option value="Costa Rica">🇨🇷 Costa Rica</option>
+              <option value="Croatia">🇭🇷 Croatia</option>
+              <option value="Cuba">🇨🇺 Cuba</option>
+              <option value="Cyprus">🇨🇾 Cyprus</option>
+              <option value="Czechia">🇨🇿 Czechia</option>
+              <option value="Denmark">🇩🇰 Denmark</option>
+              <option value="Djibouti">🇩🇯 Djibouti</option>
+              <option value="Dominica">🇩🇲 Dominica</option>
+              <option value="Dominican Republic">🇩🇴 Dominican Republic</option>
+              <option value="Ecuador">🇪🇨 Ecuador</option>
+              <option value="Egypt">🇪🇬 Egypt</option>
+              <option value="El Salvador">🇸🇻 El Salvador</option>
+              <option value="Estonia">🇪🇪 Estonia</option>
+              <option value="Eswatini">🇸🇿 Eswatini</option>
+              <option value="Ethiopia">🇪🇹 Ethiopia</option>
+              <option value="Fiji">🇫🇯 Fiji</option>
+              <option value="Finland">🇫🇮 Finland</option>
+              <option value="France">🇫🇷 France</option>
+              <option value="Gabon">🇬🇦 Gabon</option>
+              <option value="Gambia">🇬🇲 Gambia</option>
+              <option value="Georgia">🇬🇪 Georgia</option>
+              <option value="Germany">🇩🇪 Germany</option>
+              <option value="Ghana">🇬🇭 Ghana</option>
+              <option value="Greece">🇬🇷 Greece</option>
+              <option value="Grenada">🇬🇩 Grenada</option>
+              <option value="Guatemala">🇬🇹 Guatemala</option>
+              <option value="Guinea">🇬🇳 Guinea</option>
+              <option value="Guyana">🇬🇾 Guyana</option>
+              <option value="Haiti">🇭🇹 Haiti</option>
+              <option value="Honduras">🇭🇳 Honduras</option>
+              <option value="Hungary">🇭🇺 Hungary</option>
+              <option value="Iceland">🇮🇸 Iceland</option>
+              <option value="India">🇮🇳 India</option>
+              <option value="Indonesia">🇮🇩 Indonesia</option>
+              <option value="Iran">🇮🇷 Iran</option>
+              <option value="Iraq">🇮🇶 Iraq</option>
+              <option value="Ireland">🇮🇪 Ireland</option>
+              <option value="Israel">🇮🇱 Israel</option>
+              <option value="Italy">🇮🇹 Italy</option>
+              <option value="Jamaica">🇯🇲 Jamaica</option>
+              <option value="Japan">🇯🇵 Japan</option>
+              <option value="Jordan">🇯🇴 Jordan</option>
+              <option value="Kazakhstan">🇰🇿 Kazakhstan</option>
+              <option value="Kenya">🇰🇪 Kenya</option>
+              <option value="Kiribati">🇰🇮 Kiribati</option>
+              <option value="Kuwait">🇰🇼 Kuwait</option>
+              <option value="Kyrgyzstan">🇰🇬 Kyrgyzstan</option>
+              <option value="Laos">🇱🇦 Laos</option>
+              <option value="Latvia">🇱🇻 Latvia</option>
+              <option value="Lebanon">🇱🇧 Lebanon</option>
+              <option value="Lesotho">🇱🇸 Lesotho</option>
+              <option value="Liberia">🇱🇷 Liberia</option>
+              <option value="Libya">🇱🇾 Libya</option>
+              <option value="Liechtenstein">🇱🇮 Liechtenstein</option>
+              <option value="Lithuania">🇱🇹 Lithuania</option>
+              <option value="Luxembourg">🇱🇺 Luxembourg</option>
+              <option value="Madagascar">🇲🇬 Madagascar</option>
+              <option value="Malawi">🇲🇼 Malawi</option>
+              <option value="Malaysia">🇲🇾 Malaysia</option>
+              <option value="Maldives">🇲🇻 Maldives</option>
+              <option value="Mali">🇲🇱 Mali</option>
+              <option value="Malta">🇲🇹 Malta</option>
+              <option value="Mauritania">🇲🇷 Mauritania</option>
+              <option value="Mauritius">🇲🇺 Mauritius</option>
+              <option value="Mexico">🇲🇽 Mexico</option>
+              <option value="Moldova">🇲🇩 Moldova</option>
+              <option value="Monaco">🇲🇨 Monaco</option>
+              <option value="Mongolia">🇲🇳 Mongolia</option>
+              <option value="Montenegro">🇲🇪 Montenegro</option>
+              <option value="Morocco">🇲🇦 Morocco</option>
+              <option value="Mozambique">🇲🇿 Mozambique</option>
+              <option value="Myanmar">🇲🇲 Myanmar</option>
+              <option value="Namibia">🇳🇦 Namibia</option>
+              <option value="Nauru">🇳🇷 Nauru</option>
+              <option value="Nepal">🇳🇵 Nepal</option>
+              <option value="Netherlands">🇳🇱 Netherlands</option>
+              <option value="New Zealand">🇳🇿 New Zealand</option>
+              <option value="Nicaragua">🇳🇮 Nicaragua</option>
+              <option value="Niger">🇳🇪 Niger</option>
+              <option value="Nigeria">🇳🇬 Nigeria</option>
+              <option value="North Korea">🇰🇵 North Korea</option>
+              <option value="North Macedonia">🇲🇰 North Macedonia</option>
+              <option value="Norway">🇳🇴 Norway</option>
+              <option value="Oman">🇴🇲 Oman</option>
+              <option value="Pakistan">🇵🇰 Pakistan</option>
+              <option value="Palau">🇵🇼 Palau</option>
+              <option value="Palestine">🇵🇸 Palestine</option>
+              <option value="Panama">🇵🇦 Panama</option>
+              <option value="Papua New Guinea">🇵🇬 Papua New Guinea</option>
+              <option value="Paraguay">🇵🇾 Paraguay</option>
+              <option value="Peru">🇵🇪 Peru</option>
+              <option value="Philippines">🇵🇭 Philippines</option>
+              <option value="Poland">🇵🇱 Poland</option>
+              <option value="Portugal">🇵🇹 Portugal</option>
+              <option value="Qatar">🇶🇦 Qatar</option>
+              <option value="Romania">🇷🇴 Romania</option>
+              <option value="Russia">🇷🇺 Russia</option>
+              <option value="Rwanda">🇷🇼 Rwanda</option>
+              <option value="Saint Kitts and Nevis">🇰🇳 Saint Kitts and Nevis</option>
+              <option value="Saint Lucia">🇱🇨 Saint Lucia</option>
+              <option value="Saint Vincent and the Grenadines">🇻🇨 Saint Vincent and the Grenadines</option>
+              <option value="Samoa">🇼🇸 Samoa</option>
+              <option value="San Marino">🇸🇲 San Marino</option>
+              <option value="Sao Tome and Principe">🇸🇹 Sao Tome and Principe</option>
+              <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+              <option value="Senegal">🇸🇳 Senegal</option>
+              <option value="Serbia">🇷🇸 Serbia</option>
+              <option value="Seychelles">🇸🇨 Seychelles</option>
+              <option value="Sierra Leone">🇸🇱 Sierra Leone</option>
+              <option value="Singapore">🇸🇬 Singapore</option>
+              <option value="Slovakia">🇸🇰 Slovakia</option>
+              <option value="Slovenia">🇸🇮 Slovenia</option>
+              <option value="Solomon Islands">🇸🇧 Solomon Islands</option>
+              <option value="Somalia">🇸🇴 Somalia</option>
+              <option value="South Africa">🇿🇦 South Africa</option>
+              <option value="South Korea">🇰🇷 South Korea</option>
+              <option value="South Sudan">🇸🇸 South Sudan</option>
+              <option value="Spain">🇪🇸 Spain</option>
+              <option value="Sri Lanka">🇱🇰 Sri Lanka</option>
+              <option value="Sudan">🇸🇩 Sudan</option>
+              <option value="Suriname">🇸🇷 Suriname</option>
+              <option value="Sweden">🇸🇪 Sweden</option>
+              <option value="Switzerland">🇨🇭 Switzerland</option>
+              <option value="Syria">🇸🇾 Syria</option>
+              <option value="Taiwan">🇹🇼 Taiwan</option>
+              <option value="Tajikistan">🇹🇯 Tajikistan</option>
+              <option value="Tanzania">🇹🇿 Tanzania</option>
+              <option value="Thailand">🇹🇭 Thailand</option>
+              <option value="Timor-Leste">🇹🇱 Timor-Leste</option>
+              <option value="Togo">🇹🇬 Togo</option>
+              <option value="Tonga">🇹🇴 Tonga</option>
+              <option value="Trinidad and Tobago">🇹🇹 Trinidad and Tobago</option>
+              <option value="Tunisia">🇹🇳 Tunisia</option>
+              <option value="Turkey">🇹🇷 Turkey</option>
+              <option value="Turkmenistan">🇹🇲 Turkmenistan</option>
+              <option value="Tuvalu">🇹🇻 Tuvalu</option>
+              <option value="Uganda">🇺🇬 Uganda</option>
+              <option value="Ukraine">🇺🇦 Ukraine</option>
+              <option value="United Arab Emirates">🇦🇪 United Arab Emirates</option>
+              <option value="United Kingdom">🇬🇧 United Kingdom</option>
+              <option value="United States">🇺🇸 United States</option>
+              <option value="Uruguay">🇺🇾 Uruguay</option>
+              <option value="Uzbekistan">🇺🇿 Uzbekistan</option>
+              <option value="Vanuatu">🇻🇺 Vanuatu</option>
+              <option value="Vatican City">🇻🇦 Vatican City</option>
+              <option value="Venezuela">🇻🇪 Venezuela</option>
+              <option value="Vietnam">🇻🇳 Vietnam</option>
+              <option value="Yemen">🇾🇪 Yemen</option>
+              <option value="Zambia">🇿🇲 Zambia</option>
+              <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+            </select>
+            <div id="countryError" class="validation-error"></div>
+          </div>
+          <!-- Password -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="8" width="14" height="8" rx="2"/>
+                <path d="M7 8V6a5 5 0 0110 0v2"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password" required minlength="6"
+              class="pl-10 pr-12 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Create a password">
+            <div id="passwordError" class="validation-error"></div>
+          </div>
+          <!-- Confirm Password -->
+          <div class="relative">
+            <span class="input-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="8" width="14" height="8" rx="2"/>
+                <path d="M7 8V6a5 5 0 0110 0v2"/>
+              </svg>
+            </span>
+            <input type="password" id="confirm-password" name="confirm-password" required minlength="6"
+              class="pl-10 pr-12 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Confirm password">
+            <div id="confirmPasswordError" class="validation-error"></div>
+          </div>
+          <!-- Terms & Not a robot -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 -mb-2">
+            <div>
+              <input type="checkbox" id="terms" name="terms" required class="accent-purple-500">
+              <label for="terms" class="checkbox-label">I agree to the <a href="#" class="text-purple-500 underline">Terms & Conditions</a></label>
+            </div>
+            <div>
+              <input type="checkbox" id="notRobot" name="notRobot" required class="accent-purple-500">
+              <label for="notRobot" class="checkbox-label">I am not a robot</label>
+            </div>
+          </div>
+          <div id="termsError" class="validation-error mb-2"></div>
+          <div id="notRobotError" class="validation-error"></div>
+          <!-- Google reCAPTCHA widget -->
+          <div class="my-3">
+            <div class="g-recaptcha" data-sitekey="6LenN6grAAAAAFKsC1KgO0KAImBRN63hiC6VwyuU"></div>
+          </div>
+          <!-- Submit -->
+          <button type="submit" class="w-full py-3 rounded-full shadow-lg transition">Sign Up</button>
+          <p class="text-center text-purple-400 text-sm pt-2">Already have an account? <a href="login.html" class="text-purple-600 underline">Sign In</a></p>
+        </form>
+        <!-- OTP Verification Form (hidden by default) -->
+        <form id="otpForm" class="space-y-6 mt-8 w-full max-w-sm fade-in" style="display:none;" autocomplete="off">
+          <div class="relative mb-4">
+            <span class="input-icon">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14"/>
+              </svg>
+            </span>
+            <input type="text" id="otp" name="otp" required maxlength="6"
+              class="pl-10 pr-4 py-3 rounded-full w-full border input-shadow focus:ring-2 focus:ring-purple-200 outline-none placeholder:text-purple-400"
+              placeholder="Enter OTP">
+          </div>
+          <button type="submit" class="w-full py-3 rounded-full shadow-lg transition">Verify OTP</button>
+        </form>
+      </div>
+    </div>
+    <!-- Right Section: SVG ONLY -->
+    <div class="right-section">
+      <div class="svg-card">
+         <img src="/assets/images/ibra.gif" alt="Signup Illustration" class="signup-illustration" />
+      </div>
+    </div>
+  </div>
+  <!-- Google reCAPTCHA API -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Signup and OTP logic
+      const signupForm = document.getElementById('signupForm');
+      const otpForm = document.getElementById('otpForm');
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+      // Validation error elements
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      const confirmPasswordError = document.getElementById('confirmPasswordError');
+      const phoneError = document.getElementById('phoneError');
+      const countryError = document.getElementById('countryError');
+      const termsError = document.getElementById('termsError');
+      const notRobotError = document.getElementById('notRobotError');
+      let signupEmail = ""; // Store email for OTP verification
+
+      signupForm.addEventListener('submit', async function(e) {
+        // Reset error messages
+        nameError.style.display = emailError.style.display = passwordError.style.display = confirmPasswordError.style.display =
+          phoneError.style.display = countryError.style.display = termsError.style.display = notRobotError.style.display = 'none';
+        nameError.textContent = emailError.textContent = passwordError.textContent = confirmPasswordError.textContent =
+          phoneError.textContent = countryError.textContent = termsError.textContent = notRobotError.textContent = '';
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+        let valid = true;
+
+        // Name validation
+        const name = document.getElementById('name').value.trim();
+        if (name.length < 2) {
+          nameError.textContent = "Enter your full name.";
+          nameError.style.display = "block";
+          valid = false;
+        }
+        // Email validation
+        const email = document.getElementById('email').value.trim();
+        if (!/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
+          emailError.textContent = "Enter a valid email address.";
+          emailError.style.display = "block";
+          valid = false;
+        }
+        // Password validation
+        const password = document.getElementById('password').value;
+        if (password.length < 6) {
+          passwordError.textContent = "Password must be at least 6 characters.";
+          passwordError.style.display = "block";
+          valid = false;
+        }
+        // Confirm Password validation
+        const confirmPassword = document.getElementById('confirm-password').value;
+        if (password !== confirmPassword) {
+          confirmPasswordError.textContent = "Passwords do not match.";
+          confirmPasswordError.style.display = "block";
+          valid = false;
+        }
+        // Phone validation (10-15 digits, numbers only)
+        const phone = document.getElementById('phone').value.trim();
+        if (!/^\d{10,15}$/.test(phone)) {
+          phoneError.textContent = "Enter a valid phone number (10-15 digits).";
+          phoneError.style.display = "block";
+          valid = false;
+        }
+        // Country validation
+        const country = document.getElementById('country').value;
+        if (!country) {
+          countryError.textContent = "Select your country.";
+          countryError.style.display = "block";
+          valid = false;
+        }
+        // Terms validation
+        const terms = document.getElementById('terms').checked;
+        if (!terms) {
+          termsError.textContent = "You must agree to the Terms & Conditions.";
+          termsError.style.display = "block";
+          valid = false;
+        }
+        // Not a robot validation
+        const notRobot = document.getElementById('notRobot').checked;
+        if (!notRobot) {
+          notRobotError.textContent = "Please confirm you are not a robot.";
+          notRobotError.style.display = "block";
+          valid = false;
+        }
+        // Google reCAPTCHA Validation (MUST check for the token!)
+        const recaptchaToken = grecaptcha.getResponse();
+        if (!recaptchaToken) {
+          errorMsg.textContent = "Please complete the reCAPTCHA challenge.";
+          errorMsg.style.display = "block";
+          e.preventDefault();
+          return;
+        }
+        if (!valid) {
+          e.preventDefault();
+          return;
+        }
+        e.preventDefault();
+
+        try {
+          // 1. Signup API
+          const response = await fetch('http://localhost:5000/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name,
+              email,
+              password,
+              phone,
+              country,
+              terms,
+              notRobot,
+              'g-recaptcha-response': recaptchaToken // <-- Send reCAPTCHA token with signup
+            })
+          });
+          const data = await response.json();
+          if (response.ok && data.message) {
+            // 2. Request OTP API
+            signupEmail = email;
+            const otpRes = await fetch('http://localhost:5000/api/request-otp', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+            const otpData = await otpRes.json();
+            if (otpRes.ok && otpData.message) {
+              successMsg.textContent = "Signup successful! Please check your email for the OTP.";
+              successMsg.style.display = 'block';
+              signupForm.style.display = 'none';
+              otpForm.style.display = 'block';
+            } else {
+              errorMsg.textContent = otpData.error || 'Could not send OTP. Please try again.';
+              errorMsg.style.display = 'block';
+            }
+          } else {
+            errorMsg.textContent = data.error || 'Signup failed. Please try again.';
+            errorMsg.style.display = 'block';
+          }
+        } catch (err) {
+          errorMsg.textContent = 'Network error. Please try again later.';
+          errorMsg.style.display = 'block';
+        } finally {
+          grecaptcha.reset();
+        }
+      });
+
+      // OTP Verification form handler
+      otpForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+        const otp = document.getElementById('otp').value.trim();
+        try {
+          const response = await fetch('http://localhost:5000/api/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: signupEmail, otp })
+          });
+          const data = await response.json();
+          if (response.ok && data.message) {
+            successMsg.textContent = "OTP verified! Redirecting to login...";
+            successMsg.style.display = 'block';
+            otpForm.style.display = 'none';
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 1500);
+          } else {
+            errorMsg.textContent = data.error || 'Invalid OTP. Please try again.';
+            errorMsg.style.display = 'block';
+          }
+        } catch (err) {
+          errorMsg.textContent = 'Network error. Please try again later.';
+          errorMsg.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

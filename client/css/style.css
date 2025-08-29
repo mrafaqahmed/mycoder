@@ -1,0 +1,62 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #b795ff;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-track {
+  background: #f9f9fd;
+}
+
+/* Glassmorphism Card */
+.glass {
+  background: rgba(255,255,255,0.86);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .09);
+}
+
+/* Fade In Animation */
+.fade-in {
+  animation: fadeInUp 0.75s cubic-bezier(.4,0,.2,1) forwards;
+  opacity: 0;
+}
+@keyframes fadeInUp {
+  0% { transform: translateY(30px); opacity: 0;}
+  100% { transform: translateY(0); opacity: 1;}
+}
+
+/* Stat card hover */
+.stat-card:hover {
+  box-shadow: 0 8px 24px 0 #b795ff33;
+  border-color: #b795ff;
+  transform: scale(1.03);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+/* CTA Button Animation */
+.btn-cta {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.btn-cta:hover, .btn-cta:focus {
+  box-shadow: 0 6px 18px 0 #b795ff33;
+  transform: scale(1.04);
+}
+
+/* Form Focus Outline */
+input:focus, textarea:focus, button:focus {
+  outline: 2px solid #b795ff;
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: #b795ff;
+  color: #fff;
+}
+
+/* Main background gradient (optional for body) */
+.bg-gradient-main {
+  background: linear-gradient(120deg, #eaf3ff 0%, #c2f0fa 100%);
+}

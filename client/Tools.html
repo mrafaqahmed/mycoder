@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tools - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+    .fade-in { animation: fadeInUp 1s ease forwards; opacity: 0; }
+    @keyframes fadeInUp {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .tool-card {
+      transition: transform .22s cubic-bezier(.4,0,.2,1), box-shadow .22s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      overflow: visible;
+    }
+    .tool-card:hover {
+      transform: translateY(-8px) scale(1.04) rotate(-1.5deg);
+      box-shadow: 0 12px 42px #a259f73b, 0 2px 8px #0007;
+      border-color: #a259f7;
+      z-index: 2;
+    }
+    .tool-icon {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(123deg,#a259f7 30%,#352061 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px #a259f766;
+    }
+    .tool-badge {
+      position: absolute;
+      top: -16px; left: 18px;
+      background: linear-gradient(90deg, #a259f7 70%, #fff0);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.22rem 0.9rem;
+      border-radius: 1rem;
+      letter-spacing: 0.05em;
+      box-shadow: 0 2px 8px #a259f7bb;
+      z-index: 2;
+    }
+    .bg-glow {
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: radial-gradient(circle at 55% 15%, #a259f7b9 0%, #0000 67%);
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 2rem;
+      filter: blur(22px) opacity(.6);
+    }
+    .star {
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+      animation: twinkle 2.6s infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 1;}
+      20% { opacity: .6;}
+      40% { opacity: .8;}
+      60% { opacity: .4;}
+      80% { opacity: .7;}
+    }
+    .search-bar {
+      background: #191728;
+      border: 1.5px solid #a259f7;
+      border-radius: 1.5rem;
+      color: #fff;
+      font-size: 1.1rem;
+      padding-left: 2.7rem;
+      padding-right: 1.25rem;
+      padding-top: .7rem;
+      padding-bottom: .7rem;
+      outline: none;
+      box-shadow: 0 1.5px 12px #a259f726;
+      width: 100%;
+      max-width: 430px;
+      transition: border 0.18s;
+    }
+    .search-bar:focus {
+      border-color: #d9b6ff;
+      background: #23183a;
+    }
+    .search-icon {
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      position: absolute;
+      color: #a259f7;
+      font-size: 1.35rem;
+      opacity: .94;
+      pointer-events: none;
+    }
+    .tool-quick {
+      font-size: .95rem;
+      background: #a259f7;
+      color: #fff;
+      border-radius: 1rem;
+      padding: .13rem .8rem;
+      margin-right: .35rem;
+      cursor: pointer;
+      transition: background .18s;
+      font-weight: 600;
+      opacity: .9;
+    }
+    .tool-quick:hover {
+      background: #8c3ef7;
+      opacity: 1;
+    }
+    .tool-footer {
+      font-size: .88rem;
+      color: #cfd2e9d0;
+      margin-top: auto;
+      margin-bottom: -.3rem;
+      letter-spacing: .01em;
+      display: flex;
+      gap: 1.2em;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tool-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: .3em;
+    }
+    .tool-stat svg { width: 1em; height: 1em; vertical-align: -0.18em;}
+    @media (max-width: 900px) {
+      .tool-card {padding: 1.5rem;}
+      .star {display: none;}
+    }
+    body.light {
+      background: #f8f7fc !important;
+      color: #000 !important;
+    }
+    body.light, body.light *:not(svg):not(path):not(rect):not(circle):not(text) {
+      color: #000 !important;
+      border-color: #a259f7 !important;
+    }
+    body.light .tool-card {
+      background: linear-gradient(123deg,#fff 60%,#e2d9f7 100%) !important;
+      color: #000 !important;
+      border-color: #a259f7 !important;
+    }
+    body.light .tool-card:hover {
+      box-shadow: 0 14px 34px #a259f730, 0 4px 16px #bbb8;
+    }
+    body.light .tool-icon {
+      color: #fff;
+      background: linear-gradient(123deg,#a259f7 30%,#8a7ad7 100%) !important;
+    }
+    body.light .search-bar {
+      background: #fff;
+      color: #000 !important;
+      border: 1.5px solid #a259f7;
+    }
+    body.light .search-bar:focus {
+      background: #f3eafd;
+      border-color: #a259f7;
+    }
+    body.light .tool-quick {
+      background: #a259f7;
+      color: #fff !important;
+    }
+    body.light nav {
+      background: #f8f7fc !important;
+      color: #000 !important;
+      border-bottom: 1.5px solid #a259f7;
+    }
+    body.light .star {
+      color: #a259f7;
+      opacity: .6;
+    }
+    body.light .tool-footer {
+      color: #000 !important;
+    }
+    body.light #modal-content {
+      background: #f7f7fd !important;
+      color: #000 !important;
+      border-color: #a259f7;
+    }
+    body.light .bg-glow {
+      background: radial-gradient(circle at 55% 15%, #a259f71e 0%, #fff0 67%);
+    }
+    body.light .tool-card a,
+    body.light .tool-card button,
+    body.light .tool-card h3,
+    body.light .tool-card p,
+    body.light .tool-card span,
+    body.light .tool-card div,
+    body.light .tool-card label {
+      color: #000 !important;
+    }
+  </style>
+</head>
+<body class="bg-[#181122] min-h-screen flex flex-col text-[#e5e7eb]">
+
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 bg-[#1a0931]/95 shadow-md border-b border-[#a259f7]">
+    <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 select-none">
+        <span class="w-10 h-10 flex items-center justify-center">
+          <svg width="40" height="40" viewBox="0 0 180 180" fill="none">
+            <g>
+              <path d="M35 55 Q35 30 75 30 H135 Q145 30 145 42 Q145 55 135 55 H75 Q65 55 65 65 Q65 75 75 75 H135" fill="#a259f7"/>
+              <rect x="35" y="80" width="110" height="18" rx="6" fill="#a259f7"/>
+              <path d="M95 98 Q95 135 95 155 Q95 160 100 160 Q105 160 105 155 Q105 135 105 98 Z" fill="#a259f7"/>
+              <path d="M35 125 Q35 110 60 110 Q65 110 65 125 Q65 140 60 140 Q35 140 35 125 Z" fill="#a259f7"/>
+            </g>
+          </svg>
+        </span>
+        <span class="text-2xl font-extrabold text-[#a259f7] drop-shadow">SafaTech Solution</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="px-6 py-2 text-base font-medium text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">Home</a>
+        <a href="about.html" class="px-6 py-2 text-base font-medium text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">About</a>
+        <a href="Tools.html" class="px-6 py-2 text-base font-bold text-[#a259f7] border-b-2 border-[#a259f7] bg-transparent transition">Tools</a>
+        <a href="login.html" class="px-6 py-2 text-base font-medium text-[#a259f7] border border-[#a259f7] rounded hover:bg-[#a259f7] hover:text-white transition">Login</a>
+        <a href="signup.html" class="px-6 py-2 text-base font-semibold text-white rounded bg-[#a259f7] hover:bg-[#8c3ef7] transition shadow">Sign Up</a>
+        <a href="contact.html" class="px-6 py-2 text-base font-semibold text-white rounded bg-[#a259f7] hover:bg-[#8c3ef7] transition shadow">Contact Us</a>
+        <button id="theme-toggle" class="ml-2 px-3 py-2 rounded-md shadow bg-white hover:bg-[#e8e8ef] text-[#a259f7] font-bold flex items-center gap-1 transition border border-[#a259f7] focus:outline-none" title="Toggle dark/light mode">
+          <span id="theme-toggle-icon" aria-hidden="true">🌙</span>
+          <span class="hidden md:inline">Mode</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero with animated stars and quick links -->
+  <section class="w-full py-14 px-6 flex flex-col items-center justify-center text-center fade-in relative" style="overflow:visible;">
+    <h1 class="text-[2.6rem] md:text-[3.2rem] font-extrabold text-white mb-3 tracking-tight leading-tight">
+      <span style="letter-spacing:0.7px;">Discover Powerful<br><span class="text-[#a259f7]">Writing Tools</span></span>
+    </h1>
+    <p class="text-[#b2b2cd] text-lg max-w-2xl mb-4">
+      Enhance your productivity, creativity, and accuracy with our unique suite of writing tools, built for every creator.
+    </p>
+    <div class="flex flex-wrap gap-0.5 justify-center mb-5">
+      <span class="tool-quick" onclick="quickJump('Grammar Checker')">Grammar Checker</span>
+      <span class="tool-quick" onclick="quickJump('Paraphraser')">Paraphraser</span>
+      <span class="tool-quick" onclick="quickJump('Plagiarism Checker')">Plagiarism Checker</span>
+      <span class="tool-quick" onclick="quickJump('Readability Checker')">Readability</span>
+      <span class="tool-quick" onclick="quickJump('Word Counter')">Word Counter</span>
+    </div>
+    <div class="relative w-full flex flex-col items-center">
+      <input id="searchTools" type="text" class="search-bar mt-2" placeholder="Search tools...">
+      <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="#a259f7" stroke-width="2" fill="none"/><path d="M16 16L21 21" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Animated stars BG -->
+    <span class="star" style="top:18px; left:8vw; font-size:1.8rem;">✨</span>
+    <span class="star" style="top:40px; right:9vw; font-size:1.5rem;">★</span>
+    <span class="star" style="bottom:24px; left:5vw; font-size:1.2rem;">✦</span>
+    <span class="star" style="bottom:18px; right:6vw; font-size:1.8rem;">✧</span>
+  </section>
+
+  <!-- Tools grid -->
+  <section class="max-w-7xl mx-auto px-6 pb-20 fade-in relative">
+    <div id="tools-list" class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div class="bg-glow"></div>
+    <div id="no-results" class="hidden text-center text-[#a259f7] font-semibold text-xl mt-12">No tools found.</div>
+  </section>
+
+  <!-- Modal for tool preview -->
+  <div id="modal-bg" class="fixed inset-0 bg-[#181122e6] z-40 flex items-center justify-center hidden" style="backdrop-filter: blur(3px);">
+    <div id="modal-content" class="bg-[#211032] rounded-2xl p-8 max-w-lg w-[95vw] border-2 border-[#a259f7] shadow-2xl text-white relative">
+      <button onclick="closeModal()" class="absolute top-2 right-3 text-xl text-[#a259f7] hover:text-[#e7e1fa] font-bold transition">&times;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // Dark/Light mode logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    function setTheme(theme) {
+      if (theme === 'light') {
+        document.body.classList.add('light');
+        themeToggleIcon.textContent = '🌞';
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.body.classList.remove('light');
+        themeToggleIcon.textContent = '🌙';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+    // Initial theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) setTheme(savedTheme);
+    else setTheme(prefersDark ? 'dark' : 'light');
+    themeToggleBtn.onclick = () => {
+      setTheme(document.body.classList.contains('light') ? 'dark' : 'light');
+    };
+
+    // Tool data (add/edit here)
+    const tools = [
+      {
+        name: "Grammar Checker",
+        desc: "Instantly check and correct grammar mistakes in your writing for flawless communication.",
+        link: "client/tools/grammar-checker.html",
+        icon: `<svg class="tool-icon" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#a259f7"/><path d="M11 17l4 4 6-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        badge: "Popular",
+        preview: "Detects advanced grammar mistakes, offers real-time suggestions and explanations for every correction, and adapts to your writing style.",
+        stats: { uses: 3412, rating: 4.8, updated: "2025-08-01" }
+      },
+      {
+        name: "Paraphraser",
+        desc: "Rewrite sentences and paragraphs for unique, clear, and engaging content.",
+        link: "client/tools/paraphraser.html",
+        icon: `<svg class="tool-icon" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#a259f7"/><path d="M10 18h8v4M22 14V8H8v6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        badge: "AI Enhanced",
+        preview: "Offers multiple paraphrasing styles (fluent, creative, formal), rephrases at sentence or paragraph level, and keeps your meaning intact.",
+        stats: { uses: 2887, rating: 4.7, updated: "2025-07-25" }
+      },
+      {
+        name: "Plagiarism Checker",
+        desc: "Detect duplicate content and ensure your work is original and authentic.",
+        link: "client/tools/plagiarism-checker.html",
+        icon: `<svg class="tool-icon" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#a259f7"/><circle cx="16" cy="16" r="7" stroke="white" stroke-width="2"/><path d="M19 19l3 3" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`,
+        badge: "New",
+        preview: "Scans billions of web sources, highlights matched text with sources, and gives you an originality score instantly.",
+        stats: { uses: 1984, rating: 4.6, updated: "2025-08-10" }
+      },
+      {
+        name: "Readability Checker",
+        desc: "Analyze your text for readability and get tips to make your writing clearer.",
+        link: "client/tools/readability-checker.html",
+        icon: `<svg class="tool-icon" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#a259f7"/><path d="M12 12h8M12 16h8M12 20h8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`,
+        badge: "",
+        preview: "Checks Flesch-Kincaid, Gunning Fog, and other readability scores, then recommends edits to boost clarity and engagement.",
+        stats: { uses: 1766, rating: 4.5, updated: "2025-07-22" }
+      },
+      {
+        name: "Word Counter",
+        desc: "Count words, characters, and sentences in your text instantly and accurately.",
+        link: "client/tools/word-counter.html",
+        icon: `<svg class="tool-icon" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#a259f7"/><text x="16" y="22" text-anchor="middle" fill="white" font-size="15" font-family="Inter" font-weight="bold">123</text></svg>`,
+        badge: "",
+        preview: "Live word, character, and sentence counts. Useful for meeting word limits and tracking your writing output.",
+        stats: { uses: 2260, rating: 4.4, updated: "2025-08-05" }
+      }
+    ];
+
+    function formatNumber(n) {
+      if (n > 999) return (n/1000).toFixed(1).replace('.0','') + "k";
+      return n;
+    }
+
+    // Use goToTool for Try Now
+    function goToTool(toolUrl) {
+      if (!localStorage.getItem('token')) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(toolUrl);
+      } else {
+        window.location.href = toolUrl;
+      }
+    }
+
+    // Render tool cards
+    const list = document.getElementById('tools-list');
+    function renderTools(filter = "") {
+      list.innerHTML = "";
+      let showCount = 0;
+      tools.forEach((tool, i) => {
+        if (filter && !tool.name.toLowerCase().includes(filter) && !tool.desc.toLowerCase().includes(filter)) return;
+        showCount++;
+        const card = document.createElement('div');
+        card.className = "tool-card bg-gradient-to-br from-[#191728] to-[#1a191a] rounded-2xl shadow-lg border border-[#a259f7]/25 p-8 flex flex-col items-center text-center fade-in";
+        card.style.animationDelay = `${i * 0.07 + 0.15}s`;
+        card.id = ("tool-" + tool.name.toLowerCase().replace(/\s+/g,"-"));
+        card.innerHTML = `
+          ${tool.badge ? `<div class="tool-badge">${tool.badge}</div>` : ""}
+          <div class="mb-4" style="z-index:1">${tool.icon}</div>
+          <h3 class="text-xl font-bold text-white mb-2" style="z-index:1">${tool.name}</h3>
+          <p class="text-[#b2b2cd] text-base mb-6" style="z-index:1">${tool.desc}</p>
+          <div class="flex gap-2 justify-center w-full mb-2 z-10">
+            <button 
+              class="inline-block px-5 py-2 rounded-full text-white font-semibold bg-[#a259f7] hover:bg-[#8c3ef7] transition shadow-lg"
+              style="letter-spacing:.5px"
+              onclick="goToTool('${tool.link}')"
+            >Try Now</button>
+            <button class="inline-block px-5 py-2 rounded-full text-[#a259f7] font-semibold bg-[#fff1] hover:bg-[#a259f7]/25 border border-[#a259f7] transition shadow-lg" onclick="openModal(${i})" style="letter-spacing:.5px">Preview</button>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-stat" title="Usage">
+              <svg fill="none" stroke="#a259f7" stroke-width="2" viewBox="0 0 20 20"><path d="M10 3v14M3 10h14"/></svg>
+              ${formatNumber(tool.stats.uses)} uses
+            </span>
+            <span class="tool-stat" title="User rating">
+              <svg fill="#a259f7" viewBox="0 0 20 20"><polygon points="10,2 12.4,7.7 18.6,8 13.8,12.2 15.1,18.2 10,15 4.9,18.2 6.2,12.2 1.4,8 7.6,7.7" /></svg>
+              ${tool.stats.rating}★
+            </span>
+            <span class="tool-stat" title="Last updated">
+              <svg stroke="#a259f7" fill="none" viewBox="0 0 20 20" stroke-width="2"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              ${tool.stats.updated}
+            </span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+      document.getElementById("no-results").style.display = showCount === 0 ? "block" : "none";
+    }
+    renderTools();
+
+    // Search functionality
+    document.getElementById('searchTools').addEventListener('input', function(e) {
+      renderTools(e.target.value.trim().toLowerCase());
+    });
+
+    // Quick jump to tool
+    window.quickJump = (name) => {
+      const el = document.getElementById("tool-" + name.toLowerCase().replace(/\s+/g,"-"));
+      if (el) {
+        el.scrollIntoView({behavior:"smooth", block:"center"});
+        el.classList.add("ring-4","ring-[#a259f7]","scale-105");
+        setTimeout(()=>el.classList.remove("ring-4","ring-[#a259f7]","scale-105"),800);
+      }
+    };
+
+    // Modal logic
+    window.openModal = (idx) => {
+      document.getElementById('modal-bg').style.display = "flex";
+      const tool = tools[idx];
+      document.getElementById('modal-body').innerHTML = `
+        <div class="flex items-center gap-3 mb-3">${tool.icon}<h2 class="text-2xl font-extrabold">${tool.name}</h2></div>
+        <div class="text-[#d1c8ec] mb-4">${tool.desc}</div>
+        <div class="mb-4"><span class="font-bold text-[#a259f7]">How it helps:</span> ${tool.preview ? tool.preview : ''}</div>
+        <div class="tool-footer mb-3">
+            <span class="tool-stat" title="Usage">
+              <svg fill="none" stroke="#a259f7" stroke-width="2" viewBox="0 0 20 20"><path d="M10 3v14M3 10h14"/></svg>
+              ${formatNumber(tool.stats.uses)} uses
+            </span>
+            <span class="tool-stat" title="User rating">
+              <svg fill="#a259f7" viewBox="0 0 20 20"><polygon points="10,2 12.4,7.7 18.6,8 13.8,12.2 15.1,18.2 10,15 4.9,18.2 6.2,12.2 1.4,8 7.6,7.7" /></svg>
+              ${tool.stats.rating}★
+            </span>
+            <span class="tool-stat" title="Last updated">
+              <svg stroke="#a259f7" fill="none" viewBox="0 0 20 20" stroke-width="2"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              ${tool.stats.updated}
+            </span>
+        </div>
+        <button class="inline-block px-6 py-2 rounded-full text-white font-semibold bg-[#a259f7] hover:bg-[#8c3ef7] transition shadow-lg" onclick="goToTool('${tool.link}')">Go to Tool</button>
+      `;
+    };
+    window.closeModal = () => {
+      document.getElementById('modal-bg').style.display = "none";
+    };
+    document.getElementById('modal-bg').addEventListener('click', function(e){
+      if (e.target === this) closeModal();
+    });
+
+    // Animate fade-in
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach((el, i) => {
+        el.style.opacity = 0;
+        setTimeout(() => el.style.opacity = 1, 300 + i * 110);
+      });
+    });
+  </script>
+</body>
+</html>

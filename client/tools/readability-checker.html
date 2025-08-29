@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Readability Checker - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="../css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0936 0%, #2a1152 60%, #1b1129 100%);
+      color: #f1eaff;
+      overflow-x: hidden;
+    }
+    .sidebar {
+      background: #3a2171;
+      min-width: 90px;
+      width: 90px;
+      max-width: 90px;
+      height: 98vh;
+      border-radius: 2.8rem;
+      margin: 18px 0 18px 18px;
+      position: fixed;
+      top: 0; left: 0;
+      box-shadow: 0 8px 44px #19113370, 2px 0 38px #a259f726;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 30;
+      transition: width 0.36s cubic-bezier(.7,.32,.23,1.1);
+    }
+    .sidebar:hover {
+      width: 220px;
+      min-width: 220px;
+      max-width: 220px;
+      box-shadow: 0 8px 58px #a259f73c;
+    }
+    .sidebar .logo {
+      margin: 34px 0 26px 0;
+      text-align: center;
+      width: 100%;
+    }
+    .sidebar .logo span {
+      color: #fff;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      display: block;
+    }
+    .sidebar .logo .tools {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #a259f7;
+      letter-spacing: 1px;
+      margin-top: -2px;
+      opacity: 0.86;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 92%;
+      margin: 9px 0;
+      padding: 14px 18px;
+      border-radius: 1.55rem;
+      color: #c2b6e7;
+      font-size: 1.13rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      cursor: pointer;
+      position: relative;
+    }
+    .sidebar-link.active, .sidebar-link[aria-current="page"] {
+      background: #fff;
+      color: #a259f7;
+      font-weight: 800;
+      box-shadow: 0 2px 13px #a259f74c;
+    }
+    .sidebar-link:hover:not(.active):not([aria-current="page"]) {
+      background: #a259f7;
+      color: #fff;
+    }
+    .sidebar-link span.label {
+      opacity: 0;
+      transition: opacity .2s;
+      white-space: nowrap;
+      pointer-events: none;
+      font-size: 1.13rem;
+      font-weight: 600;
+    }
+    .sidebar:hover .sidebar-link span.label {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .sidebar-link .icon {
+      width: 34px; height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      border-radius: 1.2rem;
+      background: #fff;
+      color: #a259f7;
+      box-shadow: 0 1.5px 7px #a259f72c;
+      transition: background 0.17s, color 0.17s;
+    }
+    .sidebar-link.active .icon,
+    .sidebar-link[aria-current="page"] .icon {
+      background: #a259f7;
+      color: #fff;
+    }
+    .sidebar-link:hover .icon {
+      background: #fff;
+      color: #a259f7;
+    }
+    .sidebar .sidebar-footer {
+      margin-top: auto;
+      margin-bottom: 30px;
+      width: 92%;
+      text-align: left;
+    }
+    .sidebar .profile-box {
+      background: #fff;
+      color: #a259f7;
+      border-radius: 1.25rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 2px 8px #a259f71a;
+      font-size: 1.02rem;
+      font-weight: 600;
+      transition: box-shadow .22s;
+    }
+    .sidebar .profile-box .profile-avatar {
+      background: #a259f7;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .sidebar .profile-box .profile-meta {
+      color: #a259f7;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .sidebar .logout-btn {
+      background: linear-gradient(90deg, #a259f7 0%, #6c67f7 100%);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.6rem;
+      font-weight: 800;
+      border-radius: 1.1rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      box-shadow: 0 1.5px 8px #a259f72c;
+      font-size: 1.11rem;
+      transition: background .17s, color .14s;
+    }
+    .sidebar .logout-btn:hover {
+      background: linear-gradient(90deg, #6c67f7 0%, #a259f7 100%);
+      color: #fff;
+    }
+    .main-content {
+      margin-left: 130px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .readability-container {
+      background: linear-gradient(135deg, #24143c 60%, #1c1030 100%);
+      border-radius: 2.5rem;
+      box-shadow: 0 16px 54px #0005, 0 2px 30px #a259f73a;
+      padding: 2.5rem 2.3rem 2.2rem 2.3rem;
+      width: 100%;
+      max-width: 750px;
+      min-height: 70vh;
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .readability-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.2rem;
+      text-shadow: 0 3px 18px #a259f732;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .readability-subtitle {
+      font-size: 1.14rem;
+      color: #bfa6f7;
+      font-weight: 500;
+      margin-bottom: 1.3rem;
+      text-shadow: 0 1px 8px #a259f71a;
+    }
+    .input-label {
+      color: #a259f7;
+      font-size: 1.13rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      margin-top: 1.2rem;
+      letter-spacing: 1px;
+    }
+    #read-textarea {
+      background: #2d1750;
+      color: #f6f6ff;
+      border: 1.8px solid #a259f738;
+      border-radius: 1.2rem;
+      padding: 1.25rem 1.2rem;
+      font-size: 1.15rem;
+      min-height: 170px;
+      resize: vertical;
+      width: 100%;
+      margin-bottom: 1.1rem;
+      transition: border 0.19s, box-shadow 0.16s;
+      box-shadow: 0 1.5px 8px #a259f70c;
+    }
+    #read-textarea:focus {
+      border: 2.7px solid #a259f7;
+      outline: none;
+      background: #27194a;
+      color: #fff;
+    }
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.7rem;
+    }
+    .btn {
+      border: none;
+      border-radius: 0.9rem;
+      padding: 0.72rem 1.7rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg,#a259f7 0%,#bbdcff 100%);
+      color: #fff;
+      transition: background .16s, color .16s, box-shadow .16s;
+      box-shadow: 0 2px 12px #a259f726;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+    }
+    .btn:hover, .btn:focus {
+      background: linear-gradient(90deg,#bbdcff 0%,#a259f7 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px #a259f72e;
+    }
+    .btn.reset {
+      background: linear-gradient(90deg,#eee 0%, #a259f7 100%);
+      color: #a259f7;
+      border: 1.4px solid #a259f7;
+    }
+    .btn.reset:hover, .btn.reset:focus {
+      background: linear-gradient(90deg,#a259f7 0%, #eee 100%);
+      color: #fff;
+    }
+    .file-upload-container {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      margin-bottom: 1.1em;
+      margin-top: 0.7em;
+    }
+    .difficult-words-box {
+  background: #331c52;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.1rem 0.4rem 1.1rem;
+  margin-bottom: 0.8rem;
+  color: #ffd700;
+  font-size: 1.02rem;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.difficult-words-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55em 1.1em;
+  margin: .2em 0 .2em 0;
+}
+
+.difficult-word {
+  background: #1f22ae1a;
+  color: #fdf9ff;
+  border-radius: 0.4em;
+  padding: 0.15em 0.7em;
+  font-size: 1em;
+  font-weight: 600;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  border-bottom: 1px dashed #181817;
+  margin-bottom: 0.25em;
+}
+    /* --- Enhanced Result Panel --- */
+    .result-panel {
+      background: #2d174b;
+      color: #fff;
+      border-radius: 1.1rem;
+      padding: 1.35rem 1.15rem 1.15rem 1.15rem;
+      margin-top: 1.3rem;
+      margin-bottom: 0.7rem;
+      border: 3px solid #a259f7;
+      font-size: 1.11rem;
+      line-height: 1.65;
+      word-break: break-word;
+      display: none;
+      transition: border-color 0.3s;
+    }
+    .score-stat {
+      font-size: 2.3rem;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+      transition: color 0.3s;
+    }
+    .metric-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      margin: 0.5rem 0 0.5rem 0;
+    }
+    .metric-box {
+      background: #331c52;
+      border-radius: 0.7rem;
+      padding: 0.45rem 1.1rem;
+      font-size: 1.04rem;
+      font-weight: 700;
+      color: #bbdcff;
+      margin-bottom: 0.2rem;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 20px;
+      background: #422466;
+      border-radius: 1rem;
+      margin: 0.7rem 0 0.7rem 0;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 1rem;
+      transition: width 0.5s, background 0.3s;
+      background: #27ae60;
+      width: 0%;
+    }
+    /* Color schemes */
+    .result-easy {
+      border-color: #2ecc40 !important;
+    }
+    .result-medium {
+      border-color: #ffd700 !important;
+    }
+    .result-hard {
+      border-color: #ff4136 !important;
+    }
+    .score-easy {
+      color: #2ecc40 !important;
+    }
+    .score-medium {
+      color: #ffd700 !important;
+    }
+    .score-hard {
+      color: #ff4136 !important;
+    }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; }
+      .sidebar { display: none; }
+      .readability-container { border-radius: 0; margin:0;padding:1.2rem 2vw; min-height:90vh;}
+    }
+  </style>
+</head>
+<body>
+ <!-- Sidebar and main content unchanged ... -->
+  <aside class="sidebar">
+    <div class="logo flex flex-col items-center">
+      <span>SafaTech</span>
+      <span class="tools">Tools</span>
+    </div>
+    <a href="word-counter.html" class="sidebar-link">
+      <div class="icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M8 12h8"/></svg>
+      </div>
+      <span class="label">Word Counter</span>
+    </a>
+    <a href="grammar-checker.html" class="sidebar-link">
+      <div class="icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+      </div>
+      <span class="label">Grammar Checker</span>
+    </a>
+    <a href="paraphraser.html" class="sidebar-link">
+      <div class="icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="6"/><path d="M9 9h6v6H9z"/></svg>
+      </div>
+      <span class="label">Paraphraser</span>
+    </a>
+    <a href="plagiarism-checker.html" class="sidebar-link">
+      <div class="icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+      </div>
+      <span class="label">Plagiarism Checker</span>
+    </a>
+    <a href="readability-checker.html" class="sidebar-link active" aria-current="page">
+      <div class="icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="12" width="14" height="2.5" rx="1" fill="currentColor"/><rect x="9" y="18" width="10" height="2.5" rx="1" fill="currentColor"/><rect x="9" y="24" width="6" height="2.5" rx="1" fill="currentColor"/></svg>
+      </div>
+      <span class="label">Readability Checker</span>
+    </a>
+    <div class="sidebar-footer">
+      <div class="profile-box">
+        <div class="profile-avatar" id="profile-avatar">I</div>
+        <div>
+          <div class="font-bold" id="profile-name" style="color:#a259f7">ibrahim usman</div>
+          <div class="profile-meta" id="profile-email">ibrahimusman4666@gmail.com</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="readability-container">
+      <div class="readability-title">
+        <svg width="34" height="34" fill="none" stroke="#a259f7" stroke-width="2.5" viewBox="0 0 32 32">
+          <rect x="9" y="12" width="14" height="2.5" rx="1" fill="#fff"/>
+          <rect x="9" y="18" width="10" height="2.5" rx="1" fill="#fff"/>
+          <rect x="9" y="24" width="6" height="2.5" rx="1" fill="#fff"/>
+        </svg>
+        Readability Checker
+      </div>
+      <div class="readability-subtitle">
+        Instantly check how easy your writing is to read. Paste, upload, or type your content to get a reading score and grade level.
+      </div>
+      <div class="file-upload-container">
+        <input type="file" id="file-upload" accept=".txt,.docx,.pdf" />
+        <span id="uploaded-file-name" style="color:#a259f7;font-weight:600;"></span>
+      </div>
+      <label for="read-textarea" class="input-label">Your Text</label>
+      <textarea id="read-textarea" rows="8" placeholder="Paste or type your text here to check readability..." aria-label="Text to check readability for"></textarea>
+      <div class="btn-row">
+        <button id="reset-btn" type="button" class="btn reset" title="Clear text">
+          Reset
+        </button>
+        <button id="check-btn" type="button" class="btn" title="Check readability">
+          Check Readability
+        </button>
+      </div>
+      <div id="error-message" class="error-msg" style="color:#ff4d58;font-weight:700;display:none;margin-top:8px;"></div>
+      <div id="difficult-words-panel" class="difficult-words-box" style="display:none;">
+        <span>Difficult words:</span>
+        <div class="difficult-words-list" id="difficult-words-list"></div>
+      </div>
+      <div id="complex-sentences-panel" style="display:none; margin-bottom:0.8rem;">
+        <span style="color:#ff4136;font-weight:700;">Complex sentences:</span>
+        <ul id="complex-sentences-list" style="margin:0.3em 0 0.1em 0.8em; color:#fff; font-size:1.03em;"></ul>
+      </div>
+      <div id="result-panel" class="result-panel">
+        <div class="score-stat" id="score-stat"></div>
+        <div class="progress-bar-bg">
+          <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box" id="gunningfog-stat"></div>
+          <div class="metric-box" id="colemanliau-stat"></div>
+          <div class="metric-box" id="smog-stat"></div>
+          <div class="metric-box" id="ari-stat"></div>
+        </div>
+        <div class="grade-stat" id="grade-stat"></div>
+        <div class="level-stat" id="level-stat"></div>
+        <div class="suggest-stat" id="suggest-stat"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // PROFILE
+    const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+    document.getElementById('profile-name').textContent = userInfo.name || "Unknown User";
+    document.getElementById('profile-email').textContent = userInfo.email || "unknown@example.com";
+    document.getElementById('profile-avatar').textContent = userInfo.name && userInfo.name.length ? userInfo.name[0].toUpperCase() : "U";
+    document.getElementById('logout-btn').onclick = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = "../login.html";
+    };
+
+    // Elements
+    const readTextarea = document.getElementById('read-textarea');
+    const resetBtn = document.getElementById('reset-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const errorMsg = document.getElementById('error-message');
+    const resultPanel = document.getElementById('result-panel');
+    const scoreStat = document.getElementById('score-stat');
+    const gradeStat = document.getElementById('grade-stat');
+    const levelStat = document.getElementById('level-stat');
+    const suggestStat = document.getElementById('suggest-stat');
+    const fileInput = document.getElementById('file-upload');
+    const uploadedFileName = document.getElementById('uploaded-file-name');
+    // New metric elements
+    const gunningFogStat = document.getElementById('gunningfog-stat');
+    const colemanLiauStat = document.getElementById('colemanliau-stat');
+    const smogStat = document.getElementById('smog-stat');
+    const ariStat = document.getElementById('ari-stat');
+    const progressBar = document.getElementById('progress-bar');
+    // Difficult words and complex sentences panel
+    const difficultWordsPanel = document.getElementById('difficult-words-panel');
+    const difficultWordsList = document.getElementById('difficult-words-list');
+    const complexSentencesPanel = document.getElementById('complex-sentences-panel');
+    const complexSentencesList = document.getElementById('complex-sentences-list');
+
+    const API_URL = "http://localhost:5000/api/tools/readability";
+
+    // Helper: Level to color class mapping
+    function getColorClass(level) {
+      if (!level) return 'result-medium';
+      const easy = ["Very Easy", "Easy"];
+      const medium = ["Standard", "Fairly Difficult", "Fairly Easy"];
+      const hard = ["Difficult", "Very Confusing", "Confusing"];
+      if (easy.includes(level)) return 'result-easy';
+      if (medium.includes(level)) return 'result-medium';
+      return 'result-hard';
+    }
+    function getScoreColorClass(level) {
+      if (!level) return 'score-medium';
+      const easy = ["Very Easy", "Easy"];
+      const medium = ["Standard", "Fairly Difficult", "Fairly Easy"];
+      const hard = ["Difficult", "Very Confusing", "Confusing"];
+      if (easy.includes(level)) return 'score-easy';
+      if (medium.includes(level)) return 'score-medium';
+      return 'score-hard';
+    }
+    function getProgressBarColor(level) {
+      if (!level) return '#ffd700';
+      const easy = ["Very Easy", "Easy"];
+      const medium = ["Standard", "Fairly Difficult", "Fairly Easy"];
+      const hard = ["Difficult", "Very Confusing", "Confusing"];
+      if (easy.includes(level)) return '#2ecc40';
+      if (medium.includes(level)) return '#ffd700';
+      return '#ff4136';
+    }
+
+    // Reset functionality
+    resetBtn.addEventListener('click', () => {
+      readTextarea.value = '';
+      resultPanel.style.display = 'none';
+      errorMsg.style.display = 'none';
+      uploadedFileName.textContent = '';
+      difficultWordsPanel.style.display = 'none';
+      difficultWordsList.innerHTML = '';
+      complexSentencesPanel.style.display = 'none';
+      complexSentencesList.innerHTML = '';
+      readTextarea.focus();
+      fileInput.value = '';
+    });
+
+    // File Upload Handler (TXT, DOCX, PDF, always POST to backend)
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      uploadedFileName.textContent = file.name;
+      errorMsg.style.display = 'none';
+      resultPanel.style.display = 'none';
+      difficultWordsPanel.style.display = 'none';
+      complexSentencesPanel.style.display = 'none';
+      const formData = new FormData();
+      formData.append('file', file);
+      fetch(API_URL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          errorMsg.textContent = data.error;
+          errorMsg.style.display = '';
+          resultPanel.style.display = 'none';
+          difficultWordsPanel.style.display = 'none';
+          complexSentencesPanel.style.display = 'none';
+        } else {
+          showResult(data);
+        }
+      }).catch(() => {
+        errorMsg.textContent = "Could not extract text from uploaded file.";
+        errorMsg.style.display = '';
+        resultPanel.style.display = 'none';
+        difficultWordsPanel.style.display = 'none';
+        complexSentencesPanel.style.display = 'none';
+      });
+    });
+
+    // Readability Check Button
+    checkBtn.addEventListener('click', async () => {
+      errorMsg.style.display = 'none';
+      resultPanel.style.display = 'none';
+      difficultWordsPanel.style.display = 'none';
+      complexSentencesPanel.style.display = 'none';
+      let text = readTextarea.value.trim();
+      if (!text) {
+        errorMsg.textContent = "Please enter some text to check.";
+        errorMsg.style.display = '';
+        return;
+      }
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          errorMsg.textContent = data.error;
+          errorMsg.style.display = '';
+          resultPanel.style.display = 'none';
+          difficultWordsPanel.style.display = 'none';
+          complexSentencesPanel.style.display = 'none';
+        } else {
+          showResult(data);
+        }
+      })
+      .catch(() => {
+        errorMsg.textContent = "Failed to check readability.";
+        errorMsg.style.display = '';
+        resultPanel.style.display = 'none';
+        difficultWordsPanel.style.display = 'none';
+        complexSentencesPanel.style.display = 'none';
+      });
+    });
+
+    /**
+     * Highlight in textarea: This is a tricky UI challenge.
+     * Instead, we'll highlight in a preview below for both difficult words and complex sentences.
+     * Optionally, you may build a custom textarea overlay for a true inline highlight.
+     */
+    function showResult(data) {
+      // Remove any previous color classes
+      resultPanel.classList.remove('result-easy', 'result-medium', 'result-hard');
+      scoreStat.classList.remove('score-easy', 'score-medium', 'score-hard');
+      // Set color classes based on level
+      const colorClass = getColorClass(data.level);
+      resultPanel.classList.add(colorClass);
+      scoreStat.classList.add(getScoreColorClass(data.level));
+      // Flesch Reading Ease
+      scoreStat.textContent = `Flesch Reading Ease: ${typeof data.score === 'number' ? data.score.toFixed(1) : "0"}`;
+      // Progress bar
+      let score = typeof data.score === 'number' ? data.score : 0;
+      let percent = Math.max(0, Math.min(100, score)); // Clamp 0-100
+      progressBar.style.width = percent + "%";
+      progressBar.style.background = getProgressBarColor(data.level);
+      // Readability Metrics
+      gunningFogStat.textContent = (typeof data.gunningFog === 'number') ? `Gunning Fog: ${data.gunningFog.toFixed(1)}` : '';
+      colemanLiauStat.textContent = (typeof data.colemanLiau === 'number') ? `Coleman-Liau: ${data.colemanLiau.toFixed(1)}` : '';
+      smogStat.textContent = (typeof data.smog === 'number') ? `SMOG: ${data.smog.toFixed(1)}` : '';
+      ariStat.textContent = (typeof data.ari === 'number') ? `ARI: ${data.ari.toFixed(1)}` : '';
+      gunningFogStat.style.display = (typeof data.gunningFog === 'number') ? '' : 'none';
+      colemanLiauStat.style.display = (typeof data.colemanLiau === 'number') ? '' : 'none';
+      smogStat.style.display = (typeof data.smog === 'number') ? '' : 'none';
+      ariStat.style.display = (typeof data.ari === 'number') ? '' : 'none';
+      // Grade and level
+      gradeStat.textContent = data.grade ? `Grade: ${data.grade}` : '';
+      levelStat.textContent = data.level || '';
+      // Suggestions
+      suggestStat.textContent = data.suggestions && data.suggestions.length
+        ? "Tips: " + data.suggestions.join(", ")
+        : '';
+      resultPanel.style.display = 'block';
+
+    // Difficult Words
+if (Array.isArray(data.difficultWords) && data.difficultWords.length > 0) {
+  difficultWordsList.innerHTML = '';
+  data.difficultWords.forEach(dw => {
+    const w = document.createElement('span');
+    w.className = 'difficult-word';
+    w.textContent = dw.word;
+    if (dw.definition) w.setAttribute('data-def', dw.definition);
+    difficultWordsList.appendChild(w);
+  });
+  difficultWordsPanel.style.display = '';
+} else {
+  difficultWordsPanel.style.display = 'none';
+  difficultWordsList.innerHTML = '';
+}
+
+      // Complex Sentences
+      if (Array.isArray(data.complexSentences) && data.complexSentences.length > 0) {
+        complexSentencesList.innerHTML = '';
+        data.complexSentences.forEach(cs => {
+          const li = document.createElement('li');
+          li.className = 'highlight-sentence';
+          li.textContent = cs.text;
+          if (typeof cs.score === 'number') {
+            const badge = document.createElement('span');
+            badge.style.cssText = "display:inline-block;margin-left:0.7em;color:#ffd700;font-size:0.98em;font-weight:700;";
+            badge.textContent = `Score: ${cs.score.toFixed(1)}`;
+            li.appendChild(badge);
+          }
+          complexSentencesList.appendChild(li);
+        });
+        complexSentencesPanel.style.display = '';
+      } else {
+        complexSentencesPanel.style.display = 'none';
+        complexSentencesList.innerHTML = '';
+      }
+    }
+  </script>
+</body>
+</html>

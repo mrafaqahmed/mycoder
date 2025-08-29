@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Blog - SafaTech Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Swiper.js CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Explore the SafaTech Solutions blog for expert insights on web development, mobile apps, digital marketing, SEO, content writing, graphic design, and multimedia. Learn from industry leaders and boost your digital strategy.">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+    .fade-in { animation: fadeInUp 1s ease forwards; opacity: 0; }
+    @keyframes fadeInUp {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .hero-hex-bg {
+      background-color: #101014;
+      background-image:
+        linear-gradient(180deg, rgba(15,12,20,0.80) 0%, rgba(20,16,29,0.96) 100%),
+        url('data:image/svg+xml;utf8,<svg width="160" height="138" viewBox="0 0 160 138" fill="none" xmlns="http://www.w3.org/2000/svg"><g><polygon points="80,3 157,43 157,122 80,162 3,122 3,43" fill="%2325242a"/><polygon points="80,23 137,55 137,110 80,142 23,110 23,55" fill="%23141216"/><polygon points="80,43 117,66 117,99 80,122 43,99 43,66" fill="%231f1d23"/><polygon points="80,58 102,71 102,93 80,106 58,93 58,71" fill="%23302d39"/></g></svg>');
+      background-size: 160px 138px;
+      background-repeat: repeat;
+      background-position: center;
+      box-shadow: 0 12px 64px #000b inset;
+    }
+    .purple-dot {
+      box-shadow: 0 0 12px 3px #a259f7bb;
+    }
+    /* Swiper 3D Carousel Styles */
+    .swiper {
+      width: 100%;
+      padding-top: 44px;
+      padding-bottom: 66px;
+      min-height: 470px;
+    }
+    .swiper-slide {
+      background: linear-gradient(135deg, #231142 60%, #a259f7 100%);
+      border-radius: 30px;
+      box-shadow: 0 12px 44px #a259f748, 0 1px 8px #0007;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      min-width: 330px;
+      max-width: 390px;
+      height: 470px;
+      overflow: hidden;
+      cursor: grab;
+      --shine-angle: 120deg;
+      --shine-opacity: 0.16;
+      background-image:
+        linear-gradient(var(--shine-angle), rgba(255,255,255,var(--shine-opacity)) 0%, rgba(255,255,255,0) 60%);
+      transition:
+        box-shadow .24s,
+        transform 0.5s cubic-bezier(.34,1.56,.64,1),
+        filter 0.44s cubic-bezier(.34,1.56,.64,1);
+      will-change: transform, filter, box-shadow;
+    }
+    .swiper-slide:hover {
+      transform: scale(1.065) rotateY(3deg) translateY(-9px);
+      box-shadow: 0 32px 94px #a259f7ee, 0 2px 14px #0007;
+      --shine-opacity: 0.25;
+      --shine-angle: 90deg;
+      filter: brightness(1.11) saturate(1.13) blur(0.5px);
+    }
+    .swiper-slide .carousel-image {
+      width: 100%;
+      min-height: 170px;
+      max-height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+      transition: transform .7s cubic-bezier(.34,1.56,.64,1), filter .4s;
+      box-shadow: 0 4px 18px #000c;
+      filter: brightness(1.06) grayscale(0.12);
+    }
+    .swiper-slide:hover .carousel-image {
+      transform: scale(1.12) rotateZ(-1.5deg);
+      filter: brightness(1.19) saturate(1.17);
+    }
+    .swiper-slide-content {
+      padding: 1.3rem 1.5rem 1.8rem 1.5rem;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(0deg, #1a062a 95%, #0000 100%);
+      opacity: 0.97;
+      animation: contentFadeIn 1.1s cubic-bezier(.42,0,.58,1) 0.22s both;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes contentFadeIn {
+      from { opacity: 0; transform: translateY(18px);}
+      to { opacity: 0.97; transform: translateY(0);}
+    }
+    .carousel-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.36rem;
+      text-shadow: 0 2px 12px #0007;
+      letter-spacing: .01em;
+      min-height: 39px;
+      line-height: 1.2;
+      margin-top: 0.1rem;
+    }
+    .carousel-meta {
+      font-size: 1.08rem;
+      color: #b998ff;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 1px 6px #0009;
+    }
+    .carousel-desc {
+      font-size: 1.09rem;
+      color: #e5e7eb;
+      opacity: 0.94;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      min-height: 52px;
+      letter-spacing: 0.01em;
+    }
+    .carousel-tags {
+      margin-bottom: 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em;
+    }
+    .carousel-tag {
+      background: #a259f726;
+      color: #a259f7;
+      font-size: 0.93rem;
+      border-radius: 10px;
+      padding: 0.19em 0.79em;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-right: 0.2em;
+      margin-bottom: 0.1em;
+      display: inline-block;
+      transition: background .16s, color .16s;
+      box-shadow: 0 1px 4px #a259f72c;
+    }
+    .carousel-tag:hover {
+      background: #a259f7;
+      color: #fff;
+    }
+    .swiper-slide .read-more {
+      color: #a259f7;
+      margin-top: 0.2rem;
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 1.09rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.1em;
+      transition: color .14s, text-shadow .2s;
+      text-shadow: 0 2px 5px #0006;
+      letter-spacing: 0.02em;
+    }
+    .swiper-slide .read-more:hover {
+      color: #fff;
+      text-decoration: underline;
+      text-shadow: 0 2px 9px #a259f7cc;
+    }
+    .swiper-slide .read-more svg {
+      width: 1.3em;
+      height: 1.3em;
+    }
+    .swiper-slide-active {
+      box-shadow: 0 32px 110px #a259f7f0, 0 8px 32px #0009;
+      background: linear-gradient(135deg, #322163 40%, #a259f7 100%);
+      backdrop-filter: blur(3.5px) brightness(1.16);
+      border: 3px solid #a259f7cc;
+      filter: brightness(1.11) saturate(1.15) blur(.2px);
+    }
+    .swiper-pagination-bullet {
+      background: #a259f7;
+      opacity: 0.7;
+    }
+    .swiper-pagination-bullet-active {
+      opacity: 1;
+      transform: scale(1.25);
+      box-shadow: 0 2px 7px #a259f7aa;
+    }
+    .swiper-button-next, .swiper-button-prev {
+      color: #a259f7;
+      filter: drop-shadow(0 1px 9px #a259f7bb);
+      transition: color .18s;
+    }
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+      color: #fff;
+    }
+    .carousel-bg-dot {
+      position: absolute;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle,#a259f7 75%,#fff0 100%);
+      opacity: 0.12;
+      filter: blur(2.5px);
+      animation: floatDot 6s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    .carousel-bg-dot.dot2 { left: 10%; top: 60%; width: 20px; height: 20px; animation-delay: 2.4s;}
+    .carousel-bg-dot.dot3 { left: 80%; top: 35%; width: 24px; height: 24px; animation-delay: 4s;}
+    .carousel-bg-dot.dot4 { left: 60%; top: 82%; width: 26px; height: 26px; animation-delay: 1.5s;}
+    @keyframes floatDot {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-24px) scale(1.1);}
+    }
+    /* Reflection effect under active card */
+    .swiper-slide-active::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 10%;
+      width: 80%;
+      bottom: -35px;
+      height: 32px;
+      background: linear-gradient(180deg, #a259f7a1 0%, #fff0 100%);
+      border-radius: 99em;
+      opacity: 0.18;
+      filter: blur(10px);
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Glow on swipe */
+    .swiper-slide-active {
+      box-shadow: 0 0 0 6px #a259f7aa, 0 38px 110px #a259f7f0, 0 8px 32px #0009;
+      animation: glowPulse 2.4s infinite alternate;
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 0 5px #a259f7aa, 0 38px 110px #a259f7f0, 0 8px 32px #0009; }
+      100% { box-shadow: 0 0 0 12px #a259f73c, 0 48px 130px #a259f7f0, 0 8px 32px #0009; }
+    }
+
+    /* --- Lets Work Together Section Styles --- */
+    .collab-section {
+      background: #181122;
+      position: relative;
+      overflow: hidden;
+      min-height: 540px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+    .collab-grid {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: repeating-linear-gradient(0deg,rgba(160,89,247,0.04) 0 1px,transparent 1px 48px),
+                  repeating-linear-gradient(90deg,rgba(160,89,247,0.05) 0 1px,transparent 1px 48px);
+    }
+    .collab-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .collab-text {
+      flex: 1 1 0%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .collab-label {
+      color: #a259f7;
+      font-size: 1.18rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.1rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+    }
+    .collab-title {
+      color: #fff;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 7vw, 7rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      margin-bottom: 0;
+      text-transform: uppercase;
+      word-spacing: -0.18em;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.2em;
+    }
+    .collab-btn {
+      margin-top: 2rem;
+      background: #a259f7;
+      color: #fff;
+      font-weight: 800;
+      border-radius: 9999px;
+      font-size: 1.21rem;
+      padding: 2.1rem 2.7rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 48px #a259f74a,0 2px 6px #0004;
+      transition: background .18s, color .18s, transform .14s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      position: relative;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .collab-btn:hover {
+      background: #6c67f7;
+      color: #fff;
+      transform: scale(1.06) translateY(-2px);
+    }
+    .collab-arrow {
+      display: inline-block;
+      font-size: 1.7em;
+      transition: transform 0.4s cubic-bezier(.65,1.7,.62,.86);
+      will-change: transform;
+      margin-right: 0.2em;
+    }
+    .collab-btn.clicked .collab-arrow {
+      transform: translateX(22px) rotate(23deg) scale(1.1);
+      color: #fff;
+    }
+    .collab-dot {
+      width: 15px; height: 15px;
+      background: #a259f7;
+      border-radius: 50%;
+      margin-left: 0.38em;
+      margin-bottom: 0.08em;
+      box-shadow: 0 0 22px 5px #a259f763;
+      display: inline-block;
+      animation: collab-dot-blink 1.3s infinite alternate cubic-bezier(.53,0,.47,1);
+    }
+    @keyframes collab-dot-blink {
+      0% { opacity: 0.75; }
+      100% { opacity: 1; }
+    }
+    /* Dynamic Telephone (tube) animation */
+    .collab-tube-outer {
+      flex: none;
+      width: 180px; min-width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .collab-tube {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      animation: tube-spin 7s linear infinite;
+    }
+    @keyframes tube-spin {
+      0% { transform: rotate(-25deg);}
+      100% { transform: rotate(335deg);}
+    }
+    .collab-tube-inner {
+      width: 150px; height: 150px;
+      position: absolute;
+      left: 0; top: 0;
+      /* 3D tube SVG */
+      background: url('data:image/svg+xml;utf8,<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="75" cy="75" rx="73" ry="52" stroke="black" stroke-width="24" fill="none" opacity="0.88"/><ellipse cx="75" cy="75" rx="65" ry="45" stroke="url(%23gloss)" stroke-width="10" fill="none" opacity="0.26"/><defs><linearGradient id="gloss" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="white" stop-opacity="0.38"/><stop offset="100%" stop-color="white" stop-opacity="0"/></linearGradient></defs></svg>') center center no-repeat;
+      background-size: contain;
+      filter: drop-shadow(0 6px 42px #0008) blur(0.5px);
+    }
+    .collab-tube-inner::before, .collab-tube-inner::after {
+      content: "";
+      position: absolute;
+      background: #181122;
+      border-radius: 50%;
+      filter: blur(2.8px);
+    }
+    .collab-tube-inner::before {
+      width: 20px; height: 20px;
+      left: -7px; top: 65px;
+    }
+    .collab-tube-inner::after {
+      width: 20px; height: 20px;
+      right: -7px; bottom: 65px;
+    }
+    @media (max-width: 900px) {
+      .collab-title { font-size: clamp(1.4rem, 9vw, 3.5rem);}
+      .collab-section { min-height: 320px;}
+      .collab-content { flex-direction: column; gap: 1.6rem;}
+      .collab-tube-outer { width: 120px; }
+      .collab-tube { width: 80px; height: 80px;}
+      .collab-tube-inner { width: 80px; height: 80px;}
+    }
+    @media (max-width: 600px) {
+      .collab-title { font-size: clamp(1rem, 10vw, 2.3rem);}
+      .collab-tube-outer { width: 70px; }
+      .collab-tube, .collab-tube-inner { width: 55px; height: 55px;}
+      .collab-btn { padding: 0.7rem 1.5rem; font-size: 1rem;}
+    }
+  </style>
+</head>
+<body class="bg-[#181122] min-h-screen flex flex-col text-[#e5e7eb]">
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 bg-[#1a0931]/95 shadow-md border-b border-[#a259f7]">
+    <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 select-none">
+        <span class="w-10 h-10 flex items-center justify-center">
+          <svg width="40" height="40" viewBox="0 0 180 180" fill="none">
+            <g>
+              <path d="M35 55 
+                       Q35 30 75 30 
+                       H135 
+                       Q145 30 145 42 
+                       Q145 55 135 55 
+                       H75 
+                       Q65 55 65 65 
+                       Q65 75 75 75 
+                       H135" 
+                    fill="#a259f7"/>
+              <rect x="35" y="80" width="110" height="18" rx="6" fill="#a259f7"/>
+              <path d="M95 98
+                       Q95 135 95 155
+                       Q95 160 100 160
+                       Q105 160 105 155
+                       Q105 135 105 98
+                       Z"
+                    fill="#a259f7"/>
+              <path d="M35 125
+                       Q35 110 60 110
+                       Q65 110 65 125
+                       Q65 140 60 140
+                       Q35 140 35 125
+                       Z"
+                    fill="#a259f7"/>
+            </g>
+          </svg>
+        </span>
+        <span class="text-2xl font-extrabold text-[#a259f7] drop-shadow">SafaTech Solution</span>
+      </a>
+      <div class="hidden md:flex items-center gap-2">
+        <a href="index.html" class="px-6 py-2 text-base font-medium text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">Home</a>
+        <a href="about.html" class="px-6 py-2 text-base font-medium text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">About us</a>
+        <a href="signup.html" class="px-6 py-2 text-base font-semibold text-white rounded bg-[#a259f7] hover:bg-[#8c3ef7] transition shadow">Sign up</a>
+        <a href="login.html" class="px-6 py-2 text-base font-medium text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">Login</a>
+      </div>
+      <button id="menu-btn" class="md:hidden flex items-center justify-center w-8 h-8 rounded bg-[#2a174d] hover:bg-[#a259f7]/10 transition focus:outline-none">
+        <svg class="w-6 h-6 text-[#a259f7]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pt-2 pb-4 bg-[#1a0931]/95 rounded-b-xl shadow space-y-2">
+      <a href="index.html" class="block py-2 text-base text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] font-medium transition">Home</a>
+      <a href="about.html" class="block py-2 text-base text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] font-medium transition">About us</a>
+      <a href="signup.html" class="block py-2 bg-gradient-to-r from-[#a259f7] to-[#8c3ef7] text-white rounded text-center font-bold shadow border-2 border-transparent hover:border-[#a259f7]">Sign up</a>
+      <a href="login.html" class="block py-2 text-base text-white hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] font-medium transition">Login</a>
+    </div>
+  </nav>
+
+  <!-- Blog Hero Section (like About Us) -->
+  <section class="hero-hex-bg w-full min-h-[650px] py-24 px-6 flex flex-col items-center justify-center text-center relative fade-in border-t-2 border-[#a259f7]">
+    <h1 class="text-[4rem] md:text-[6rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
+      Our <span class="text-[#a259f7]">Blog</span>
+    </h1>
+    <nav class="flex items-center justify-center text-xl font-semibold mb-8">
+      <span class="text-white opacity-90">Home</span>
+      <span class="mx-1 text-[#a259f7]"> *</span>
+      <span class="text-[#a259f7] font-bold">Our Blog</span>
+      <span class="ml-4 inline-block align-middle purple-dot rounded-full w-3 h-3 bg-[#a259f7]"></span>
+    </nav>
+  </section>
+
+  <!-- Swiper 3D Carousel -->
+  <section class="max-w-5xl mx-auto w-full px-2 mb-14 mt-0 relative" style="z-index:1;">
+    <!-- Animated Dots Background -->
+    <span class="carousel-bg-dot"></span>
+    <span class="carousel-bg-dot dot2"></span>
+    <span class="carousel-bg-dot dot3"></span>
+    <span class="carousel-bg-dot dot4"></span>
+    <div class="swiper mySwiper relative z-10">
+      <div class="swiper-wrapper" id="carousel-list">
+        <!-- Slides will be injected by JS -->
+      </div>
+      <!-- Controls -->
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </section>
+
+  <!-- Lets Work Together Section -->
+  <section class="collab-section">
+    <div class="collab-grid"></div>
+    <div class="collab-content">
+      <div class="collab-tube-outer">
+        <div class="collab-tube">
+          <div class="collab-tube-inner"></div>
+        </div>
+      </div>
+      <div class="collab-text">
+        <div class="collab-label">LET'S COLLABORATE</div>
+        <div class="collab-title">
+          LET'S WORK<span class="collab-dot"></span><br>TOGETHER
+        </div>
+        <button class="collab-btn" id="collabBtn">
+          <span class="collab-arrow" id="collabArrow">↗</span>
+          Contact Us
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Responsive mobile menu toggle
+    document.getElementById('menu-btn').onclick = function(){
+      var menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    };
+
+    // Blog posts array as before
+    const blogPosts = [
+      {
+        title: "The Future of Web Development: Trends & Tips for 2025",
+        image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80",
+        meta: "Web Development | 5 min read",
+        desc: "Stay ahead with the latest in responsive design, JavaScript frameworks, and performance optimization. Discover how SafaTech delivers cutting-edge websites that rank high on Google.",
+        tags: ["Responsive Design", "SEO", "Frontend", "Backend", "Web Performance"],
+        link: "#"
+      },
+      {
+        title: "Mobile App Strategies: Boost User Engagement",
+        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+        meta: "Mobile App | 4 min read",
+        desc: "Explore proven mobile app marketing, UI/UX, and retention insights. Build scalable Android and iOS apps with SafaTech's mobile-first expertise.",
+        tags: ["App Development", "Android", "iOS", "UI/UX", "Push Notifications"],
+        link: "#"
+      },
+      {
+        title: "Digital Marketing Essentials for Small Businesses",
+        image:  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+        meta: "Digital Marketing | 6 min read",
+        desc: "Grow your brand with expert SEO, PPC, content marketing, and social media strategies. SafaTech’s digital campaigns help you convert and retain more customers.",
+        tags: ["SEO", "Content Marketing", "Social Media", "PPC", "Branding"],
+        link: "#"
+      },
+      {
+        title: "How to Write Content That Gets Results",
+        image:  "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
+        meta: "Content Writing | 3 min read",
+        desc: "Master blog writing, web content, and copywriting to boost your website’s authority. Learn how SafaTech’s content team crafts high-ranking, conversion-focused copy.",
+        tags: ["Copywriting", "Blogging", "Content Strategy", "SEO Writing"],
+        link: "#"
+      },
+      {
+        title: "Graphic Design Trends: Visuals That Wow in 2025",
+        image: "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80",
+        meta: "Graphic Design | 5 min read",
+        desc: "Discover trending color palettes, typography, and branding styles. SafaTech’s designers create eye-catching visuals that set your brand apart.",
+        tags: ["Branding", "Logo Design", "UI Design", "Color Theory", "Typography"],
+        link: "#"
+      },
+      {
+        title: "Photography & Videography: Elevate Your Brand Story",
+        image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+        meta: "Photography | 4 min read",
+        desc: "Leverage professional visuals for your website and social media. Our tips help you create stunning photos and videos that engage your audience.",
+        tags: ["Photo Editing", "Video Production", "Brand Storytelling", "Visual Content"],
+        link: "#"
+      }
+    ];
+
+    // Render Swiper 3D Carousel Slides (with real content)
+    function renderCarousel() {
+      const carouselList = document.getElementById('carousel-list');
+      carouselList.innerHTML = '';
+      blogPosts.forEach((post, i) => {
+        const slide = document.createElement('div');
+        slide.className = "swiper-slide";
+        slide.innerHTML = `
+          <img src="${post.image}" alt="${post.title} image" class="carousel-image" />
+          <div class="swiper-slide-content">
+            <div class="carousel-meta">${post.meta}</div>
+            <div class="carousel-title">${post.title}</div>
+            <div class="carousel-tags">
+              ${post.tags.map(tag=>`<span class="carousel-tag">${tag}</span>`).join('')}
+            </div>
+            <div class="carousel-desc">${post.desc}</div>
+            <a href="${post.link}" class="read-more" aria-label="Read more about ${post.title}">
+              Read More
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        `;
+        carouselList.appendChild(slide);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCarousel();
+
+      // Swiper 3D Coverflow Init with dynamic, interactive & animated effects
+      new Swiper(".mySwiper", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        loop: true,
+        speed: 1050,
+        autoplay: {
+          delay: 3200,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        },
+        coverflowEffect: {
+          rotate: 52,
+          stretch: 0,
+          depth: 360,
+          modifier: 1.33,
+          slideShadows: true,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        keyboard: {
+          enabled: true,
+        },
+        a11y: {
+          enabled: true,
+        },
+        on: {
+          setTransition(swiper, transition) {
+            swiper.slides.forEach(slide => {
+              slide.style.transitionDuration = transition + 'ms';
+            });
+          },
+          slideChangeTransitionStart(swiper) {
+            const slides = swiper.slides;
+            slides.forEach((slide, idx) => slide.classList.remove('shine'));
+            setTimeout(() => {
+              if (slides[swiper.activeIndex]) slides[swiper.activeIndex].classList.add('shine');
+            }, 60);
+          }
+        }
+      });
+
+      // Parallax tilt effect for active card
+      document.querySelector('.mySwiper').addEventListener('mousemove', function(e) {
+        const active = document.querySelector('.swiper-slide-active');
+        if (!active) return;
+        const rect = active.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        active.style.transform = `scale(1.065) rotateY(${-x/36}deg) rotateX(${y/44}deg) translateY(-9px)`;
+      });
+      document.querySelector('.mySwiper').addEventListener('mouseleave', function() {
+        const active = document.querySelector('.swiper-slide-active');
+        if (!active) return;
+        active.style.transform = '';
+      });
+
+      // Lets Work Together button with animated arrow and navigation
+      const collabBtn = document.getElementById('collabBtn');
+      const collabArrow = document.getElementById('collabArrow');
+      collabBtn.addEventListener('click', function() {
+        collabBtn.classList.add('clicked');
+        collabArrow.style.transition = 'transform 0.4s cubic-bezier(.65,1.7,.62,.86)';
+        setTimeout(() => {
+          window.location.href = "contact.html";
+        }, 350);
+        setTimeout(() => {
+          collabBtn.classList.remove('clicked');
+        }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>

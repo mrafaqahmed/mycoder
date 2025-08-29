@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SafaTech Solution - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #070707;
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    /* --- NAVBAR Glassmorphism --- */
+    .navbar-glass {
+      background: rgba(17, 17, 18, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid #a259f7;
+      box-shadow: 0 4px 28px 0 #a259f71a;
+    }
+    .nav-btn {
+      background: rgba(28, 23, 41, 0.56);
+      padding: 0.54rem 1.8rem;
+      border-radius: 1.7rem;
+      color: #b998ff;
+      font-weight: 600;
+      font-size: 1.12rem;
+      letter-spacing: 0.08em;
+      border: none;
+      outline: none;
+      box-shadow: 0 1px 8px 0 #a259f72c;
+      position: relative;
+      overflow: hidden;
+      transition:
+        background 0.18s cubic-bezier(.7,.1,.3,1.8),
+        color 0.18s cubic-bezier(.8,0,.4,1),
+        box-shadow .16s cubic-bezier(.7,.1,.3,1.8),
+        filter .24s;
+    }
+    .nav-btn:before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 0; height: 0;
+      background: radial-gradient(circle, #a259f7 0%, #6e44ff 70%, transparent 100%);
+      transform: translate(-50%,-50%);
+      z-index: 0;
+      opacity: 0.13;
+      transition: width .32s, height .32s, opacity .27s;
+    }
+    .nav-btn:hover:before, .nav-btn:focus:before {
+      width: 170%; height: 250%;
+      opacity: 0.21;
+    }
+    .nav-btn:hover, .nav-btn:focus {
+      background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%);
+      color: #fff;
+      box-shadow: 0 2px 28px #a259f799, 0 1.5px 11px #8b66ff22;
+      filter: brightness(1.13) drop-shadow(0 0 8px #a259f7cc);
+    }
+    .nav-btn.active, .nav-btn[aria-current="page"] {
+      background: linear-gradient(90deg,#a259f7 14%,#6c67f7 100%);
+      color: #fff;
+      box-shadow: 0 6px 28px #a259f755, 0 0.5px 8px #a259f733;
+      filter: brightness(1.18) drop-shadow(0 0 12px #a259f7bb);
+    }
+    .nav-btn.active:after, .nav-btn[aria-current="page"]:after {
+      content: "";
+      position: absolute;
+      left: 50%; bottom: -8px;
+      transform: translateX(-50%);
+      width: 64%;
+      height: 6px;
+      border-radius: 12px;
+      background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%);
+      filter: blur(4px);
+      opacity: 0.89;
+      box-shadow: 0 0 24px #a259f7dd;
+    }
+    .nav-cta {
+      background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%);
+      color: #fff;
+      padding: 0.52rem 1.9rem;
+      font-weight: 700;
+      border-radius: 1.7rem;
+      box-shadow: 0 2px 18px #a259f7cc;
+      border: none;
+      transition: background .2s, box-shadow .2s;
+    }
+    .nav-cta:hover, .nav-cta:focus {
+      background: linear-gradient(90deg,#6c67f7 0%, #a259f7 100%);
+      box-shadow: 0 2px 28px #a259f7dd, 0 0px 14px #a259f799;
+    }
+
+    .btn-purple {
+      background: linear-gradient(90deg,#a259f7 0%,#6c67f7 100%);
+      color: #fff !important;
+      font-weight: 700;
+      border-radius: 9999px;
+      box-shadow: 0 2px 22px #a259f7b8, 0 1.5px 12px #8b66ff38;
+      padding: 1rem 2.4rem;
+      font-size: 1.15rem;
+      border: none;
+      outline: none;
+      transition: background .18s, box-shadow .17s, filter .16s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-purple:hover, .btn-purple:focus {
+      background: linear-gradient(90deg,#6c67f7 0%,#a259f7 100%);
+      filter: brightness(1.13);
+      box-shadow: 0 2px 30px #a259f7de, 0 1.5px 16px #8b66ff4c;
+    }
+    .btn-purple svg {
+      filter: drop-shadow(0 0 6px #a259f7bb);
+    }
+    .purple-text { color: #a259f7 !important; }  
+    @media (max-width: 900px) {
+      section h1 { font-size: 2.2rem!important; }
+      section h2 { font-size: 1.4rem!important; }
+      .nav-btn, .nav-cta { font-size: 1rem; padding: 0.45rem 1.25rem; }
+    }
+    .dynamic-circular-purple circle {
+      fill: #a259f7 !important;
+      filter: drop-shadow(0 0 24px #a259f7cc) drop-shadow(0 0 38px #a259f7bb);
+    }
+    .dynamic-circular-purple g,
+    .dynamic-circular-purple polyline {
+      stroke: #fff !important;
+    }
+    .dynamic-circular-purple text {
+      fill: #fff !important;
+    }
+    .badge-btn {
+      z-index: 30;
+    }
+    .scroll-banner {
+      width: 100vw;
+      overflow: hidden;
+      background: #a259f7;
+      padding: 0;
+      margin: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 3;
+    }
+    .scroll-track {
+      display: flex;
+      width: max-content;
+      animation: scroll-left 22s linear infinite;
+      gap: 2.6rem;
+    }
+    .scroll-banner span {
+      color: #171717;
+      font-weight: 800;
+      font-size: 1.7rem;
+      padding: 0 0.5em;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes scroll-left {
+      0% {transform: translateX(0);}
+      100% {transform: translateX(-50%);}
+    }
+    @media (max-width: 700px) {
+      .scroll-banner span {font-size: 1.01rem;}
+      .scroll-banner {height: 34px;}
+    }
+    #newsletter-modal {
+      background: rgba(0,0,0,0.65);
+    }
+    #newsletter-box {
+      box-shadow: 0 6px 52px 0 #0005;
+    }
+    #newsletter-box input[type="email"]::placeholder {
+      color: #a03cb0;
+      opacity: 1;
+    }
+    #newsletter-close {
+      cursor: pointer;
+      background: none;
+      border: none;
+      outline: none;
+      line-height: 1;
+      padding: 0;
+      z-index: 10;
+      border-radius: 6px;
+    }
+    #newsletter-close:hover {
+      background: #a259f7;
+      color: #fff;
+    }
+    #newsletter-box img {
+      filter: drop-shadow(0 1px 18px #0006);
+    }
+    @media (max-width: 1100px) {
+      nav .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+      nav ul, nav .flex.items-center.gap-2.ml-8 { gap: 0.5rem; }
+    }
+    @media (max-width: 900px) {
+      nav .max-w-7xl { flex-wrap: wrap; padding-left: 0.5rem; padding-right: 0.5rem; }
+      nav ul { gap: 0.1rem; }
+      nav .flex.items-center.gap-2.ml-8 { gap: 0.1rem; margin-left: 0.5rem; }
+      nav .flex.items-center.gap-2.ml-4 { gap: 0.1rem; margin-left: 0.5rem;}
+      nav .px-4, nav .px-5 { padding-left: 0.7rem !important; padding-right: 0.7rem !important;}
+    }
+    @media (max-width: 700px) {
+      nav .max-w-7xl { flex-direction: column; gap: 0.6rem; }
+      nav .flex.items-center { flex-wrap: wrap; }
+      nav .gap-2, nav .gap-4 { gap: 0.1rem !important; }
+      nav ul { flex-wrap: wrap; gap: 0.05rem; }
+      nav .flex.items-center.gap-2.ml-8, nav .flex.items-center.gap-2.ml-4 { margin-left: 0.1rem !important;}
+      nav .px-4, nav .px-5 { padding-left: 0.6rem !important; padding-right: 0.6rem !important;}
+      nav .font-extrabold { font-size: 1rem !important;}
+      nav svg { width: 36px !important; height: 36px !important;}
+    }
+    /* Loader background for home */
+    .loader-bg-home {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .loader-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 600px;
+      height: 600px;
+      font-family: "Inter", sans-serif;
+      font-size: 2.2em;
+      font-weight: 300;
+      color: white;
+      border-radius: 50%;
+      background-color: transparent;
+      user-select: none;
+      pointer-events: none;
+      box-shadow: 0 6px 60px #a259f799, 0 0 0 #0000;
+    }
+    .loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background-color: transparent;
+      animation: loader-rotate 2s linear infinite;
+      z-index: 0;
+    }
+    @keyframes loader-rotate {
+      0% {
+        transform: rotate(90deg);
+        box-shadow:
+          0 10px 40px 0 #fff9 inset,
+          0 20px 90px 0 #ad5fff inset,
+          0 60px 120px 0 #471eec inset;
+      }
+      50% {
+        transform: rotate(270deg);
+        box-shadow:
+          0 10px 18px 0 #fff9 inset,
+          0 20px 60px 0 #d60a47 inset,
+          0 40px 120px 0 #311e80 inset;
+      }
+      100% {
+        transform: rotate(450deg);
+        box-shadow:
+          0 10px 40px 0 #fff9 inset,
+          0 20px 90px 0 #ad5fff inset,
+          0 60px 120px 0 #471eec inset;
+      }
+    }
+    .loader-letter {
+      display: inline-block;
+      opacity: 0.4;
+      transform: translateY(0);
+      animation: loader-letter-anim 2s infinite;
+      z-index: 1;
+      border-radius: 50ch;
+      border: none;
+      pointer-events: none;
+    }
+    .loader-letter:nth-child(1) { animation-delay: 0s; }
+    .loader-letter:nth-child(2) { animation-delay: 0.1s; }
+    .loader-letter:nth-child(3) { animation-delay: 0.2s; }
+    .loader-letter:nth-child(4) { animation-delay: 0.3s; }
+    .loader-letter:nth-child(5) { animation-delay: 0.4s; }
+    .loader-letter:nth-child(6) { animation-delay: 0.5s; }
+    .loader-letter:nth-child(7) { animation-delay: 0.6s; }
+    .loader-letter:nth-child(8) { animation-delay: 0.7s; }
+    .loader-letter:nth-child(9) { animation-delay: 0.8s; }
+    .loader-letter:nth-child(10) { animation-delay: 0.9s; }
+    @keyframes loader-letter-anim {
+      0%, 100% {
+        opacity: 0.4;
+        transform: translateY(0);
+      }
+      20% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+      40% {
+        opacity: 0.7;
+        transform: translateY(0);
+      }
+    }
+    @media (max-width: 700px) {
+      .loader-bg-home { align-items: flex-start; }
+      .loader-wrapper { width: 220px; height: 220px; font-size: 1.2em;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader background effect for home page -->
+  <div class="loader-bg-home" aria-hidden="true">
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+      <span class="loader-letter"></span>
+    </div>
+  </div>
+  <!-- Newsletter Modal -->
+  <div id="newsletter-modal" class="fixed inset-0 z-[99] flex items-center justify-center hidden">
+    <div id="newsletter-box" class="relative bg-[#313131] rounded-2xl p-8 pt-12 w-full max-w-lg animate__animated animate__rotateInDownLeft" style="overflow: visible;">
+      <button id="newsletter-close" class="absolute top-4 right-4 text-white text-2xl hover:text-purple-400 transition font-bold">&#10005;</button>
+      <div class="text-left">
+        <h2 class="text-3xl font-bold text-white mb-2">Subscribe To Our <span class="text-[#bafc52]">Newsletter</span></h2>
+        <div class="text-lg text-gray-200 mb-5">Stay Updated With <span class="text-[#bafc52] font-bold">SafaTech Solution.</span></div>
+        <form class="flex flex-col gap-4">
+          <input type="email" placeholder="Your Email" class="rounded-lg px-4 py-3 bg-black text-[#bafc52] placeholder-[#bafc52] focus:outline-none font-semibold"/>
+          <button type="submit" class="bg-[#a259f7] hover:bg-[#6c67f7] text-black font-bold py-3 rounded-full flex items-center gap-2 justify-center text-lg shadow-lg transition">
+            Subscribe <span class="text-xl">&#8594;</span>
+          </button>
+        </form>
+      </div>
+      <img src="https://rankovate.com/wp-content/uploads/2025/07/section-bg-shape-3.png"
+           alt="" width="120"
+           class="absolute right-2 bottom-2 pointer-events-none select-none"/>
+    </div>
+  </div>
+  <!-- Navbar -->
+  <nav class="w-full fixed top-0 left-0 right-0 z-30 navbar-glass">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
+      <a href="index.html" class="flex items-center gap-2" aria-label="SafaTech Solution Home">
+        <img src="../assets/images/logo11.jpg" class="h-19 w-12 object-contain" style="background: transparent;"/>
+      </a>
+      <ul class="flex items-center gap-2 ml-8" role="menubar" aria-label="Main navigation">
+        <li>
+          <a href="index.html" class="px-3 py-2 text-[#a259f7] font-bold border-b-2 border-[#a259f7] bg-transparent hover:text-white transition" aria-current="page">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="about.html" class="px-3 py-2 text-white font-medium hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">
+            About
+          </a>
+        </li>
+        <li class="relative group">
+  <a href="#" 
+     class="px-3 py-2 text-white font-medium hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">
+    Services
+  </a>
+  <!-- Dropdown menu -->
+  <ul class="absolute left-0 mt-2 w-56 bg-gray-900 text-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50">
+    <li>
+      <a href="services/webservice.html" class="block px-4 py-2 hover:bg-[#a259f7] rounded-t-lg">Web Development</a>
+    </li>
+    <li>
+      <a href="services/softwareservice.html" class="block px-4 py-2 hover:bg-[#a259f7]">Software Development</a>
+    </li>
+    <li>
+      <a href="services/mobileservice.html" class="block px-4 py-2 hover:bg-[#a259f7]">Mobile Development</a>
+    </li>
+    <li>
+      <a href="s" class="block px-4 py-2 hover:bg-[#a259f7]">Digital Marketing</a>
+    </li>
+    <li>
+      <a href="services/GraphicDesign.html" class="block px-4 py-2 hover:bg-[#a259f7]">Graphic Designing</a>
+    </li>
+    <li>
+      <a href="photography.html" class="block px-4 py-2 hover:bg-[#a259f7]">Photography</a>
+    </li>
+    <li>
+      <a href="services/Ved&photoservice.html" class="block px-4 py-2 hover:bg-[#a259f7] rounded-b-lg">Videography</a>
+    </li>
+  </ul>
+</li>
+
+        <li>
+          <a href="tools.html" class="px-3 py-2 text-white font-medium hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition">
+            Tools
+          </a>
+        </li>
+        <li>
+          <a href="blog.html" class="px-3 py-2 text-white font-medium hover:text-[#a259f7] border-b-2 border-transparent hover:border-[#a259f7] transition" aria-label="Blog">
+            Blog
+          </a>
+        </li>
+      </ul>
+      <div class="flex items-center gap-2 ml-4">
+        <a href="login.html" class="px-4 py-2 bg-transparent text-[#a259f7] border border-[#a259f7] font-semibold hover:bg-[#a259f7] hover:text-white transition" aria-label="Login">Login</a>
+        <a href="signup.html" class="px-4 py-2 bg-[#a259f7] text-white font-semibold border-none hover:bg-[#6c67f7] transition" aria-label="Sign Up">Sign Up</a>
+        <a href="#contact-faq" class="px-5 py-2 bg-[#a259f7] text-white font-semibold border-none hover:bg-[#6c67f7] transition shadow-sm ml-2" aria-label="Contact Us">Contact Us</a>
+        <button id="tools-menu-button" class="w-9 h-9 flex items-center justify-center bg-[#232324] hover:bg-[#a259f7] text-white transition" aria-label="Show Tools Menu">
+          <svg width="22" height="22" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="2" fill="currentColor"/><circle cx="11" cy="5" r="2" fill="currentColor"/><circle cx="17" cy="5" r="2" fill="currentColor"/><circle cx="5" cy="11" r="2" fill="currentColor"/><circle cx="11" cy="11" r="2" fill="currentColor"/><circle cx="17" cy="11" r="2" fill="currentColor"/><circle cx="5" cy="17" r="2" fill="currentColor"/><circle cx="11" cy="17" r="2" fill="currentColor"/><circle cx="17" cy="17" r="2" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <!-- Tools Drawer (hidden by default) -->
+  <div id="tools-drawer"
+       class="fixed top-0 right-0 h-full w-[350px] bg-[#181029] shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out"
+       style="max-width:95vw;">
+    <button id="close-tools-drawer" class="absolute top-5 right-5 text-[#a2ff63] hover:text-[#a259f7] text-3xl font-bold focus:outline-none" aria-label="Close Tools Drawer">&times;</button>
+    <div class="px-8 pt-10 pb-6 flex flex-col gap-8 h-full overflow-y-auto">
+      <div class="mt-2 mb-4 w-3 h-3 rounded-full bg-[#a2ff63]"></div>
+      <div class="flex flex-col items-center gap-7">
+        <div class="flex flex-col items-center">
+         <!-- SafaTech "ST" Logo Inspired by Image 8, in Purple -->
+<svg width="50" height="50" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- S shape -->
+    <path d="M35 55 
+             Q35 30 75 30 
+             H135 
+             Q145 30 145 42 
+             Q145 55 135 55 
+             H75 
+             Q65 55 65 65 
+             Q65 75 75 75 
+             H135" 
+          stroke="#a259f7" stroke-width="0" fill="#a259f7"/>
+    <!-- Horizontal bar of T -->
+    <rect x="35" y="80" width="110" height="18" rx="6" fill="#a259f7"/>
+    <!-- T stem (with pointed tip) -->
+    <path d="M95 98
+             Q95 135 95 155
+             Q95 160 100 160
+             Q105 160 105 155
+             Q105 135 105 98
+             Z"
+          fill="#a259f7"/>
+    <!-- Left-bottom accent (like the original) -->
+    <path d="M35 125
+             Q35 110 60 110
+             Q65 110 65 125
+             Q65 140 60 140
+             Q35 140 35 125
+             Z"
+          fill="#a259f7"/>
+  </g>
+</svg>
+          <span class="font-extrabold text-2xl text-[#a259f7] mt-2">SafaTech</span>
+        </div>
+        <div class="flex flex-col items-center gap-4 text-white text-lg font-semibold">
+          <div class="flex flex-col items-center gap-1">
+            <svg width="38" height="38" fill="none"><path d="M12 18a6 6 0 1112 0v2a6 6 0 11-12 0v-2z" stroke="#a2ff63" stroke-width="2"/><path d="M18 26v4" stroke="#a2ff63" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Phone</span>
+            <span class="text-[#a2ff63] text-base mt-1 font-normal">+123-456-7890</span>
+          </div>
+          <hr class="w-24 border-[#232324] my-1">
+          <div class="flex flex-col items-center gap-1">
+            <svg width="38" height="38" fill="none"><rect x="7" y="12" width="24" height="14" rx="3" stroke="#a2ff63" stroke-width="2"/><path d="M7 12l12 9 12-9" stroke="#a2ff63" stroke-width="2"/></svg>
+            <span>Email</span>
+            <span class="text-[#a2ff63] text-base mt-1 font-normal">info@safatech.com</span>
+          </div>
+          <hr class="w-24 border-[#232324] my-1">
+          <div class="flex flex-col items-center gap-1">
+            <svg width="38" height="38" fill="none"><path d="M19 27a7 7 0 100-14 7 7 0 000 14z" stroke="#a2ff63" stroke-width="2"/><path d="M19 20v7" stroke="#a2ff63" stroke-width="2" stroke-linecap="round"/><circle cx="19" cy="27" r="1.5" fill="#a2ff63"/></svg>
+            <span>Address</span>
+            <span class="text-[#a2ff63] text-base mt-1 font-normal text-center">123 AI St, SafaTech Tower, Silicon Oasis, Dubai, UAE</span>
+          </div>
+        </div>
+        <hr class="w-3/4 border-[#232324] my-2">
+        <div>
+          <div class="text-white font-bold mb-2">Follow Us On</div>
+          <div class="flex gap-2">
+            <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a2ff63] flex items-center justify-center hover:bg-[#a2ff63] hover:text-black transition">
+              <!-- X/Twitter -->
+              <svg width="18" height="18" fill="none"><path d="M7 7l4 4m4-4l-4 4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a2ff63] flex items-center justify-center hover:bg-[#a2ff63] hover:text-black transition">
+              <!-- LinkedIn -->
+              <svg width="18" height="18" fill="none"><rect x="2" y="7" width="4" height="9" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/></svg>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a2ff63] flex items-center justify-center hover:bg-[#a2ff63] hover:text-black transition">
+              <!-- Facebook -->
+              <svg width="18" height="18" fill="none"><path d="M17 2.1v3.19h2.09v3.19H17V18.7h-3.18V8.48h-1.6v-3.2h1.6V2.1h3.18z" stroke="currentColor" stroke-width="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Overlay for closing drawer -->
+  <div id="tools-drawer-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden"></div>
+</nav>
+<script>
+  // Tools Drawer interactions
+  const menuBtn = document.getElementById('tools-menu-button');
+  const drawer = document.getElementById('tools-drawer');
+  const overlay = document.getElementById('tools-drawer-overlay');
+  const closeBtn = document.getElementById('close-tools-drawer');
+
+  function openDrawer() {
+    drawer.classList.remove('translate-x-full');
+    overlay.classList.remove('hidden');
+  }
+  function closeDrawer() {
+    drawer.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+  }
+  menuBtn.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === "Escape") closeDrawer();
+  });
+</script>
+ <main>
+<!-- Main Hero Section -->
+<!-- Main Hero Section -->
+<section class="relative bg-transparent min-h-[730px] w-full flex flex-col justify-center overflow-hidden" style="font-family:'Inter',sans-serif;">
+  <div class="absolute inset-0 z-0 pointer-events-none"></div>
+  <div id="cursor-dot"
+       style="position:fixed;z-index:9999;pointer-events:none;width:22px;height:22px;border-radius:50%;background:#a259f7;left:0;top:0;transform:translate(-50%,-50%);transition:transform .10s cubic-bezier(.4,2,.55,1.2);">
+  </div>
+  <div class="relative z-10 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row items-start justify-between pt-24 px-6 md:px-16">
+    <!-- Left: Main Headings & Desc -->
+    <div class="flex-1 min-w-[340px] pt-10 pb-7">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+        <span class="text-white block">Content Writing & SEO Toolkit</span>
+        <span class="purple-text block md:inline-block mt-2 md:mt-0">For Students, Professionals & Teams</span>
+      </h1>
+      <h2 class="text-2xl md:text-4xl font-light mb-8 mt-2 text-white">
+        Plagiarism Detection, SEO Analysis &amp; More
+      </h2>
+      <p class="text-lg md:text-xl text-gray-100 mb-6 max-w-2xl font-normal mt-4">
+        <span class="purple-text font-bold">SafaTech Solution</span> empowers you to create, optimize, and safeguard your content for school, business, and the web.<br>
+        <span class="purple-text">Write original, high-ranking content—trusted by 1000+ users. Free &amp; secure.</span>
+      </p>
+      <!-- CTA buttons -->
+      <div class="flex gap-4 mb-7">
+        <a href="signup.html" class="btn-purple">
+          Let’s Grow
+        </a>
+        <a href="tools/word-counter.html" class="btn-purple">
+          <svg width="24" height="24" fill="none"><circle cx="12" cy="12" r="12" fill="#a259f7" fill-opacity="0.16"/><path d="M9 8l5 4-5 4V8z" fill="#fff"/></svg>
+          Let's get Started
+        </a>
+      </div>
+      <!-- Social Proof: Trustpilot & Clutch -->
+      <div class="flex flex-col md:flex-row gap-8 mt-6">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <svg width="30" height="28" viewBox="0 0 36 34" fill="none"><path d="M18 1L22.09 12.26L34 13.27L25 21.14L27.18 33.02L18 26.77L8.82 33.02L11 21.14L2 13.27L13.91 12.26L18 1Z" fill="#a259f7"/></svg>
+            <span class="text-2xl font-bold purple-text">Trustpilot</span>
+          </div>
+          <div class="flex items-center">
+            <svg width="100" height="20"><g fill="#a259f7"><rect width="18" height="18" rx="4"/><rect x="20" width="18" height="18" rx="4"/><rect x="40" width="18" height="18" rx="4"/><rect x="60" width="18" height="18" rx="4"/><rect x="80" width="18" height="18" rx="4"/></g></svg>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm text-gray-400 mb-1">REVIEWED ON</div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-bold text-white">Clutch</span>
+            <span class="flex items-center gap-1">
+              <svg width="14" height="14" fill="#FF3F3F"><polygon points="7,1 8.7,5.2 13.2,5.2 9.4,8.3 10.9,12.5 7,9.9 3.1,12.5 4.6,8.3 0.8,5.2 5.3,5.2"/></svg>
+              <svg width="14" height="14" fill="#FF3F3F"><polygon points="7,1 8.7,5.2 13.2,5.2 9.4,8.3 10.9,12.5 7,9.9 3.1,12.5 4.6,8.3 0.8,5.2 5.3,5.2"/></svg>
+              <svg width="14" height="14" fill="#FF3F3F"><polygon points="7,1 8.7,5.2 13.2,5.2 9.4,8.3 10.9,12.5 7,9.9 3.1,12.5 4.6,8.3 0.8,5.2 5.3,5.2"/></svg>
+              <svg width="14" height="14" fill="#FF3F3F"><polygon points="7,1 8.7,5.2 13.2,5.2 9.4,8.3 10.9,12.5 7,9.9 3.1,12.5 4.6,8.3 0.8,5.2 5.3,5.2"/></svg>
+              <svg width="14" height="14" fill="#FF3F3F"><polygon points="7,1 8.7,5.2 13.2,5.2 9.4,8.3 10.9,12.5 7,9.9 3.1,12.5 4.6,8.3 0.8,5.2 5.3,5.2"/></svg>
+            </span>
+            <span class="ml-2 text-white font-bold">5.0 Rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: Circular Badge (absolute for true right positioning) -->
+    <div class="hidden lg:block absolute right-10 top-1/2 -translate-y-1/2 z-30 select-none">
+      <button id="circular-badge-btn" class="group relative focus:outline-none transition-transform duration-300 dynamic-circular-purple badge-btn" style="background:none;border:none;padding:0;cursor:pointer;">
+        <span class="inline-block animate-[spin_28s_linear_infinite] group-[.rotating]:animate-none" id="badge-spin-wrapper">
+          <svg width="220" height="220" viewBox="0 0 220 220" fill="none">
+            <defs>
+              <path id="safatech-circle" d="M110,110 m-90,0 a90,90 0 1,1 180,0 a90,90 0 1,1 -180,0"/>
+              <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="18" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <text font-size="17" font-family="Inter, Arial, sans-serif" letter-spacing="2.2">
+              <textPath href="#safatech-circle">
+                * AI Writing Since 2025 • SafaTech Solution • Smarter Content *
+              </textPath>
+            </text>
+            <circle cx="110" cy="110" r="44" fill="#a259f7" filter="url(#glow)" />
+            <g id="badge-arrow" class="badge-arrow-rotating">
+              <line x1="94" y1="126" x2="126" y2="94" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+              <line x1="114" y1="94" x2="126" y2="94" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+              <line x1="126" y1="94" x2="126" y2="106" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <!-- Responsive: show badge below on mobile -->
+  <div class="block lg:hidden w-full flex justify-center mt-8">
+    <button id="circular-badge-btn-mobile" class="group relative focus:outline-none transition-transform duration-300 dynamic-circular-purple badge-btn" style="background:none;border:none;padding:0;cursor:pointer;">
+      <span class="inline-block animate-[spin_28s_linear_infinite] group-[.rotating]:animate-none" id="badge-spin-wrapper-mobile">
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+  <circle cx="40" cy="40" r="32" fill="#a259f7"/>
+  <g stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main shaft: bottom-left to top-right -->
+    <line x1="28" y1="52" x2="52" y2="28"/>
+    <!-- Head, right -->
+    <line x1="44" y1="28" x2="52" y2="28"/>
+    <!-- Head, up -->
+    <line x1="52" y1="28" x2="52" y2="36"/>
+  </g>
+</svg>
+      </span>
+    </button>
+  </div>
+</section>
+<!-- ===== INFINITE SCROLL BANNER ===== -->
+<div class="scroll-banner">
+  <div class="scroll-track">
+    <span>AI Word Tools ✱</span>
+    <span>Grammar Genius ✱</span>
+    <span>Plagiarism Free ✱</span>
+    <span>SEO Power ✱</span>
+    <span>Checklist Maker ✱</span>
+    <span>Word Counter ✱</span>
+    <span>Instant Results ✱</span>
+    <span>Team Collaboration ✱</span>
+    <span>AI Word Tools ✱</span>
+    <span>Grammar Genius ✱</span>
+    <span>Plagiarism Free ✱</span>
+    <span>SEO Power ✱</span>
+    <span>Checklist Maker ✱</span>
+    <span>Word Counter ✱</span>
+    <span>Instant Results ✱</span>
+    <span>Team Collaboration ✱</span>
+  </div>
+</div>
+<!-- ===== SERVICES / PARTNERS SECTION ===== -->
+<!-- Our Services Section (Custom BG Image, No Purple Gradient) -->
+<section class="w-full py-16 px-4 relative z-10"
+         style="background: url('../assets/images/section3.png') no-repeat center center; background-size: cover; background-color: #181029;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+      <div class="flex items-center gap-3">
+        <span class="w-6 h-6 rounded-full bg-[#a259f7] flex items-center justify-center text-white text-xl font-bold">*</span>
+        <span class="text-white text-lg font-semibold">Our Services</span>
+      </div>
+      <a href="#" class="flex items-center gap-2">
+        <span class="bg-[#26193c] text-white font-bold px-7 py-3 rounded-full text-lg">Explore All Services</span>
+        <span class="w-12 h-12 bg-[#a259f7] rounded-full flex items-center justify-center text-white text-2xl">&#8599;</span>
+      </a>
+    </div>
+    <h2 class="text-4xl md:text-6xl font-extrabold mb-10 flex items-center gap-3" style="color: #0d0c0c;">
+  Our Powerful Tools
+  <span class="inline-block align-middle w-6 h-6 rounded-full" style="background: #000000;"></span>
+</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">📝</span>
+        <h3 class="font-bold text-xl text-white mb-1">AI Content Writer</h3>
+        <p class="text-[#b998ff] text-center">Generate articles, blogs, & emails with advanced AI.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">🔍</span>
+        <h3 class="font-bold text-xl text-white mb-1">Plagiarism Checker</h3>
+        <p class="text-[#b998ff] text-center">Detect duplicate content and protect originality.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">📈</span>
+        <h3 class="font-bold text-xl text-white mb-1">SEO Optimizer</h3>
+        <p class="text-[#b998ff] text-center">Boost your search rankings with actionable insights.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">📝</span>
+        <h3 class="font-bold text-xl text-white mb-1">Grammar & Proofreader</h3>
+        <p class="text-[#b998ff] text-center">Polish text for flawless grammar and clarity.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">🔢</span>
+        <h3 class="font-bold text-xl text-white mb-1">Word Counter</h3>
+        <p class="text-[#b998ff] text-center">Instantly count words, characters, and readability.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">👥</span>
+        <h3 class="font-bold text-xl text-white mb-1">Team Collaboration</h3>
+        <p class="text-[#b998ff] text-center">Share, review, and work together in real-time.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">📋</span>
+        <h3 class="font-bold text-xl text-white mb-1">Checklist Maker</h3>
+        <p class="text-[#b998ff] text-center">Create to-do lists and writing checklists easily.</p>
+      </div>
+      <div class="bg-[#1e132c]/80 rounded-xl p-6 flex flex-col items-center shadow-xl hover:scale-105 transition">
+        <span class="text-4xl mb-3">⚡</span>
+        <h3 class="font-bold text-xl text-white mb-1">Instant Reports</h3>
+        <p class="text-[#b998ff] text-center">Get detailed content analytics and suggestions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ===== ABOUT SECTION (HOME) ===== -->
+<section class="relative bg-[#0a0613] overflow-hidden pb-24 pt-16 px-4 z-20">
+  <section class="w-full py-16 px-4 relative z-10"
+         style="background: url('../assets/images/section2.png') no-repeat center center; background-size: cover; background-color: #181029;">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between">
+    <div>
+      <div class="flex items-center gap-2 mb-4">
+        <span class="w-5 h-5 rounded-full bg-[#a259f7] flex items-center justify-center text-white text-base font-bold">*</span>
+        <span class="uppercase tracking-widest font-bold text-white text-sm">About SafaTech</span>
+      </div>
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div>
+          <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-2">
+            Built for <span class="text-[#a259f7]">SEO Content Success</span>.<br>
+            Powered by Real <span class="text-[#a259f7]">Results</span>
+            <span class="inline-block align-middle w-4 h-4 rounded-full bg-[#a259f7] ml-2"></span>
+          </h2>
+        </div>
+        <div class="md:ml-8 max-w-xl">
+          <p class="text-lg text-gray-200 mb-5 leading-relaxed">
+            At <b class="text-[#a259f7] font-bold">SafaTech Solution</b>, we help you rank higher and reach more readers with smarter writing tools.<br>
+            From <span class="text-[#a259f7] font-semibold">SEO-optimized articles</span>, <span class="text-[#a259f7] font-semibold">plagiarism and grammar checks</span>, to <span class="text-[#a259f7] font-semibold">keyword research</span> and <span class="text-[#a259f7] font-semibold">content analysis</span>—we empower students, professionals, and teams to create original, high-ranking content that gets found in search.
+          </p>
+          <a href="about.html" class="inline-flex items-center gap-3">
+            <span class="bg-[#232324] text-white font-bold px-7 py-3 rounded-full text-lg shadow-lg transition hover:bg-[#a259f7] hover:text-white">More About</span>
+            <span class="w-12 h-12 bg-[#a259f7] rounded-full flex items-center justify-center text-white text-2xl hover:scale-110 transition">&#8599;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Features/Highlights Cards -->
+  <div class="max-w-7xl mx-auto mt-16 flex flex-col gap-8">
+    <div class="bg-gradient-to-r from-[#181029] to-[#191334] rounded-2xl px-8 py-7 flex items-center gap-6 shadow-lg border border-[#26193c]/60">
+      <span class="text-[#a259f7] text-3xl sm:text-4xl">
+        <svg width="38" height="38" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="#a259f7" stroke-width="2"/><rect x="15" y="1" width="10" height="10" rx="2" stroke="#a259f7" stroke-width="2"/><rect x="1" y="15" width="10" height="10" rx="2" stroke="#a259f7" stroke-width="2"/><circle cx="25" cy="20" r="5" stroke="#a259f7" stroke-width="2"/><line x1="30" y1="34" x2="34" y2="34" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <div>
+        <h3 class="font-bold text-2xl text-white mb-1">SEO-Driven Content</h3>
+        <p class="text-[#b998ff] text-base">Our tools help you craft content that’s not just original, but optimized for search engines—improve rankings and visibility with every piece you publish.</p>
+      </div>
+    </div>
+    <div class="bg-gradient-to-r from-[#181029] to-[#191334] rounded-2xl px-8 py-7 flex items-center gap-6 shadow-lg border border-[#26193c]/60">
+      <span class="text-[#a259f7] text-3xl sm:text-4xl">
+        <svg width="40" height="40" fill="none"><rect x="6" y="6" width="28" height="28" rx="6" stroke="#a259f7" stroke-width="2"/><path d="M20 13v14M13 20h14" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <div>
+        <h3 class="font-bold text-2xl text-white mb-1">Comprehensive Writing Tools</h3>
+        <p class="text-[#b998ff] text-base">Access keyword optimization, plagiarism detection, SEO analysis, and real-time feedback—streamline your content workflow from idea to publication.</p>
+      </div>
+    </div>
+    <div class="bg-gradient-to-r from-[#181029] to-[#191334] rounded-2xl px-8 py-7 flex items-center gap-6 shadow-lg border border-[#26193c]/60">
+      <span class="text-[#a259f7] text-3xl sm:text-4xl">
+        <svg width="38" height="38" fill="none"><circle cx="19" cy="19" r="17" stroke="#a259f7" stroke-width="2"/><path d="M19 6v26M6 19h26" stroke="#a259f7" stroke-width="2"/></svg>
+      </span>
+      <div>
+        <h3 class="font-bold text-2xl text-white mb-1">Collaboration & Data Security</h3>
+        <p class="text-[#b998ff] text-base">Work together and keep your content safe—share drafts, gather feedback, and protect your data with built-in privacy features.</p>
+      </div>
+    </div>
+  </div>
+    <!-- Dynamic Rotating Ball (bottom right) -->
+    <div class="pointer-events-none absolute right-0 bottom-0 translate-x-1/3 translate-y-1/3 z-0 select-none">
+      <canvas id="about-rotating-ball" width="330" height="330" style="width:330px;height:330px;"></canvas>
+    </div>
+  </section>
+  <script>
+    // Rotating Ball Animation (canvas)
+    const ballCanvas = document.getElementById('about-rotating-ball');
+    if(ballCanvas) {
+      const ctx = ballCanvas.getContext('2d');
+      let t = 0;
+      function drawBall() {
+        ctx.clearRect(0,0,ballCanvas.width,ballCanvas.height);
+        // Ball base
+        const centerX = ballCanvas.width/2, centerY = ballCanvas.height/2, radius = 140;
+        // Draw shadow
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY+32, radius*0.9, 0, 2*Math.PI);
+        ctx.fillStyle = "#000";
+        ctx.filter = "blur(22px)";
+        ctx.fill();
+        ctx.restore();
+        // Ball main
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2*Math.PI);
+        const grad = ctx.createRadialGradient(centerX-40, centerY-52, 22, centerX, centerY, radius);
+        grad.addColorStop(0,"#e9e9ef");
+        grad.addColorStop(0.2,"#232324");
+        grad.addColorStop(0.55,"#181029");
+        grad.addColorStop(1,"#08060c");
+        ctx.fillStyle = grad;
+        ctx.shadowColor = "#a259f7";
+        ctx.shadowBlur = 26;
+        ctx.fill();
+        ctx.restore();
+        // 'Shine' highlight
+        ctx.save();
+        ctx.globalAlpha = 0.18 + 0.05*Math.sin(t/18);
+        ctx.beginPath();
+        ctx.ellipse(centerX-40, centerY-60, 36, 18, Math.PI/6, 0, 2*Math.PI);
+        ctx.fillStyle="#fff";
+        ctx.filter = "blur(2px)";
+        ctx.fill();
+        ctx.restore();
+        // Rotating purple ring
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius*0.84, t/33, t/33+Math.PI/1.6);
+        ctx.strokeStyle = "#a259f7";
+        ctx.lineWidth = 15;
+        ctx.shadowColor = "#a259f7";
+        ctx.shadowBlur = 20;
+        ctx.stroke();
+        ctx.restore();
+        t += 1.2;
+        requestAnimationFrame(drawBall);
+      }
+      drawBall();
+    }
+  </script>
+  <section id="why-choose-us" class="w-full bg-[#0a0613] pt-20 pb-24 px-4 flex flex-col items-center relative z-20">
+     <div id="floating-torus-container"
+     style="
+       position: absolute;
+       left: 0;            /* Fully inside section on the left */
+       top: 50%;           /* Vertically centered */
+       transform: translateY(-50%);
+       width: 200px;
+       height: 320px;
+       z-index: 10;
+       pointer-events: none;
+     ">
+</div>
+  <div class="max-w-7xl w-full mx-auto">
+    <!-- Heading Row -->
+    <div class="flex items-center justify-between flex-wrap gap-5 mb-10">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#a259f7] text-[#191919] text-base font-bold">*</span>
+          <span class="uppercase tracking-widest font-extrabold text-[#a259f7] text-sm">Why Choose Us</span>
+        </div>
+ 
+        <h2 class="text-4xl md:text-5xl font-extrabold text-[#a259f7] mb-2 leading-tight">
+          Why SafaTech Stands Out
+        </h2>
+      </div>
+      <a href="#contact-us" class="flex items-center gap-2 bg-[#232324] hover:bg-[#a259f7] hover:text-white text-white font-bold px-7 py-3 rounded-full text-lg shadow-lg transition mt-3 md:mt-0">
+        Contact Us
+        <span class="w-8 h-8 bg-[#a259f7] rounded-full flex items-center justify-center text-[#232324] text-2xl ml-2 transition">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M4 14L14 4M14 4H6M14 4V12"/></svg>
+        </span>
+      </a>
+    </div>
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
+      <!-- Projects Launched -->
+      <div class="bg-[#191225] rounded-2xl p-10 min-h-[230px] flex flex-col justify-between border border-[#2b1b3e] relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-4 h-4 rounded-full bg-[#a259f7] flex items-center justify-center text-[#181818] text-xs font-bold">*</span>
+          <span class="text-white text-lg font-semibold">Projects Launched</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-5xl md:text-6xl font-extrabold text-[#a259f7] mb-1 counter" data-count="230">0+</span>
+          <p class="text-white text-base">
+            From innovative web tools to seamless writing solutions—SafaTech has launched projects for students, professionals, and global teams.
+          </p>
+        </div>
+        <span class="absolute right-5 top-5 w-2 h-2 bg-[#a259f7] rounded-full"></span>
+      </div>
+      <!-- Media Placements -->
+      <div class="bg-[#191225] rounded-2xl p-10 min-h-[230px] flex flex-col justify-between border border-[#2b1b3e] relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-4 h-4 rounded-full bg-[#a259f7] flex items-center justify-center text-[#181818] text-xs font-bold">*</span>
+          <span class="text-white text-lg font-semibold">Media Placements</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-5xl md:text-6xl font-extrabold text-[#a259f7] mb-1 counter" data-count="1800">0+</span>
+          <p class="text-white text-base">
+            Featured on top EdTech, SaaS, and business sites—empowering content on global platforms with smart distribution.
+          </p>
+        </div>
+      </div>
+      <!-- Satisfied Clients -->
+      <div class="bg-[#191225] rounded-2xl p-10 min-h-[230px] flex flex-col justify-between border border-[#2b1b3e] relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-4 h-4 rounded-full bg-[#a259f7] flex items-center justify-center text-[#181818] text-xs font-bold">*</span>
+          <span class="text-white text-lg font-semibold">Satisfied Clients</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-5xl md:text-6xl font-extrabold text-[#a259f7] mb-1 counter" data-count="700">0+</span>
+          <p class="text-white text-base">
+            Students, educators, and creators trust SafaTech to deliver accuracy, speed, and privacy in every tool and service.
+          </p>
+        </div>
+      </div>
+      <!-- Industry Mentions -->
+      <div class="bg-[#191225] rounded-2xl p-10 min-h-[230px] flex flex-col justify-between border border-[#2b1b3e] relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-4 h-4 rounded-full bg-[#a259f7] flex items-center justify-center text-[#181818] text-xs font-bold">*</span>
+          <span class="text-white text-lg font-semibold">Industry Mentions</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-5xl md:text-6xl font-extrabold text-[#a259f7] mb-1 counter" data-count="120">0+</span>
+          <p class="text-white text-base">
+            Recognized in top tech media & directories—SafaTech's innovation and security set the standard for writing tools.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- SAFATECH TESTIMONIALS SECTION (Dynamic, Animate on View, SafaTech Theme) -->
+<section id="safatech-testimonials" class="w-full bg-[#0a0613] pt-20 pb-24 px-4 flex flex-col items-center relative z-20">
+  <div class="max-w-7xl w-full mx-auto">
+    <!-- Heading Row -->
+    <div class="flex items-center justify-between flex-wrap gap-5 mb-8">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#a259f7] text-[#191919] text-base font-bold">*</span>
+          <span class="uppercase tracking-widest font-extrabold text-[#a259f7] text-sm">Client Testimonials</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-2 leading-tight">
+          What <span class="text-[#a259f7]">Content Writers</span> Say<br>About <span class="text-[#a259f7]">SafaTech</span>
+        </h2>
+      </div>
+      <a href="testimonials.html" class="flex items-center gap-2 bg-[#a259f7] hover:bg-[#232324] hover:text-white text-[#191919] font-bold px-7 py-3 rounded-full text-lg shadow-lg transition mt-3 md:mt-0">
+        Explore All Testimonials
+        <span class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#a259f7] text-2xl ml-2 transition">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M4 14L14 4M14 4H6M14 4V12"/></svg>
+        </span>
+      </a>
+    </div>
+    <!-- Testimonial Cards Row -->
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Rating Card -->
+      <div class="bg-[#181029] border border-[#2b1b3e] rounded-2xl px-10 py-10 flex flex-col items-center justify-center min-w-[310px] max-w-[370px] shadow-lg relative mb-3 md:mb-0">
+        <span id="testimonial-rating" class="text-6xl font-extrabold text-[#a259f7] mb-2">0</span>
+        <div class="flex items-center mb-2">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="client 1" class="w-7 h-7 rounded-full border-2 border-white -ml-1">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="client 2" class="w-7 h-7 rounded-full border-2 border-white -ml-2">
+          <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="client 3" class="w-7 h-7 rounded-full border-2 border-white -ml-2">
+          <span class="ml-2 text-sm text-white">Our Clients<br><span class="text-[#b998ff]">(2k+ Reviews)</span></span>
+        </div>
+        <span class="text-xl font-bold text-white mt-1 text-center">Rated by Students &<br>Professionals Worldwide</span>
+        <div class="mt-5 w-full flex flex-col gap-2">
+          <div class="flex items-center gap-2 justify-center">
+            <span class="text-white font-semibold text-base">Reviewed on</span>
+            <span class="font-bold text-lg text-[#a259f7]">Clutch</span>
+            <span class="flex items-center ml-2 text-[#ffd700]">
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M10 1.5l2.472 5.01 5.528.803-4 3.898.944 5.509L10 13.125l-4.944 2.595.944-5.509-4-3.898 5.528-.803L10 1.5z" fill="#FFD700"/></svg>
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M10 1.5l2.472 5.01 5.528.803-4 3.898.944 5.509L10 13.125l-4.944 2.595.944-5.509-4-3.898 5.528-.803L10 1.5z" fill="#FFD700"/></svg>
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M10 1.5l2.472 5.01 5.528.803-4 3.898.944 5.509L10 13.125l-4.944 2.595.944-5.509-4-3.898 5.528-.803L10 1.5z" fill="#FFD700"/></svg>
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M10 1.5l2.472 5.01 5.528.803-4 3.898.944 5.509L10 13.125l-4.944 2.595.944-5.509-4-3.898 5.528-.803L10 1.5z" fill="#FFD700"/></svg>
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20"><path d="M10 1.5l2.472 5.01 5.528.803-4 3.898.944 5.509L10 13.125l-4.944 2.595.944-5.509-4-3.898 5.528-.803L10 1.5z" fill="#FFD700"/></svg>
+            </span>
+            <span class="text-[#a259f7] font-bold ml-2">5.0</span>
+            <span class="text-white text-base ml-1">Rating</span>
+          </div>
+          <div class="flex items-center gap-2 justify-center mt-2">
+            <img src="https://cdn.trustpilot.net/brand-assets/4.0.0/logo-white.svg" alt="Trustpilot" class="h-7" style="height:28px;">
+            <span class="flex items-center ml-2">
+              <svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>
+              <svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>
+              <svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>
+              <svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>
+              <svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>
+            </span>
+          </div>
+        </div>
+        <a href="#contact-us" class="flex items-center gap-2 bg-[#232324] hover:bg-[#a259f7] hover:text-white text-white font-bold px-7 py-3 rounded-full text-lg shadow-lg transition mt-5">
+          Contact Now
+          <span class="w-8 h-8 bg-[#a259f7] rounded-full flex items-center justify-center text-[#232324] text-2xl ml-2 transition">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M4 14L14 4M14 4H6M14 4V12"/></svg>
+          </span>
+        </a>
+      </div>
+      <!-- Testimonials Slider -->
+      <div class="flex-1 bg-[#181029] border border-[#2b1b3e] rounded-2xl py-10 px-7 shadow-lg flex flex-col min-w-[340px] max-w-full">
+        <div id="testimonial-slider" class="flex transition-all duration-700">
+          <!-- Slides will be injected by JS -->
+        </div>
+        <!-- Custom Dots -->
+        <div class="flex gap-2 justify-center mt-8" id="testimonial-dots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // Dynamic rating animation
+  let ratingAnimated = false;
+  function animateRating() {
+    if (ratingAnimated) return;
+    const el = document.getElementById('testimonial-rating');
+    let from = 0, to = 4.9, duration = 1200, steps = 60, frame = 0;
+    function stepAnim() {
+      frame++;
+      let progress = frame / steps;
+      let val = (from + (to - from) * progress).toFixed(1);
+      el.textContent = progress < 1 ? val : to;
+      if (progress < 1) requestAnimationFrame(stepAnim);
+    }
+    stepAnim();
+    ratingAnimated = true;
+  }
+
+  // Testimonials data (can be dynamic from backend)
+  const testimonials = [
+    {
+      text: `SafaTech’s writing tools have genuinely improved my workflow. I can now create, review, and share content faster than ever before. The privacy and security features are a huge plus.`,
+      name: "Brenda Cho",
+      title: "Content Marketer",
+      rating: 5
+    },
+    {
+      text: `The real-time collaboration and SEO checks are a game changer for our team projects. Highly recommend SafaTech to any student or professional who wants to save time and get great results.`,
+      name: "Sarah Mitchell",
+      title: "Marketing Director",
+      rating: 5
+    },
+    {
+      text: `I love how easy it is to use SafaTech's platform. The support team is super responsive and the plagiarism checker is the best I've seen!`,
+      name: "Yusuf Khan",
+      title: "Student, University of London",
+      rating: 5
+    }
+  ];
+  let currentIndex = 0;
+  function renderTestimonialSlider() {
+    const slider = document.getElementById('testimonial-slider');
+    slider.innerHTML = '';
+    // Only show 2 at a time for desktop, 1 for mobile
+    const isMobile = window.innerWidth < 768;
+    const showCount = isMobile ? 1 : 2;
+    for (let i = 0; i < showCount; i++) {
+      const idx = (currentIndex + i) % testimonials.length;
+      const t = testimonials[idx];
+      slider.innerHTML += `
+        <div class="flex-1 px-6 ${i>0?'border-l border-[#2b1b3e]':''}">
+          <div class="text-gray-200 text-base mb-6 relative">
+            <span class="text-[#a259f7] text-2xl absolute -left-7 -top-2">“</span>
+            ${t.text}
+            <span class="text-[#a259f7] text-2xl align-super">”</span>
+          </div>
+          <div class="font-bold text-white text-lg">${t.name}</div>
+          <div class="text-[#b998ff] text-sm mb-2">${t.title}</div>
+          <span class="flex items-center gap-1">
+            ${'<svg width="18" height="18" fill="none"><rect width="18" height="18" rx="4" fill="#1dc653"/></svg>'.repeat(t.rating)}
+          </span>
+        </div>
+      `;
+    }
+    // Dots
+    const dots = document.getElementById('testimonial-dots');
+    dots.innerHTML = '';
+    for(let i=0; i<testimonials.length; i++){
+      dots.innerHTML += `<button onclick="goToTestimonial(${i})" class="rounded-full w-3 h-3 ${i===currentIndex?'bg-[#a259f7]':'bg-[#383058]'} border-none transition"></button>`;
+    }
+  }
+  function goToTestimonial(idx){
+    currentIndex = idx;
+    renderTestimonialSlider();
+  }
+  window.goToTestimonial = goToTestimonial;
+
+  // Animate on view
+  document.addEventListener("DOMContentLoaded", function() {
+    renderTestimonialSlider();
+    const section = document.getElementById("safatech-testimonials");
+    if (!section) return animateRating();
+    let observer = new window.IntersectionObserver(function(entries, obs) {
+      if (entries[0].isIntersecting && !ratingAnimated) {
+        animateRating();
+        obs.disconnect();
+      }
+    }, { threshold: 0.23 });
+    observer.observe(section);
+    window.addEventListener('resize', renderTestimonialSlider);
+  });
+</script>
+<script>
+  // Animate counters ONLY when the section comes into view
+  let counted = false;
+  function animateCounters() {
+    if (counted) return;
+    document.querySelectorAll(".counter").forEach(function (el) {
+      let countTo = parseInt(el.getAttribute("data-count"), 10);
+      let duration = 1700;
+      let frame = 0, frames = 60;
+      let from = 0;
+      let step = () => {
+        frame++;
+        let progress = frame / frames;
+        let val = Math.floor(from + (countTo - from) * progress);
+        if (progress < 1) {
+          el.textContent = val.toLocaleString() + "+";
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = countTo.toLocaleString() + "+";
+        }
+      };
+      step();
+    });
+    counted = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const section = document.getElementById("why-choose-us");
+    if (!section) return animateCounters();
+    let observer = new window.IntersectionObserver(function(entries, obs) {
+      if (entries[0].isIntersecting && !counted) {
+        animateCounters();
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    observer.observe(section);
+  });
+</script>
+<!-- SAFATECH FEATURES SECTION (Dynamic, Animates on Scroll, SafaTech Theme, Circular Text Animate, Fade-in, Dynamic Headline) -->
+<section id="safatech-features" class="w-full bg-[#12002a] pt-20 pb-24 px-4 flex flex-col items-center relative z-20 overflow-x-hidden">
+  <div class="max-w-7xl w-full mx-auto flex flex-col lg:flex-row items-start justify-between gap-8">
+    <!-- Left: Headings & Content -->
+    <div class="flex-1 min-w-[320px] opacity-0 transform translate-y-8 transition-all duration-900" id="features-left">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#a259f7] text-[#12002a] text-base font-bold">*</span>
+        <span class="uppercase tracking-widest font-extrabold text-[#a259f7] text-sm">SafaTech Features</span>
+      </div>
+      <h2 class="dynamic-headline text-4xl md:text-5xl font-extrabold leading-tight mb-2 text-white">
+        <span id="headline-typed"></span>
+      </h2>
+      <p class="mb-3 text-lg text-gray-200">
+        From <span class="text-[#a259f7] font-semibold">powerful content optimization</span> and <span class="text-[#a259f7] font-semibold">SEO Tools</span> to <span class="text-[#a259f7] font-semibold">seamless team collaboration</span> — SafaTech fuels visibility, growth, and trust for students, professionals, and teams in the digital space.
+      </p>
+      <div class="flex flex-wrap gap-x-8 gap-y-4 mb-6 mt-4 text-[#a259f7]">
+        <div class="flex items-center gap-2">
+          <svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><circle cx="11" cy="11" r="5" fill="#a259f7"/></svg>
+          <span class="font-medium text-white">Visibility That Drives Listings</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><circle cx="11" cy="11" r="5" fill="#a259f7"/></svg>
+          <span class="font-medium text-white">Scalable Growth at Every Stage</span>
+        </div>
+      </div>
+      <!-- Feature Pill Row -->
+      <div class="w-full bg-transparent mt-4">
+        <div class="flex flex-col md:flex-row md:gap-0 gap-6 items-stretch">
+          <div class="flex-1 flex items-center bg-[#181029] border-2 border-[#a259f7] rounded-2xl px-7 py-6 gap-4 min-w-[230px]">
+            <span class="bg-[#a259f7] rounded-full w-14 h-14 flex items-center justify-center">
+              <svg width="30" height="30" fill="none"><rect x="7" y="7" width="16" height="16" rx="4" stroke="#fff" stroke-width="2"/><path d="M11 15h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            <span class="text-white text-lg font-bold leading-tight">Cost-Efficient<br>Execution</span>
+          </div>
+          <div class="flex-1 flex items-center bg-[#181029] border-2 border-[#a259f7] rounded-2xl px-7 py-6 gap-4 min-w-[230px]">
+            <span class="bg-[#a259f7] rounded-full w-14 h-14 flex items-center justify-center">
+              <svg width="30" height="30" fill="none"><circle cx="15" cy="15" r="12" stroke="#fff" stroke-width="2"/><path d="M15 9v6l4 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            <span class="text-white text-lg font-bold leading-tight">Credible Brand<br>Presence</span>
+          </div>
+          <div class="flex-1 flex items-center bg-[#181029] border-2 border-[#a259f7] rounded-2xl px-7 py-6 gap-4 min-w-[230px]">
+            <span class="bg-[#a259f7] rounded-full w-14 h-14 flex items-center justify-center">
+              <svg width="30" height="30" fill="none"><rect x="7" y="7" width="16" height="16" rx="4" stroke="#fff" stroke-width="2"/><path d="M15 11v8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            <span class="text-white text-lg font-bold leading-tight">Faster Go-to-<br>Market Edge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: Animated Chart/Report -->
+    <div class="flex-1 min-w-[340px] flex flex-col items-center justify-center relative mt-12 lg:mt-0 opacity-0 transform translate-y-8 transition-all duration-900" id="features-right">
+      <div class="w-full max-w-md mx-auto relative">
+        <!-- Rotating Circular SEO/Expertise SVG -->
+        <svg id="rotating-circle-svg" class="absolute -top-16 left-1/2 -translate-x-1/2 z-10" width="170" height="170" style="will-change: transform;">
+          <defs>
+            <path id="circlePath" d="M85,85 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"/>
+          </defs>
+          <g>
+            <text font-size="17" fill="#a259f7" font-family="Inter, Arial, sans-serif" letter-spacing="2.2">
+              <textPath startOffset="0%" href="#circlePath" id="circle-text">
+                • SEO Expertise • Growth Focus • Since 2020 •
+              </textPath>
+            </text>
+          </g>
+        </svg>
+        <div class="z-20 relative">
+          <div class="absolute left-5 top-10 z-10">
+            <span class="bg-[#a259f7] rounded-full w-5 h-5 block"></span>
+          </div>
+          <div class="text-white font-extrabold text-3xl pl-20 pt-8">Growth Report <span class="text-[#a259f7] text-xl align-top">2024</span></div>
+          <!-- Chart Container -->
+          <div class="w-full pt-6 pl-4 pr-2">
+            <svg id="growth-bar-chart" width="330" height="190" viewBox="0 0 330 190" class="w-full h-auto z-20"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- CONTACT & FAQ SECTION (SafaTech, AI Writing Theme, Purple Accent) -->
+<section id="contact-faq" class="w-full bg-[#0a0613] py-16 px-4 flex flex-col items-center relative z-20">
+  <div id="floating-spheres-cluster"
+     style="position:absolute; left:0; bottom:2vw; width:280px; height:340px; z-index:2; pointer-events:none;"></div>
+
+  <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <!-- Contact Form Card -->
+    <div class="bg-[#181029] border border-[#2b1b3e] rounded-2xl px-8 py-10 shadow-xl flex flex-col justify-center w-full max-w-xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2 leading-tight">
+        Ready to <span class="text-[#a259f7]">Grow</span> Your <span class="text-[#a259f7]">Project?</span>
+      </h2>
+      <p class="text-gray-300 mb-6">
+        Tell us about your project &mdash; we’ll help with content, SEO, or team collaboration. No fluff, just expert AI solutions.
+      </p>
+      <form class="flex flex-col gap-4">
+        <div class="flex flex-col md:flex-row gap-4">
+          <input class="flex-1 bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" placeholder="First Name" required>
+          <input class="flex-1 bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" placeholder="Last Name" required>
+        </div>
+        <input class="bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" placeholder="Your Website">
+        <input class="bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" placeholder="Phone No">
+        <input class="bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" placeholder="E-mail" type="email" required>
+        <textarea class="bg-[#0a0613] border border-[#342458] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#a259f7]" rows="3" placeholder="Message" required></textarea>
+        <!-- Fake reCAPTCHA (replace with your real one) -->
+        <div class="flex items-center gap-3 mt-1 mb-1">
+          <span class="w-5 h-5 rounded-full bg-[#232324] border border-[#a259f7] flex items-center justify-center">
+            <svg width="17" height="17" fill="none"><path d="M14 5l-6.09 7.5L3 8.27" stroke="#a259f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="text-white text-sm">I'm not a robot</span>
+          <span class="ml-auto">
+            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" class="h-5" alt="captcha">
+          </span>
+        </div>
+        <button type="submit" class="mt-2 bg-[#a259f7] hover:bg-[#8d3bdd] text-[#181029] font-bold py-3 rounded-full w-full text-lg transition">Send Message</button>
+      </form>
+    </div>
+    <!-- FAQ Accordion -->
+    <div>
+      <div class="flex items-center gap-2 mb-3">
+        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#a259f7] text-[#181818] text-base font-bold">*</span>
+        <span class="uppercase tracking-widest font-extrabold text-[#a259f7] text-sm">FAQS</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6 leading-tight text-white">
+        FAQ's About <span class="text-[#a259f7]">SafaTech</span>
+      </h2>
+      <div id="faq-list" class="flex flex-col gap-4">
+        <!-- Accordions rendered by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+const faqs = [
+  {
+    q: "What is SafaTech?",
+    a: "SafaTech is an AI writing and productivity platform for students, professionals, and teams. We provide smart tools for content creation, plagiarism & SEO checks, and real-time collaboration to help you write and publish better, faster, and more securely."
+  },
+  {
+    q: "What services does SafaTech provide?",
+    a: "Our platform offers AI-powered writing, content checks, plagiarism detection, SEO analysis, grammar correction, and seamless team collaboration — all in one place."
+  },
+  {
+    q: "Does SafaTech guarantee project success or raise grades?",
+    a: "We provide advanced tools and support, but your results depend on your own use and effort. We help you maximize your productivity and quality!"
+  },
+  {
+    q: "How does plagiarism and SEO checking work?",
+    a: "Upload or write your content, and our AI will run advanced checks for originality, SEO best practices, readability, and more, providing instant feedback."
+  },
+  {
+    q: "What’s included in your AI collaboration suite?",
+    a: "You get real-time document sharing, commenting, group editing, and secure cloud storage — perfect for teams or class projects."
+  },
+  {
+    q: "Which platforms are supported by SafaTech?",
+    a: "SafaTech is web-based and works on all modern browsers, desktops, tablets, and mobiles. No installation needed."
+  },
+  {
+    q: "What’s the usual response time for support?",
+    a: "Our expert support team replies within 12 hours, 24/7!"
+  },
+  {
+    q: "Can I get a refund if I’m not satisfied?",
+    a: "Absolutely! We offer a 7-day money-back guarantee for all new users."
+  },
+];
+
+function renderFaqs() {
+  const container = document.getElementById('faq-list');
+  container.innerHTML = '';
+  faqs.forEach((item, i) => {
+    container.innerHTML += `
+      <div class="faq-item rounded-lg bg-[#181029] border border-[#2b1b3e] mb-1 overflow-hidden">
+        <button type="button" class="w-full flex items-center justify-between px-6 py-4 text-left text-white font-semibold text-lg focus:outline-none hover:bg-[#232324] transition" 
+          onclick="toggleFaq(${i})">
+          <span>${item.q}</span>
+          <span class="ml-2">${i===0?`
+            <svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><path d="M7 11h8" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>
+          `:`
+            <svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><path d="M7 11h8M11 7v8" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>
+          `}</span>
+        </button>
+        <div class="faq-answer px-6 pb-4 text-[#b998ff] text-base leading-relaxed" style="display:${i===0?'block':'none'};">
+          ${item.a}
+        </div>
+      </div>
+    `;
+  });
+}
+window.toggleFaq = function(idx) {
+  const items = document.querySelectorAll('#faq-list .faq-item');
+  items.forEach((item, i) => {
+    const answer = item.querySelector('.faq-answer');
+    const icon = item.querySelector('button span:last-child');
+    if (i === idx) {
+      // toggle open/close
+      const open = answer.style.display === 'block';
+      answer.style.display = open ? 'none' : 'block';
+      icon.innerHTML = open
+        ? `<svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><path d="M7 11h8M11 7v8" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>`
+        : `<svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><path d="M7 11h8" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>`;
+    } else {
+      answer.style.display = 'none';
+      item.querySelector('button span:last-child').innerHTML =
+        `<svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="10" stroke="#a259f7" stroke-width="2"/><path d="M7 11h8M11 7v8" stroke="#a259f7" stroke-width="2" stroke-linecap="round"/></svg>`;
+    }
+  });
+};
+
+document.addEventListener("DOMContentLoaded", renderFaqs);
+</script>
+
+<script>
+  // DATA (dynamic headline phrases, chart data)
+  const dynamicHeadlines = [
+    "Why Your Content<br>Succeeds with <b>SafaTech</b>"
+  ];
+  const chartMonths = ['Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const chartValues = [35, 80, 130, 160, 220]; // Example dynamic data, can be from API/backend
+
+  // Helper: Type headline with animation
+  function typeHeadline(phrases, targetId, delay = 45) {
+    const el = document.getElementById(targetId);
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let typing = '';
+    function type() {
+      const phrase = phrases[phraseIndex];
+      if (charIndex <= phrase.length) {
+        el.innerHTML = phrase.substring(0, charIndex) + '<span class="opacity-60">|</span>';
+        charIndex++;
+        setTimeout(type, delay);
+      } else {
+        el.innerHTML = phrase; // Remove cursor
+      }
+    }
+    type();
+  }
+
+  // Animate bar chart only once when section comes into view
+  let chartAnimated = false;
+  function animateBarChart() {
+    if (chartAnimated) return;
+    const svg = document.getElementById('growth-bar-chart');
+    svg.innerHTML = '';
+    // Chart dimensions & settings
+    const w = 330, h = 190;
+    const barW = 38, gap = 22;
+    const maxVal = Math.max(...chartValues) * 1.05;
+    // Axes & grid lines
+    for (let i = 0; i <= 4; i++) {
+      let y = 36 + ((h - 70) / 4) * i;
+      let val = Math.round(maxVal - (maxVal / 4) * i);
+      // Grid line
+      let grid = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      grid.setAttribute("x1", "52");
+      grid.setAttribute("x2", w - 10);
+      grid.setAttribute("y1", y);
+      grid.setAttribute("y2", y);
+      grid.setAttribute("stroke", "#46326a");
+      grid.setAttribute("stroke-width", "1.1");
+      svg.appendChild(grid);
+      // Value label
+      let label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", "0");
+      label.setAttribute("y", y + 5);
+      label.setAttribute("fill", "#a259f7");
+      label.setAttribute("font-size", "15");
+      label.setAttribute("font-family", "Inter, Arial, sans-serif");
+      label.textContent = "$" + val;
+      svg.appendChild(label);
+    }
+    // Animate bars
+    chartValues.forEach((v, i) => {
+      let bh = Math.round((v / maxVal) * (h - 70));
+      // Bar
+      let bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      bar.setAttribute("x", 60 + i * (barW + gap));
+      bar.setAttribute("y", h - 20 - bh);
+      bar.setAttribute("width", barW);
+      bar.setAttribute("height", 0);
+      bar.setAttribute("rx", "8");
+      bar.setAttribute("fill", "#a259f7");
+      svg.appendChild(bar);
+      // Bar label (month)
+      let t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("x", 60 + i * (barW + gap) + barW/2);
+      t.setAttribute("y", h - 2);
+      t.setAttribute("fill", "#fff");
+      t.setAttribute("font-size", "16");
+      t.setAttribute("font-family", "Inter, Arial, sans-serif");
+      t.setAttribute("text-anchor", "middle");
+      t.textContent = chartMonths[i];
+      svg.appendChild(t);
+      // Animate height
+      setTimeout(() => {
+        bar.animate([
+          {height: 0, y: h - 20},
+          {height: bh, y: h - 20 - bh}
+        ], {
+          duration: 1100 + i*160,
+          fill: 'forwards',
+          easing: 'cubic-bezier(.7,0,.3,1)'
+        });
+        setTimeout(() => {
+          bar.setAttribute('height', bh);
+          bar.setAttribute('y', h - 20 - bh);
+        }, 1100 + i*160);
+      }, 80 + i * 120);
+    });
+    chartAnimated = true;
+  }
+
+  // Animate rotating SVG circular text
+  let circleRotateId = null;
+  function startCircleRotation() {
+    const svg = document.getElementById('rotating-circle-svg');
+    let angle = 0;
+    function rotate() {
+      angle += 0.6;
+      svg.style.transform = `rotate(${angle}deg)`;
+      circleRotateId = requestAnimationFrame(rotate);
+    }
+    if (!circleRotateId) rotate();
+  }
+  function stopCircleRotation() {
+    if (circleRotateId) cancelAnimationFrame(circleRotateId);
+    circleRotateId = null;
+  }
+
+  // Fade-in effect for left/right columns
+  function fadeInFeaturesSection() {
+    document.getElementById('features-left').classList.add('opacity-100', 'translate-y-0');
+    document.getElementById('features-left').classList.remove('opacity-0', 'translate-y-8');
+    document.getElementById('features-right').classList.add('opacity-100', 'translate-y-0');
+    document.getElementById('features-right').classList.remove('opacity-0', 'translate-y-8');
+  }
+
+  // Observer for animation on scroll
+  document.addEventListener("DOMContentLoaded", function() {
+    // Set up headline typing effect
+    setTimeout(() => {
+      typeHeadline(dynamicHeadlines, "headline-typed", 25);
+    }, 350);
+
+    // IntersectionObserver for scroll-in animation
+    const section = document.getElementById("safatech-features");
+    if (!section) return;
+    let observer = new window.IntersectionObserver(function(entries, obs) {
+      if (entries[0].isIntersecting) {
+        fadeInFeaturesSection();
+        startCircleRotation();
+        animateBarChart();
+        obs.disconnect();
+      }
+    }, { threshold: 0.24 });
+    observer.observe(section);
+  });
+</script>
+<style>
+#features-left, #features-right { transition-property: opacity, transform !important; }
+#features-left.opacity-100, #features-right.opacity-100 { opacity: 1 !important; }
+#features-left.translate-y-0, #features-right.translate-y-0 { transform: translateY(0) !important; }
+</style>
+
+<script>
+  // Modal popup for newsletter
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+      document.getElementById('newsletter-modal').classList.remove('hidden');
+    }, 900);
+  });
+  document.getElementById('newsletter-close').onclick = function() {
+    const box = document.getElementById('newsletter-box');
+    box.classList.remove('animate__rotateInDownLeft');
+    box.classList.add('animate__fadeOutDown');
+    setTimeout(() => {
+      document.getElementById('newsletter-modal').classList.add('hidden');
+      box.classList.remove('animate__fadeOutDown');
+      box.classList.add('animate__rotateInDownLeft');
+    }, 700);
+  };
+
+  // Cursor-follow dot (perfectly centered on mouse pointer)
+  const cursorDot = document.getElementById('cursor-dot');
+  document.addEventListener('mousemove', (e) => {
+    cursorDot.style.left = `${e.clientX}px`;
+    cursorDot.style.top = `${e.clientY}px`;
+  });
+
+  // Badge arrow rotate on hover/click
+  function setupBadgeArrow(btnId) {
+    const badgeBtn = document.getElementById(btnId);
+    if (!badgeBtn) return;
+    badgeBtn.addEventListener('mouseenter', () => badgeBtn.classList.add('badge-rotated'));
+    badgeBtn.addEventListener('mouseleave', () => badgeBtn.classList.remove('badge-rotated'));
+    badgeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      badgeBtn.classList.add('badge-rotated');
+      setTimeout(() => badgeBtn.classList.remove('badge-rotated'), 700);
+      if(btnId==="circular-badge-btn") setTimeout(()=>{ window.location.href = 'about.html'; }, 700);
+      if(btnId==="circular-badge-btn-mobile") setTimeout(()=>{ window.location.href = 'about.html'; }, 700);
+    });
+  }
+  setupBadgeArrow('circular-badge-btn');
+  setupBadgeArrow('circular-badge-btn-mobile');
+
+  // Dynamic Gradient Mesh Background (Aurora/Plasma style, white/grey aurora)
+  const canvas = document.getElementById("gradient-mesh-bg");
+  const ctx = canvas.getContext("2d");
+  function resizeMesh() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeMesh();
+  window.addEventListener("resize", resizeMesh);
+
+  const colorSets = [
+    { x: 0.2, y: 0.3, color: [255,255,255,0.27], r: 410, dx: 0.12, dy: 0.10 }, // white
+    { x: 0.8, y: 0.2, color: [220,220,220,0.13], r: 330, dx: -0.13, dy: 0.09 }, // light grey
+    { x: 0.45, y: 0.9, color: [180,180,180,0.10], r: 350, dx: 0.1, dy: -0.12 }, // mid grey
+    { x: 0.7, y: 0.8, color: [200,200,200,0.09], r: 340, dx: 0.07, dy: -0.11 }, // silvery
+    { x: 0.33, y: 0.5, color: [170,170,170,0.10], r: 220, dx: -0.09, dy: 0.14 }  // more soft grey
+  ];
+  function animateGradientMesh() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let w = canvas.width, h = canvas.height;
+    let t = Date.now() * 0.0099;
+    colorSets.forEach(({x,y,color,r,dx,dy},i) => {
+      let cx = w*(x + Math.sin(t*dx + i)*0.09);
+      let cy = h*(y + Math.cos(t*dy + i)*0.10);
+      let rad = r + Math.sin(t*(dx+dy)+i)*38;
+      let grad = ctx.createRadialGradient(cx, cy, rad*0.45, cx, cy, rad);
+      grad.addColorStop(0, `rgba(${color[0]},${color[1]},${color[2]},${color[3]})`);
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.filter = "blur(54px)";
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(animateGradientMesh);
+  }
+  animateGradientMesh();
+</script>
+<style>
+/* Responsive font for headings */
+@media (max-width: 900px) {
+  section h1 { font-size: 2.2rem!important; }
+  section h2 { font-size: 1.4rem!important; }
+}
+</style>
+</main>
+<!-- SAFATECH FOOTER (inspired by Rankovate, purple/black theme) -->
+<footer class="bg-[#0a0613] pt-10 pb-4 px-4 w-full text-white font-sans border-t border-[#191919]">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 pb-7 border-b border-[#232324]">
+    <!-- Brand -->
+    <div class="md:col-span-1 flex flex-col gap-4">
+      <div class="flex items-center gap-2 mb-2">
+        <!-- Replace with your SVG or logo image -->
+      <!-- SafaTech "ST" Logo Inspired by Image 8, in Purple -->
+<svg width="100" height="100" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- S shape -->
+    <path d="M35 55 
+             Q35 30 75 30 
+             H135 
+             Q145 30 145 42 
+             Q145 55 135 55 
+             H75 
+             Q65 55 65 65 
+             Q65 75 75 75 
+             H135" 
+          stroke="#a259f7" stroke-width="0" fill="#a259f7"/>
+    <!-- Horizontal bar of T -->
+    <rect x="35" y="80" width="110" height="18" rx="6" fill="#a259f7"/>
+    <!-- T stem (with pointed tip) -->
+    <path d="M95 98
+             Q95 135 95 155
+             Q95 160 100 160
+             Q105 160 105 155
+             Q105 135 105 98
+             Z"
+          fill="#a259f7"/>
+    <!-- Left-bottom accent (like the original) -->
+    <path d="M35 125
+             Q35 110 60 110
+             Q65 110 65 125
+             Q65 140 60 140
+             Q35 140 35 125
+             Z"
+          fill="#a259f7"/>
+  </g>
+</svg>
+        <span class="font-extrabold text-2xl text-[#a259f7]">SafaTech</span>
+      </div>
+      <div class="text-[#cccccc] text-base leading-6">
+        Built for creators.<br>
+        Powered by AI.<br>
+        Proven by results — not promises.
+      </div>
+      <div class="mt-4">
+        <div class="font-bold text-lg mb-1">Follow us on</div>
+        <div class="flex gap-3">
+          <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a259f7] flex items-center justify-center hover:bg-[#a259f7] hover:text-black transition">
+            <!-- X (Twitter) -->
+            <svg width="18" height="18" fill="none" viewBox="0 0 32 32"><path d="M7 7l18 18M25 7L7 25" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a259f7] flex items-center justify-center hover:bg-[#a259f7] hover:text-black transition">
+            <!-- Medium -->
+            <svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="9" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a259f7] flex items-center justify-center hover:bg-[#a259f7] hover:text-black transition">
+            <!-- LinkedIn -->
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="2" y="7" width="4" height="15" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><rect x="8" y="11" width="4" height="11" rx="2" stroke="currentColor" stroke-width="2"/><rect x="14" y="7" width="4" height="15" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border-2 border-[#a259f7] flex items-center justify-center hover:bg-[#a259f7] hover:text-black transition">
+            <!-- Facebook -->
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M17 2.1v3.19h2.09v3.19H17V18.7h-3.18V8.48h-1.6v-3.2h1.6V2.1h3.18z" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="mt-5">
+        <div class="font-bold text-lg mb-1">We Accept</div>
+        <div class="flex gap-2 flex-wrap">
+          <!-- Add or replace with your real payment/crypto icons -->
+          <img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/paypal.svg" class="h-7 w-7 rounded-full bg-[#181029] p-1" alt="PayPal">
+          <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg?v=026" class="h-7 w-7 rounded-full bg-[#181029] p-1" alt="BTC">
+          <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=026" class="h-7 w-7 rounded-full bg-[#181029] p-1" alt="ETH">
+          <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=026" class="h-7 w-7 rounded-full bg-[#181029] p-1" alt="USDT">
+          <img src="https://cryptologos.cc/logos/solana-sol-logo.svg?v=026" class="h-7 w-7 rounded-full bg-[#181029] p-1" alt="Solana">
+        </div>
+      </div>
+    </div>
+    <!-- Quick Links -->
+    <div class="md:col-span-1 flex flex-col gap-2">
+      <div class="font-bold text-xl mb-1">Quick Link</div>
+      <a href="#" class="hover:text-[#a259f7]">Home</a>
+      <a href="#" class="hover:text-[#a259f7]">About Us</a>
+      <a href="#" class="hover:text-[#a259f7]">Blog</a>
+      <a href="#" class="hover:text-[#a259f7]">NewsRoom</a>
+      <a href="#" class="hover:text-[#a259f7]">Contact Us</a>
+    </div>
+    <!-- Services -->
+    <div class="md:col-span-1 flex flex-col gap-2">
+      <div class="font-bold text-xl mb-1">Services</div>
+      <a href="#" class="hover:text-[#a259f7]">AI Writing</a>
+      <a href="#" class="hover:text-[#a259f7]">Plagiarism Checker</a>
+      <a href="#" class="hover:text-[#a259f7]">SEO Analysis</a>
+      <a href="#" class="hover:text-[#a259f7]">Team Collaboration</a>
+    </div>
+    <!-- Industries -->
+    <div class="md:col-span-1 flex flex-col gap-2">
+      <div class="font-bold text-xl mb-1">Industries</div>
+      <a href="#" class="hover:text-[#a259f7]">Education</a>
+      <a href="#" class="hover:text-[#a259f7]">Marketing</a>
+      <a href="#" class="hover:text-[#a259f7]">Publishing</a>
+      <a href="#" class="hover:text-[#a259f7]">Enterprise</a>
+      <a href="#" class="hover:text-[#a259f7]">Startups</a>
+    </div>
+    <!-- Newsletter + Contact -->
+    <div class="md:col-span-1 flex flex-col gap-3">
+      <div class="font-bold text-xl mb-1">Subscribe To SafaTech</div>
+      <form class="flex flex-col gap-2 mb-2">
+        <input type="email" placeholder="Enter Your Email" class="bg-transparent border border-[#a259f7] rounded-full px-4 py-2 text-white placeholder:text-[#cccccc] focus:outline-none">
+        <button type="submit" class="bg-[#232324] hover:bg-[#a259f7] hover:text-black text-white font-bold rounded-full py-2 transition">Subscribe</button>
+      </form>
+      <div class="font-bold text-xl mt-2 mb-2">Contact Info</div>
+      <div class="flex items-center gap-2 text-lg mb-1">
+        <svg width="20" height="20" fill="none" stroke="#a259f7" stroke-width="2"><rect x="2" y="4" width="16" height="12" rx="2" stroke-width="2"/><path d="M2 4l8 6 8-6" stroke-width="2"/></svg>
+        <svg width="20" height="20" fill="none" stroke="#a259f7" stroke-width="2"><circle cx="10" cy="10" r="9" stroke-width="2"/><path d="M7 10h6M10 7v6" stroke-width="2"/></svg>
+      </div>
+      <div class="text-[#a259f7] font-bold">Phone:</div>
+      <a href="tel:+1234567890" class="text-[#a259f7] mb-2 hover:underline">+123-456-7890</a>
+      <div class="text-[#a259f7] font-bold">Address:</div>
+      <div class="text-[#cccccc] text-base leading-6">
+        123 AI St, SafaTech Tower,<br>
+        Silicon Oasis, Dubai, UAE
+      </div>
+    </div>
+  </div>
+  <!-- Bottom bar -->
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pt-5 gap-3">
+    <span class="text-sm text-[#cccccc]">Copyright © 2025 All Rights Reserved.</span>
+    <div class="flex gap-6 text-sm">
+      <a href="#" class="hover:text-[#a259f7]">Privacy Policy</a>
+      <span>/</span>
+      <a href="#" class="hover:text-[#a259f7]">Term’s & Condition</a>
+    </div>
+  </div>
+</footer>
+<script>
+(function() {
+  const container = document.getElementById('floating-torus-container');
+  if (!container) return;
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, width / height, 0.9, 1000);
+  camera.position.z = 8;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  // Torus geometry
+  const geometry = new THREE.TorusGeometry(2, 0.53, 48, 94);
+  const material = new THREE.MeshPhysicalMaterial({
+    color: 0xa259f7, // SafaTech Purple
+    metalness: 0.54,
+    roughness: 0.09,
+    clearcoat: 0.7,
+    clearcoatRoughness: 0.13,
+    reflectivity: 0.25,
+    sheen: 0.7,
+    sheenColor: new THREE.Color(0xa259f7),
+    transparent: false,
+    opacity: 1,
+    emissive: new THREE.Color(0xa259f7),
+    emissiveIntensity: 0.25
+  });
+  const torus = new THREE.Mesh(geometry, material);
+  scene.add(torus);
+
+  // Stronger lighting
+  const light1 = new THREE.PointLight(0xffffff, 2.1, 100);
+  light1.position.set(6, 12, 13);
+  scene.add(light1);
+  const light2 = new THREE.PointLight(0xa259f7, 0.6, 100);
+  light2.position.set(-8, -6, 8);
+  scene.add(light2);
+  const ambient = new THREE.AmbientLight(0xa259f7, 1.6);
+  scene.add(ambient);
+
+  // Animate: fast up/down float + fast rotation
+  let start = Date.now();
+  function animate() {
+    let t = (Date.now() - start) * 0.0025; // Faster!
+    torus.position.y = Math.sin(t * 1.2) * 1.2; // Faster and more range
+    torus.rotation.x = 0.74 + Math.sin(t * 0.55) * 0.22; // Faster
+    torus.rotation.y = t * 0.42; // Faster rotation
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const newW = container.offsetWidth, newH = container.offsetHeight;
+    camera.aspect = newW / newH;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newW, newH);
+  });
+})();
+</script>
+<script>
+// Floating 3D Spheres Cluster (SafaTech style)
+(function() {
+  const container = document.getElementById('floating-spheres-cluster');
+  if (!container) return;
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(36, width/height, 0.1, 1000);
+  camera.position.set(0, 0, 9);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  // Colors for spheres (SafaTech purple, blue, white, accent)
+  const colors = [
+    0xa259f7, // Purple
+    0x38bdf8, // Blue
+    0xffffff, // White
+    0x232324, // Dark accent
+    0x7c3aed  // Violet accent
+  ];
+
+  // Create 5 spheres, different sizes/colors
+  const spheres = [];
+  const radii = [1.25, 0.9, 0.7, 0.55, 0.45];
+  for (let i = 0; i < 5; i++) {
+    const geometry = new THREE.SphereGeometry(radii[i], 48, 48);
+    const material = new THREE.MeshPhysicalMaterial({
+      color: colors[i],
+      metalness: 0.55,
+      roughness: 0.17,
+      clearcoat: 0.6,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.22,
+      sheen: 0.5,
+      sheenColor: new THREE.Color(colors[i]),
+      transparent: true,
+      opacity: 0.95,
+      emissive: new THREE.Color(colors[i]),
+      emissiveIntensity: i === 2 ? 0.16 : 0.09 + 0.05*i
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+    spheres.push(sphere);
+  }
+
+  // Add a subtle point light and ambient
+  const light1 = new THREE.PointLight(0xffffff, 1.6, 100);
+  light1.position.set(3, 7, 7);
+  scene.add(light1);
+  const light2 = new THREE.PointLight(0xa259f7, 0.8, 100);
+  light2.position.set(-6, -9, 7);
+  scene.add(light2);
+  scene.add(new THREE.AmbientLight(0x222244, 1.25));
+
+  // Animate: spheres orbit, float, and rotate as a cluster
+  let start = Date.now();
+  function animate() {
+    let t = (Date.now() - start) * 0.0012;
+    // Arrange in a loose cluster, orbit each at different speed/phase
+    spheres[0].position.set(Math.sin(t) * 1.7, Math.cos(t*1.08) * 1.8, Math.cos(t*0.7) * 0.6);
+    spheres[1].position.set(-Math.cos(t*1.2) * 1.2, Math.sin(t*1.19+1.2) * 2.1, Math.sin(t*0.9) * 0.8 - 0.4);
+    spheres[2].position.set(Math.sin(t*0.8 + 1.3) * 1.6 + 0.3, Math.cos(t*1.1 - 0.7) * 1.4, Math.cos(t*0.5) * 1.2 + 0.7);
+    spheres[3].position.set(Math.cos(t*1.5+0.8) * 1.15 - 0.8, Math.sin(t*1.23+1.6) * 1.5 + 0.7, Math.sin(t*1.4) * 0.5 - 1.1);
+    spheres[4].position.set(Math.sin(t*0.7-0.9) * 2.1, Math.cos(t*1.23+2.1) * 1.22 - 0.8, Math.cos(t*0.9) * 0.98 + 0.3);
+
+    // Cluster group slow rotation
+    scene.rotation.y = Math.sin(t*0.17) * 0.10 + 0.11;
+    scene.rotation.x = Math.cos(t*0.11) * 0.10 + 0.08;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Responsive resize
+  window.addEventListener('resize', () => {
+    const newW = container.offsetWidth, newH = container.offsetHeight;
+    camera.aspect = newW / newH;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newW, newH);
+  });
+})();
+</script>
+</body>
+</html>
